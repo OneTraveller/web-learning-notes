@@ -1,0 +1,440 @@
+一、起步
+
+1. jest
+  Jest是 Facebook 的一套开源的 JavaScript 测试框架， 它自动集成了断言、JSDom、覆盖率报告等开发者所需要的所有测试工具，配置较少，对vue框架友好。
+2. vue-test-utils
+  Vue Test Utils 是 Vue.js 官方的单元测试实用工具库，为jest和vue提供了一个桥梁，暴露出一些接口，让我们更加方便的通过Jest为Vue应用编写单元测试。
+3. 安装
+  如果已经安装配置了webpack、babel的vue脚手架，现在需要在安装的是：
+  npm i jest @vue/test-utils vue-jest babel-jest jest-serializer-vue -D
+4. 在package.json中定义单元测试的脚本和配置jest
+  "scripts": {
+    "test": "jest"
+  },
+
+ "jest": {
+    "moduleFileExtensions": [
+      "js",
+      // 告诉 Jest 处理 `*.vue` 文件
+      "vue"
+    ],
+    "moduleNameMapper": {
+      // 支持源代码中相同的 `@` -> `src` 别名
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      // 用 `babel-jest` 处理 `*.js` 文件
+      "^.+\\.js$": "<rootDir>/node_modules/babel-jest",
+      // 用 `vue-jest` 处理 `*.vue` 文件
+      ".*\\.(vue)$": "<rootDir>/node_modules/vue-jest"
+    },
+    "snapshotSerializers": [
+      // 快照的序列化工具
+      "<rootDir>/node_modules/jest-serializer-vue"
+    ],
+    //成多种格式的测试覆盖率报告  可选
+    "collectCoverage": true,
+    "collectCoverageFrom": ["**/*.{js,vue}", "!**/node_modules/**"]
+  }
+5. 配置.babelrc文件
+  {
+    "presets": [
+      ["env", { "modules": false }]
+    ],
+    "env": {
+      "test": {
+        "presets": [
+          ["env"]
+        ]
+      }
+    }
+  }
+
+6. 写测试文件，放在根目录下test文件夹中，以.spec.js或.test.js为后缀名的文件，正常名字和组件名一致，如测试header组件，应该名字叫做header.spec.js或header.test.js
+  header.vue
+  <template>
+    <div>
+      <div>
+        <span class="count">{{ count }}</span>
+        <button @click="increment">Increment</button>
+      </div>
+    </div>
+  </template>
+  <script>
+  export default {
+    data () {
+      return {
+        count: 0
+      }
+    },
+    methods: {
+      increment () {
+        this.count++
+      }
+    }
+  }
+  </script>
+
+  header.spec.js
+  import { mount } from '@vue/test-utils'
+  import header from '@/components/header.vue'
+
+  describe('header', () => {
+    const wrapper = mount(header)
+
+    it('点击按钮', () => {
+      const button = wrapper.find('button');
+      expect(button.text()).toBe('Increment');
+      button.trigger('click');
+      expect(wrapper.find('.count').text()).toBe('1')
+    })
+  })
+
+7. 执行命令行：npm test，运行单元测试
+ 
+
+二、jest常用API
+1. 全局函数
+1）beforeAll(fn, timeout)/afterAll(fn, timeout)
+  在所有测试运行之前/之后执行，第二个参数可选，默认为5秒
+2）beforeEach(fn, timeout)/afterEach(fn, timeout)
+  在每个测试运行之前/之后执行，第二个参数可选，默认为5秒
+3）describe(name, fn)
+  创建一个块，将几个相关的测试组合在一起。
+  describe.only(name, fn)只运行一次
+4）test(name, fn, timeout)
+  测试方法，test(name, fn, timeout) 等价于 it(name, fn, timeout)， 第三个参数可选，默认为5秒
+  test.only(name, fn, timeout)，只运行一次
+
+2. 匹配器
+1）相等、不相等匹配
+  toBe
+    test('3+3等于6', () => {
+      expect(3 + 3).toBe(6);
+    });
+    expect(3+3)返回我们期望的结果，toBe是匹配器，匹配具体的某一个值
+  toEqual
+    如果是匹配对象，需要使用toEqual
+    const obj = { one: 1, two: 2 };
+    expect(obj).toBe({ one: 1, two: 2 });
+  not：匹配不相等
+    expect(3+3).not.toBe(6);
+2）匹配真假
+  toBeNull 只匹配 null
+  toBeUndefined 只匹配 undefined
+  toBeDefined 与...相反 toBeUndefined
+  toBeTruthy匹配if声明视为真的任何内容
+  toBeFalsy匹配if语句视为false的任何内容
+
+3）匹配数字
+  toBeGreaterThan(3) 大于3
+  toBeGreaterThanOrEqual(3) 等于或大于3
+  toBeLessThan(3) 小于3
+  toBeLessThanOrEqual(3) 等于或小于3
+  对于浮点相等，请使用toBeCloseTo
+    const value = 0.1 + 0.2;
+    // expect(value).toBe(0.3); //报错 Received: 0.30000000000000004
+    expect(value).toBeCloseTo(0.3);
+4）匹配字符串，toMatch 支持正则
+  test('but there is a "stop" in Christoph', () => {
+    expect('Christoph').toMatch(/stop/);
+  });
+5）匹配数组，toContain，数组中是否包含
+  const shoppingList = [
+    'paper towels',
+    'beer',
+  ];
+
+  test('the shopping list has beer on it', () => {
+    expect(shoppingList).toContain('beer');
+  });
+
+3. 异步函数
+1）回调函数
+回调是异步比较常见，实现如下
+  function fetchData (callback) {
+    setTimeout(() => {
+      callback('peanut butter');
+    }, 1000)
+  }
+
+  test('the data is peanut butter', done => {
+    function callback (data) {
+      expect(data).toBe('peanut butter');
+      done();
+    }
+    fetchData(callback);
+  });
+  如果不写done()，将会报超时的错误
+
+2）promise
+  function fetchData () {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('peanut butter')
+      }, 1000)
+    })
+  }
+
+  test('the data is peanut butter', () => {
+    expect.assertions(1);
+    return fetchData().then(data => {
+      expect(data).toBe('peanut butter');
+    });
+  });
+  assertions（1）代表的是在当前的测试中至少有一个断言是被调用的，否则判定为失败。
+  如果删掉return语句，那么你的测试将在fetchData完成之前结束。
+
+  配合 .resolves/.rejects使用
+    test('the data is peanut butter', () => {
+      expect.assertions(1);
+      return expect(fetchData()).resolves.toBe('peanut butter');
+    });
+3）async/await
+使用async/await可以使代码看起来更加整洁
+  test('the data is peanut butter', async () => {
+    expect.assertions(1);
+    await expect(fetchData()).resolves.toBe('peanut butter');
+  });
+
+4. mock
+  在项目中，一个模块的方法内常常会去调用另外一个模块的方法。在单元测试中，我们可能并不需要关心内部调用的方法的执行过程和结果，只想知道它是否被正确调用即可，甚至会指定该函数的返回值。此时，使用Mock函数是十分有必要。
+  常用的方法有：jest.fn()/jest.mock()/jest.spyOn
+1） jest.fn() 
+  jest.fn()是创建Mock函数最简单的方式，如果没有定义函数内部的实现，jest.fn()会返回undefined作为返回值。                     
+    test('测试jest.fn()调用', () => {
+      let mockFn = jest.fn();
+      let result = mockFn(1, 2, 3);
+
+      // mockFn被调用
+      expect(mockFn).toBeCalled();
+      // mockFn被调用了一次
+      expect(mockFn).toBeCalledTimes(1);
+      // mockFn传入的参数为1, 2, 3
+      expect(mockFn).toHaveBeenCalledWith(1, 2, 3);
+    })
+
+    test('jest.fn()添加返回值', () => {
+      let mockFn = jest.fn().mockReturnValue('default');
+      // mockFn执行后返回值为default
+      expect(mockFn()).toBe('default');
+    })
+
+模拟另一个模块的调用情况
+  fetch.js
+  export default {
+    fetch (callback) {
+      callback()
+    }
+  }
+  fetch.test.js
+  
+  import fetch from './fetch';
+  test('测试jest.fn()调用', () => {
+    let mockFn = jest.fn();
+    fetch.fetch(mockFn);
+    expect(mockFn).toBeCalled()
+  })
+
+2）jest.mock()
+  fetch.js文件夹中封装的请求方法可能我们在其他模块被调用的时候，并不需要进行实际的请求。这时使用jest.mock(）去mock整个模块是十分有必要的
+  创建event.js文件，用来调用fetch.js
+  import fetch from './fetch';
+  export default {
+    getPostList () {
+      return fetch.fetch(data => {
+        console.log('fetchPostsList be called!');
+      });
+    }
+  }
+
+  fetch.test.js
+    import events from './event';
+    import fetch from './fetch';
+
+  jest.mock('./fetch.js');
+  test('mock 整个 fetch.js模块', () => {
+    expect.assertions(1);
+    events.getPostList();
+    expect(fetch.fetch).toHaveBeenCalled();
+  });
+  使用jest.mock('./fetch.js')模拟fetch模块，若不用jest.mock，会报错：jest.fn() value must be a mock function or spy.
+
+3）jest.sypOn()
+在上面的jest.mock()中，并没有执行console.log('fetchPostsList be called!')，说明fetch函数没有执行。jest.spyOn()方法同样创建一个mock函数，但是该mock函数不仅能够捕获函数的调用情况，还可以正常的执行被spy的函数。
+  import events from './event';
+  import fetch from './fetch';
+
+  test('使用jest.spyOn()监控fetch.fetch被正常调用', () => {
+    expect.assertions(1);
+    const spyFn = jest.spyOn(fetch, 'fetch');
+    events.getPostList();
+    expect(spyFn).toHaveBeenCalled();
+  })
+  使用jest.spyOn，执行了console.log('fetchPostsList be called!')。
+
+ 三、vue-test-utils常用API
+1. mount
+创建一个包含被挂载和渲染的 Vue 组件的 Wrapper
+
+  import { mount } from '@vue/test-utils'
+  import Foo from './Foo.vue'
+  describe('Foo', () => {
+    it('renders a div', () => {
+      const wrapper = mount(Foo)
+      expect(wrapper.contains('div')).toBe(true)
+    })
+  })
+
+2.shallowMount
+和 mount 一样，创建一个包含被挂载和渲染的 Vue 组件的 Wrapper，不同的是被存根的子组件
+  import { shallowMount } from '@vue/test-utils'
+  import Foo from './Foo.vue'
+  describe('Foo', () => {
+    it('返回一个 div', () => {
+      const wrapper = shallowMount(Foo)
+      expect(wrapper.contains('div')).toBe(true)
+    })
+  })
+
+3.render render
+在底层使用 vue-server-renderer 将一个组件渲染为静态的 HTML。
+  import { render } from '@vue/server-test-utils'
+  import Foo from './Foo.vue'
+  describe('Foo', () => {
+    it('renders a div', async () => {
+      const wrapper = await render(Foo)
+      expect(wrapper.text()).toContain('<div></div>')
+    })
+  })
+
+4.createLocalVue 
+createLocalVue 返回一个 Vue 的类供你添加组件、混入和安装插件而不会污染全局的 Vue 类。
+可通过 options.localVue 来使用
+  import { createLocalVue, shallowMount } from '@vue/test-utils'
+  import Foo from './Foo.vue'
+  const localVue = createLocalVue()
+  const wrapper = shallowMount(Foo, {
+    localVue,
+    mocks: { foo: true }
+  })
+  expect(wrapper.vm.foo).toBe(true)
+  const freshWrapper = shallowMount(Foo)
+  expect(freshWrapper.vm.foo).toBe(false)
+
+5.选择器
+很多方法的参数中都包含选择器。一个选择器可以是一个 CSS 选择器、一个 Vue 组件或是一个查找选项对象。
+  标签选择器 (div、foo、bar)
+  类选择器 (.foo、.bar)
+  特性选择器 ([foo]、[foo="bar"])
+  id 选择器 (#foo、#bar)
+  伪选择器 (div:first-of-type)
+  近邻兄弟选择器 (div + .foo)
+  一般兄弟选择器 (div ~ .foo)
+  const buttonr = wrapper.find('.button')
+  const content = wrapper.find('#content')
+
+6.伪造 $route 和 $router
+有的时候你想要测试一个组件在配合 $route 和 $router 对象的参数时的行为。这时候你可以传递自定义假数据给 Vue 实例。
+  import { shallowMount } from '@vue/test-utils'
+  const $route = {
+    path: '/home'
+  }
+  const wrapper = shallowMount(Component, {
+    mocks: {
+      $route
+    }
+  })
+  expect(wrapper.vm.$route.path).toBe('/home')
+
+7.测试vuex
+在测试vuex，主要通过伪造state/getters/mutations/actions进行测试
+
+.vue文件中
+  <template>
+    <div>
+      <h1>{{appName}}</h1>
+      <h2>{{appNameWithVersion}}</h2>
+      <button @click="updateAppName"
+              class="mutation">mutation update</button>
+      <button @click="updateActionAppName"
+              class='action'>action update</button>
+    </div>
+  </template>
+  <script>
+  export default {
+    methods: {
+      updateAppName () {
+        this.$store.commit('setAppName', 'admin2')
+      },
+      updateActionAppName () {
+        this.$store.dispatch('setName', 'admin3')
+      }
+    },
+    computed: {
+      appName () {
+        return this.$store.state.appName;
+      },
+      appNameWithVersion () {
+        return this.$store.getters.appNameWithVersion;
+      }
+    }
+  }
+  </script>
+
+.spec.js文件中
+  import { shallowMount, createLocalVue } from '@vue/test-utils'
+  import Vuex from 'vuex'
+  import Header from '@/components/Header.vue'
+  const localVue = createLocalVue()
+  localVue.use(Vuex)
+
+  describe('header.vue', () => {
+    let wrapper;
+    let store, state, getters, mutations, actions;
+
+    beforeEach(() => {
+      state = {
+        appName: 'admin'
+      };
+      getters = {
+        appNameWithVersion: () => 'getters'
+      }
+      mutations = {
+        setAppName: jest.fn(),
+      }
+      actions = {
+        setName: jest.fn(),
+      }
+      store = new Vuex.Store({
+        state,
+        getters,
+        mutations,
+        actions
+      })
+
+      wrapper = shallowMount(Header, {
+        store,
+        localVue
+      })
+    })
+
+    it('测试vuex', () => {
+      expect(wrapper.find('h1').text()).toBe(state.appName)
+      expect(wrapper.find('h2').text()).toBe(getters.appNameWithVersion())
+      wrapper.find('.mutation').trigger('click')
+      expect(mutations.setAppName).toHaveBeenCalled()
+      wrapper.find('.action').trigger('click')
+      expect(actions.setName).toHaveBeenCalled()
+    })
+  })
+
+完...
+ 
+
+参考：
+1.https://vue-test-utils.vuejs.org/zh/
+2.https://jestjs.io/docs/en/getting-started
+3.http://www.cnblogs.com/Wolfmanlq/p/8018370.html
+4.https://www.jianshu.com/p/70a4f026a0f1
+5.https://www.jianshu.com/p/ad87eaf54622

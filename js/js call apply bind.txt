@@ -1,0 +1,103 @@
+call、apply、bind
+cat.call(dog, a, b) == cat.apply(dog, [a, b]) == (cat.bind(dog, a, b))()
+
+1.作用
+改变函数内的this指向
+  var name = 'window', 
+  foo = {name: 'foo'};
+  function fn () {
+  console.log(this.name)
+  }
+  fn();//window
+  fn.call(foo);//foo
+
+2.用法
+  call 语法： foo.call(this, arg1,arg2, ... ,argn );
+  apply 语法： foo.apply(this, [ arg1,arg2, ... ,argn ] );
+  bind 语法： foo.bind(this);
+
+3.区别
+1）参数
+  call： 可以有n个参数，从第二个参数开始的所有参数都是原函数的参数。
+  apply：只有两个参数，并且第二个参数必须为数组，数组中的所有元素一一对应原函数的参数。
+  bind： 只有一个参数，即要绑定的this。
+
+2）调用
+  call apply：调用后立即执行
+  bind：调用后返回已经绑定this的函数
+
+4.应用
+  1）伪数组转为数组
+    [].slice.call(arr);
+  2）取数组最大最小值
+    var arr = [1,2,3,4];
+    Math.max.apply(Math, arr) == Math.max(...arr);//4
+  3）合并数组
+    var arr1 = [1,2], arr2 = [3,4];
+    [].push.apply(arr1, arr2) == arr1.concat(arr2) == [...arr1, ...arr2];
+
+ 
+
+5.手写
+1）call
+  Function.prototype.myCall = function(context) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Error')
+    }
+    context = context || window
+    context.fn = this
+    const args = [...arguments].slice(1)
+    const result = context.fn(...args)
+    delete context.fn
+    return result
+  }
+
+  首先 context 为可选参数，如果不传的话默认上下文为 window
+  接下来给 context 创建一个 fn 属性，并将值设置为需要调用的函数
+  因为 call 可以传入多个参数作为调用函数的参数，所以需要将参数剥离出来
+  然后调用函数并将对象上的函数删除
+
+2）apply
+  Function.prototype.myApply = function(context) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Error')
+    }
+    context = context || window
+    context.fn = this
+    let result
+    // 处理参数和 call 有区别
+    if (arguments[1]) {
+      result = context.fn(...arguments[1])
+    } else {
+      result = context.fn()
+    }
+    delete context.fn
+    return result
+  }
+
+3）bind
+  Function.prototype.myBind = function (context) {
+    if (typeof this !== 'function') {
+      throw new TypeError('Error')
+    }
+    const _this = this
+    const args = [...arguments].slice(1)
+    // 返回一个函数
+    return function F() {
+      // 因为返回了一个函数，我们可以 new F()，所以需要判断
+      if (this instanceof F) {
+        return new _this(...args, ...arguments)
+      }
+      return _this.apply(context, args.concat(...arguments))
+    }
+  }
+
+  前几步和之前的实现差不多，就不赘述了
+  bind 返回了一个函数，对于函数来说有两种方式调用，一种是直接调用，一种是通过 new 的方式，我们先来说直接调用的方式
+  对于直接调用来说，这里选择了 apply 的方式实现，但是对于参数需要注意以下情况：因为 bind 可以实现类似这样的代码 f.bind(obj, 1)(2)，所以我们需要将两边的参数拼接起来，于是就有了这样的实现 args.concat(...arguments)
+  最后来说通过 new 的方式，在之前的章节中我们学习过如何判断 this，对于 new 的情况来说，不会被任何方式改变 this，所以对于这种情况我们需要忽略传入的 this
+  
+
+参考：
+1.https://segmentfault.com/a/1190000011389726
+2.https://segmentfault.com/a/1190000014182270

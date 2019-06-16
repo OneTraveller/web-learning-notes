@@ -1,0 +1,265 @@
+一、起步
+
+1.安装
+  npm install vue-router
+
+2.使用
+main.js
+  import Vue from 'vue'
+  import App from './App.vue'
+  import router from './router'
+
+  new Vue({
+    router,
+    render: h => h(App)
+  }).$mount('#app')
+
+  router.js
+  import Vue from 'vue'
+  import Router from 'vue-router'
+  import Home from './views/Home.vue'
+
+  Vue.use(Router)
+
+  export default new Router({
+    routes: [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      },
+      {
+        path: '/about',
+        name: 'about',
+        component: () => import('./views/About.vue')//import实现懒加载
+      }
+    ]
+  })
+
+html
+  <div id="app">
+    <h1>Hello App!</h1>
+    <p>
+      <!-- 使用 router-link 组件来导航. -->
+      <!-- 通过传入 `to` 属性指定链接. -->
+      <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+      <router-link to="/home">Go to home</router-link>
+      <router-link to="/about">Go to about</router-link>
+    </p>
+    <!-- 路由出口 -->
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
+  </div>
+
+3.$route和$router
+  $route是一条路由，为当前路由跳转对象，可以获取name、path、query、params等
+  $router相当于一个管理者，它来管理路由。可以使用push、go、back、replace等方法
+
+二、编程式导航
+1.push
+  点击 <router-link :to="..."> 等同于调用 router.push(...)
+  // 字符串
+  router.push('home')
+  // 对象
+  router.push({ path: 'home' })
+  // 命名的路由
+  router.push({ name: 'user', params: { userId: 123 }})
+  //带有别名的路由
+  router.push(别名)
+  // 带查询参数，变成 /register?plan=private
+  router.push({ path: 'register', query: { plan: 'private' }})
+  同样的规则也适用于 router-link 组件的 to 属性
+  注意：如果提供了 path，params 会被忽略
+
+2.replace
+  <router-link :to="..." replace> 相当于 router.replace(...)
+  跟router.push 很像，唯一的不同就是，它不会向 history 添加新记录
+
+3.go
+  类似 window.history.go(n)
+  如果 history 记录不够用，那就默默地失败
+  // 在浏览器记录中前进一步，等同于 history.forward()
+  this.$router.go(1)
+  // 后退一步记录，等同于 history.back()
+  this.$router.go(-1)
+
+4.back
+  this.$router.back() 返回上一页
+
+三、路由传参
+1.url后面直接跟参数
+  //route
+  path: '/about/:user',
+  //上个页面
+  this.$router.push('about/admin')
+  //当前页面  http://localhost:8080/#/about/admin
+  this.$route.params //{user: "admin"}
+
+2.query
+  //上个页面
+  this.$router.push({path: 'about', query: { user: 'admin'}})
+  //当前页面  http://localhost:8080/#/about?user=admin
+  this.$route.query //{user: "admin"}
+
+3.params
+  刷新页面后失效
+  //上个页面
+  this.$router.push({name: 'about', params: { user: 'admin'}})
+  //当前页面  http://localhost:8080/#/about
+  this.$route.params //{user: admin}
+
+4.props
+  //route.js
+  {
+    path: '/about',
+    name: 'about',
+    props: {
+      user: 'admin'
+    }
+  }
+  //about.vue
+  export default {
+    props: {
+      user: {
+        type: String,
+        default: 'user'
+      }
+    }
+  } 
+
+四、嵌套路由
+html
+  <template>
+    <div class="about">
+      <h1>This is an about page</h1>
+      <router-view></router-view>
+    </div>
+  </template>
+
+在 About组件的模板添加一个 <router-view>
+  router.js
+  {
+    path: '/about',
+    name: 'about',
+    component: About,
+    children: [
+      { path: '', component: () => import('./components/email.vue') },
+      { path: 'tel', component: () => import('./components/tel.vue') },
+    ]
+  },
+需要在 VueRouter 的参数中使用 children 配置
+
+五、嵌套视图
+用于多个视图，比如sidebar (侧导航) 和 main (主内容) 两个视图
+html
+  <router-view></router-view>
+  <router-view name="a"></router-view>
+  <router-view name="b"></router-view>
+  
+router.js
+  注意：是components，加个s
+  {
+    path: '/about',
+    name: 'about',
+    components: {
+      default: About,
+      a: () => import('./components/email.vue'),
+      b: () => import('./components/tel.vue')
+    }
+  },
+
+六、重定向和别名
+1.重定向
+  重定向也是通过 routes 配置来完成，下面例子是从 /a 重定向到 /b
+  { path: '/a', redirect: '/b' }
+  { path: '/a', redirect: { name: 'foo' }}
+  { path: '/a', redirect: to => {
+    // 方法接收 目标路由 作为参数
+    // return 重定向的 字符串路径/路径对象
+  }}
+
+2.别名
+  /a 的别名是 /b，意味着，当用户访问 /b 时，URL 会保持为 /b，但是路由匹配则为 /a，就像用户访问 /a 一样
+  { path: '/a', component: A, alias: '/b' }
+
+ 七、导航守卫
+  每个守卫方法接收三个参数：
+  to: Route: 即将要进入的目标 路由对象
+  from: Route: 当前导航正要离开的路由
+  next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
+  next(): 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed (确认的)。
+  next(false): 中断当前的导航。
+  next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。
+
+
+1.全局守卫 router.beforeEach
+  应用场景：是否登录，没登录跳转登录页面，登录了跳转首页
+  router.js
+  router.beforeEach((to, from, next) => {
+    if (to.name !== 'login') {
+      if (HAS_LOGINED) next()
+      else next({ name: 'login' })
+    } else {
+      if (HAS_LOGINED) next({ name: 'home' })
+      else next()
+    }
+  })
+
+2.全局解析守卫 beforeResolve
+  router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用
+
+3.全局后置钩子 afterEach
+  router.afterEach((to, from) => {
+    // logining = false  清除加载层
+  })
+
+4.路由独享守卫 beforeEnter
+  path: '/foo',
+  component: Foo,
+  beforeEnter: (to, from, next) => {
+    // ...
+  }
+
+5.组件内的三个守卫
+
+  beforeRouteEnter
+  beforeRouteUpdate
+  beforeRouteLeave
+
+  beforeRouteEnter (to, from, next) {
+    // 在渲染该组件的对应路由被 confirm 前调用
+    // 不！能！获取组件实例 `this`
+    // 因为当守卫执行前，组件实例还没被创建
+    next(vm => {
+        // 通过 `vm` 访问组件实例
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    // 在当前路由改变，但是该组件被复用时调用
+    // 举例来说，对于一个带有动态参数的路径 /foo/:id，在 /foo/1 和 /foo/2 之间跳转的时候，
+    // 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。
+    // 可以访问组件实例 `this`
+  },
+  beforeRouteLeave (to, from, next) {
+    // 导航离开该组件的对应路由时调用
+    // 可以访问组件实例 `this`
+    //弹出框 是否要保存当前页面的信息
+  }
+
+5.完整的导航解析流程
+  1.导航被触发。
+  2.在失活的组件里调用离开守卫。
+  3.调用全局的 beforeEach 守卫。
+  4.在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。
+  5.在路由配置里调用 beforeEnter。
+  6.解析异步路由组件。
+  7.在被激活的组件里调用 beforeRouteEnter。
+  8.调用全局的 beforeResolve 守卫 (2.5+)。
+  9.导航被确认。
+  10.调用全局的 afterEach 钩子。
+  11.触发 DOM 更新。
+  12.用创建好的实例调用 beforeRouteEnter 守卫中传给 next 的回调函数。
+
+ 
+
+ 参考：https://router.vuejs.org/zh/installation.html

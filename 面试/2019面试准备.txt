@@ -1,0 +1,636 @@
+1.html
+　　1）什么是html
+　　　　超文本标记语言，一个网页文件
+　　2）DOCTYPE有什么作用
+　　　　告诉浏览器使用哪个版本的HTML规范来渲染文档
+　　3）介绍一下你对浏览器内核的理解，常见的浏览器内核有哪些
+　　　　主要分成两个部分：渲染引擎和JS引擎。
+　　　　渲染引擎：负责取得网页的内容(html,xml和图像等)，整理讯息(例如假如css)，以及计算网页的显示方式，然后输出到显示器或打印机。浏览器的内核的不同对于网页的语法解释会有不同，所以渲染的效果也不同。
+　　　　JS引擎：解析和执行JavaScript来实现网页的动态效果。
+　　　　常见的浏览器内核：
+　　　　Trident：IE，360，搜过浏览器；
+　　　　Gecko：Firefox
+　　　　Blink：Opera；
+　　　　Webkit：Safari，Chrome
+　　4）html5的新特性
+　　　　01 添加语义标签 header footer
+　　　　02 增强型表单 placeholder required
+　　　　03 视频和音频
+　　　　04 canvas绘图
+　　　　05 svg绘图
+　　　　06 地理定位
+　　　　07 web storage
+　　　　08 websocket
+　　　　09 拖放api
+　　　　10 web worker
+
+　　5）简述一下src与href的区别
+
+　　　　01 href 是指向网络资源所在位置，建立和当前文档之间的链接，用于超链接。
+
+　　　　02 src是指向外部资源的位置，指向的内容将会嵌入到文档中当前标签所在位置；在请求src资源时会将其指向的资源下载并应用到文档内，例如js脚本，img图片和frame等元素。
+
+
+　　2.css
+　　　　1）垂直居中几种方式
+　　　　　　01.display: flex
+　　　　　　　　.outer {
+　　　　　　　　　　display: flex;
+　　　　　　　　　　align-items: center;
+　　　　　　　　　　justify-content: center; 
+　　　　　　　　}
+　　　　　　02.absolute + transform
+　　　　　　　　.outer {
+　　　　　　　　　　position: relative;
+　　　　　　　　} 
+　　　　　　　　.inner {
+　　　　　　　　　　position: absolute;
+　　　　　　　　　　top: 50%;
+　　　　　　　　　　left: 50%;
+　　　　　　　　　　transform: translate(-50%, -50%);
+　　　　　　　　}
+　　　　　　03.absolute + margin: auto
+　　　　　　　　.outer {
+　　　　　　　　　　position: relative
+　　　　　　　　}
+　　　　　　　　.inner {
+　　　　　　　　　　position: absolute;
+　　　　　　　　　　top: 0;
+　　　　　　　　　　left: 0;
+　　　　　　　　　　bottom: 0;
+　　　　　　　　　　right: 0;
+　　　　　　　　　　margin: auto;
+　　　　　　　　}
+　　　　2）常见布局
+　　　　　　body {
+　　　　　　　　display: flex;
+　　　　　　　　padding: 0;
+　　　　　　　　margin: 0;
+　　　　　　}
+　　　　　　.left {
+　　　　　　　　background: blue;
+　　　　　　　　flex: 200px 0 0;
+　　　　　　}
+　　　　　　.middle {
+　　　　　　　　background: red;
+　　　　　　　　flex: 1;
+　　　　　　}
+　　　　　　.right {
+　　　　　　　　background: green;
+　　　　　　　　flex: 0 0 200px;
+　　　　　　}
+　　　　3）css3的新特性
+　　　　　　01 动画 animation
+　　　　　　02 过渡 transition
+　　　　　　03 多媒体查询
+　　　　　　04 多背景图
+　　　　　　05 阴影 
+　　　　　　06 圆角
+　　　　　　07 渐变
+　　　　　　08 字体 @font-face
+　　　　　　09 转换 （旋转 缩放）
+　　　　　　10 flex
+　　　　4）动画
+　　　　　　01 用keyframes创建动画
+　　　　　　02 用animation绑定到某个选择器，设置名称和时长
+　　　　　　　　div
+　　　　　　　　　　{
+　　　　　　　　　　　　width:100px;
+　　　　　　　　　　　　height:100px;
+　　　　　　　　　　　　background:red;
+　　　　　　　　　　　　animation:myfirst 5s;
+　　　　　　　　　　}
+
+　　　　　　　　@keyframes myfirst
+　　　　　　　　{
+　　　　　　　　　　0% {background:red;}
+　　　　　　　　　　100% {background:yellow;}
+　　　　　　　　}
+　　　　5）清除浮动
+　　　　　　01 设置父元素overflow属性为hidden
+　　　　　　02 使用clear：both
+　　　　　　03 在浮动元素后面添加一个空标签
+　　　　　　04 使用伪元素：after
+　　　　6）px，em，rem 的区别
+　　　　　　px像素 相对长度单位。像素px是相对于显示器屏幕分辨率而言的	em是相对长度单位。相对于当前对象内文本的字体尺寸。如当前对行内文本的字体尺寸未被人为设置，则相对于浏览器的默认字体尺寸。	
+　　　　　　rem也是相对长度单位，但相对的是HTML根元素。只修改根元素就成比例地调整所有字体大小
+
+　　　　7）盒子模型
+
+　　　　　　盒子模型包括元素的内容（content），元素的内边距（padding），元素的边框（border），元素的外边距（margin）四个部分
+　　　　　　
+
+3.js
+　　1）基本类型和引用类型
+　　　　基本类型：
+　　　　　　01 类型：number string undefined null boolean
+　　　　　　02 基本类型的值是不可变得
+　　　　　　03 基本类型的比较是值的比较
+　　　　　　04 基本类型的变量是存放在栈内存的
+　　　　引用类型：
+　　　　　　01 引用类型的值是可变的
+　　　　　　02 引用类型值可添加属性和方法	
+　　　　　　03 引用类型存储的是地址（指针）。当你创建了一个引用类型的时候，计算机会在堆内存中帮我们开辟一个空间来存放值，栈区内存保存变量标识符和指向堆内存中该对象的指针，也可以说是该对象在堆内存的地址。复制对象时，会在栈内存中添加一个指针，跟被复制的指针指向堆内存中相同的一个值，所以修改其中一个对象，另一个都会受到影响
+　　　　　　04 引用类型的比较是引用地址的比较
+　　2）typeof和instanceof的区别
+　　　　typeo
+　　　　　　01 检测变量是字符串、数值、布尔值还是undefined的最佳工具。
+　　　　　　02 typeof 来获取一个变量是否存在，如果要去使用 if 判断（未声明）则会出错。
+　　　　instanceof
+　　　　　　01 instanceof运算符用来判断用于判断左侧参数是否属于右侧的实例
+　　　　　　　　obj instanceof Object 检测Object.prototype是否存在于参数obj的原型链上。
+　　　　　　02 typeof 对于对象来说，除了函数都会显示 object，所以说 typeof 并不能准确判断变量到底是什么类型。如果我们想判断一个对象的正确类型，这时候可以考虑使用 instanceof
+　　　　　　　　([1,2.3]) instanceof Array // true
+　　　　　　　　({}) instanceof Object // true
+　　　　　　　　(new Date) instanceof Date // true
+　　　　　　　　(function(){}) instanceof Function // true
+　　3）typeof null 为什么等于object
+　　　　原理是这样的，不同的对象在底层都表示为二进制，在 JavaScript 中二进制前三位都为 0 的话会被判断为 object 类型， null 的二进制表示是全 0，自然前三位也是 0，所以执行 typeof 时会返回“ object ”。100：字符串，数据是字符串。110：布尔类型，数据是布尔值。
+　　4）怎么检测对象类型
+　　　　Object.prototype.toString.call(obj).slice(8, -1)
+　　5）this
+　　　　this是对应执行环境。this是在调用时被绑定的，取决于函数的调用方法。
+　　　　默认绑定、隐式绑定、显示绑定、new 绑定。优先级从低到高。
+　　　　01.默认绑定：
+　　　　　　最常用也是函数调用类型，当只有一个独立函数时，this指向的是window对象
+　　　　02.隐式绑定
+　　　　　　函数调用的位置有上下文环境（对象调用模式，函数是一个对象的方法）
+　　　　03.显示绑定
+　　　　　　显示绑定就是通过apply，call，bind，直接将函数中的this绑定到想要的对象上
+　　　　04.构造函数模式
+　　　　　　创建一个构造函数的实例，构造函数中的this会绑定到这个实例对象上
+　　　　6）作用域链和闭包
+　　　　　　作用域链
+　　　　　　　　作用域分为全局作用域和局部作用域，全局作用域在代码中的任何地方都可以被访问，局部作用域只在固定的代码片段中可以访问到。
+　　　　　　　　每次进入一个新的执行环境，都会创建一个用于搜索变量和函数的作用域链。作用域链是函数被创建的作用域中对象的集合。作用域链可以保证对执行环境有权访问的所有变量和函数的有序访问。标识符解析是沿着作用域一级一级的向上搜索标识符的过程，直到找到标识符（找不到报错）。
+　　　　　　　　作用域优先级：变量 > 普通函数 > 参数 > 提升
+　　　　　　闭包
+　　　　　　　　函数 A 内部有一个函数 B，函数 B 可以访问到函数 A 中的变量，那么函数 B 就是闭包。
+　　　　　　　　优点：当全局变量使用，避免全局污染
+　　　　　　　　缺点：容易造成内存泄漏
+　　7）原型与原型链
+
+　　　　原型是一个普通的对象，原型对象是构造函数的一个实例，主要用于继承。
+　　　　在创建对象的时候，都有一个叫做__proto__ 的内置属性，用于指向创建它的构造函数的原型对象，__proto__ 将对象和原型连接起来组成了原型链
+　　　　对象拥有这样一个原型链以后，当访问对象的属性时，先查找自身是否有该属性，当找不到该属性时，该对象就沿着原型链依次去查找，找不到返回undefined
+　　　　Object.prototype.__proto__ 是 null，表示 obj 对象原型链的终结
+　　　　在原型对象上定义方法和属性，是为了被子类继承和使用
+　　　　Object 是所有对象的爸爸，所有对象都可以通过 __proto__ 找到它
+　　　　Function 是所有函数的爸爸，所有函数都可以通过 __proto__ 找到它
+
+　　8）继承
+　　　　01 原型链继承
+　　　　function Parent() {
+　　　　　　this.name = 'mike';
+　　　　}
+　　　　function Child() {
+　　　　　　this.age = 12;
+　　　　}
+　　　　Child.prototype = new Parent();
+　　　　var child = new Child();
+　　　　alert(child.name) // 'mike'
+　　　　02 原型式继承
+　　　　　　function obj(o) {
+　　　　　　　　function F() { }
+　　　　　　　　F.prototype = o;
+　　　　　　　　return new F();
+　　　　　　}
+　　　　　　var box = {
+　　　　　　name: 'trigkit4',
+　　　　　　arr: ['brother', 'sister', 'baba']
+　　　　　　};
+　　　　　　var b1 = obj(box);
+　　　　　　alert(b1.name);//trigkit4;
+　　9）JS执行底层 略
+　　10）浅拷贝和深拷贝
+　　浅拷贝
+　　　　let a = {
+　　　　　　age: 1
+　　　　}
+　　　　let b = Object.assign({}, a) // 或者 let b = { ...a }
+　　　　浅拷贝只解决了第一层的问题，如果接下去的值中还有对象的话，两者享有相同的地址，会相互影响
+　　深拷贝
+　　　　01 JSON.parse(JSON.stringify(object)) 
+　　　　缺陷：
+　　　　　　会忽略 undefined
+　　　　　　会忽略 symbol
+　　　　　　不能序列化函数
+　　　　　　不能解决循环引用的对象
+　　　　02 递归
+          function deepCopy(params) {
+            var obj;
+            if (typeof params === 'object') {
+              if (Array.isArray(params)) {
+                obj = [];
+                for (var i = 0; i < params.length; i++) {
+                  obj.push(arguments.callee(params[i]))
+                }
+              } else {
+                obj = {};
+                for (var c in params) {
+                  obj[c] = arguments.callee(params[c]);
+                }
+              }
+            } else { return params; }
+            return obj;
+          }
+
+　　11）es6的常用方法
+　　　　01.let和const var
+　　　　　　var：有变量提升，可重复生命，var 在全局作用域下声明变量会导致变量挂载在 window 上
+　　　　　　let和const：没有变量提升，不能重复声明
+　　　　02.箭头函数的 this
+　　　　　　001 函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。
+　　　　　　002 不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+　　　　　　003 不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替
+　　　　03.promise
+　　　　　　Promise是一个对象，有then()方法的对象,Promise 是异步编程的一种解决方案。有三种状态
+　　　　　　等待中（pending）
+　　　　　　完成了 （resolved）
+　　　　　　拒绝了（rejected）
+　　　　　　这个承诺一旦从等待状态变成为其他状态就永远不能更改状态了，也就是说一旦状态变为 resolved 后，就不能再次改变
+　　　　　　优点：Promise 的写法是回调函数的改进，使用then方法以后，异步任务的两段执行看得更清楚了。then将原来异步函数的嵌套关系转变为链式步骤,很好地解决了回调地狱的问题
+　　　　　　缺点：Promise 的最大问题是代码冗余，原来的任务被Promise 包装了一下，不管什么操作，一眼看去都是一堆 then，原来的语义变得很不清楚。
+　　　　04.async await
+　　　　　　一个函数如果加上 async ，那么该函数就会返回一个 Promise对象
+　　　　　　await等待右侧表达式的结果，这个结果是promise对象或者其他值。
+　　　　　　如果它等到的不是一个 promise 对象，那 await 表达式的运算结果就是它等到的东西。
+　　　　　　如果它等到的是一个 promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。
+　　　　　　优点：代码简洁、几乎和同步代码一样，可读性好
+　　　　　　缺点：滥用 await 可能会导致性能问题，因为 await 会阻塞代码
+　　　　05.字符串模板
+　　　　　　let time = `now time is ${new Date}`
+　　　　06.new Set 数组去重
+　　　　　　[...new Set([1,2,3,4,2,3,3])]//[1,2,3,4]
+　　12）ts
+　　　　支持es6；支持类型检测，减少你在开发阶段犯错误的几率
+　　13）call apply bind
+　　　　改变this的指向
+　　　　call 第二个参数接受的是若干个参数列表
+　　　　apply 第二参数接收的是一个包含多个参数的数组
+　　　　bind 返回一个函数，需要手动去调用
+　　14）类型转换 略
+　　15）new的原理
+　　　　在调用 new 的过程中会发生以上四件事情：
+　　　　　　新生成了一个对象
+　　　　　　链接到原型
+　　　　　　绑定 this
+　　　　　　返回新对象
+　　　　　　代码实现如下
+　　　　　　function create(Con, ...args) {
+　　　　　　　　let obj = {}
+　　　　　　　　Object.setPrototypeOf(obj, Con.prototype)
+　　　　　　　　let result = Con.apply(obj, args)
+　　　　　　　　return result instanceof Object ? result : obj
+　　　　　　}
+　　16）js垃圾回收机制
+　　　　js中的内存管理是自动执行的，而且是不可见的。我们创建基本类型、对象、函数……所有这些都需要内存。
+　　　　定期执行以下“垃圾回收”
+　　　　　　01.垃圾回收器获取根并“标记”(记住)它们。
+　　　　　　02.然后它访问并“标记”所有来自它们的引用。
+　　　　　　03.然后它访问标记的对象并标记它们的引用。所有被访问的对象都被记住，以便以后不再访问同一个对象两次。
+　　　　　　04.以此类推，直到有未访问的引用(可以从根访问)为止。
+　　　　　　05.除标记的对象外，所有对象都被删除。
+　　17）事件机制
+　　　　001.window 往事件触发处传播，遇到注册的捕获事件会触发
+　　　　002.传播到事件触发处时触发注册的事件
+　　　　003.从事件触发处往 window 传播，遇到注册的冒泡事件会触发
+　　　　事件代理：
+　　　　　　因为冒泡机制，比如既然点击子元素，也会触发父元素的点击事件，那我们完全可以将子元素的事件要做的事写到父元素的事件里，也就是将子元素的事件处理程序写到父元素的事件处理程序中，这就是事件委托。
+　　　　　　每当将事件处理程序制定给元素时，运行中的浏览器代码与支持页面交互的JS代码之间就会建立一个连接，而这种连接越多，页面执行起来就越慢。考虑内存和性能问题，为了解决事件处理程序过多的问题，采用事件委托变得很有必要。
+　　18）数组常用方法
+　　　　01. concat() //连接多个数组，并返回结果
+　　　　02. join() //把数组分割成字符串 如[1,2].join(',') => "1,2"
+　　　　03. pop() // 删除并返回数组的最后一个元素
+　　　　04. pusp() //向数组的末尾添加一个或更多元素，并返回新的长度
+　　　　05. unshift() //向数组的开头添加一个或更多元素，并返回新的长度
+　　　　06. shift() // 删除并返回数组的第一个元素
+　　　　07. sort() // 对数组进行排序
+　　　　08. reverse() // 颠倒数组
+　　　　09. toString() // 把数组转为字符串
+　　　　010. slice(start, [end]) // 返回数组指定元素
+　　　　011. splice(index, count, [add]) // 从数组中删除指定元素，并返回被删除内容(数组格式) index: 位置；count：删除数量；add：添加元素 可选
+　　　　012. map filter forEach reduce find some every includes
+　　19）字符串常用方法
+　　　　01 slice(start, [end]) // 截取字符串
+　　　　02 substring(start, [stop]) // 截取字符串， 与slice相似，但不允许负的参数；如果参数 start 与 stop 相等，那么该方法返回的就是一个空串（即长度为 0 的字符串）。如果 start 比 stop 大，那么该方法在提取子串之前会先交换这两个参数。
+　　　　03 substr(start, length) // 截取字符串
+　　　　04 charAt() // 返回在指定位置的字符
+　　　　05 concat() //拼接字符串
+　　　　06 indexOf() // 检索字符串
+　　　　07 lastIndexOf() // 从后向前检索
+　　　　08 match() // 找到与正则的匹配 ('match1match2').match(/\d+/g) => [1,2];
+　　　　09 replace() // 替换与正则相匹配的值 ('match1match2').replace(/\d/g, '||') => ('match||match||')
+　　　　010 search() // 检索与正则匹配的值 ('match1match2').search(/\d/g) => 5
+　　　　011 toUpperCase() // 把字符串转为大写
+　　　　012 toLowerCase() // 把字符串转为小写
+　　　　013 split('&') 字符串按‘&’进行分割
+　　20）对象常用方法
+　　　　01 Object.keys 获取对象的所有keys值 为数组形式
+　　　　02 Object.values 获取对象的所有values 为数组形式
+　　　　03 {}.hasOwnproperty('key') 判断对象是否有key属性
+　　　　04 for(let x in obj) 循环对象
+　　　　05 Object.assign() 复制并克隆对象,并返回合并后的对象，如果是多个对象参数，那么相同的属性，后边的属性值会覆盖前边的属性值；例如 Object.assign({} , obj)
+　　　　06 Object.entries() 遍历对象，并返回一个数组，数组的每一个元素是由对象的属性以及属性值组成的数组；
+　　　　07 Object.create() 创建对象
+　　　　08 obj.hasOwnProperty('name') 判断对象自身属性中是否具有指定的属性。
+
+　　21）es5和es6去重
+　　　　es5　
+        [1,1,2,1,2].filter((item, i, arr) => {
+            return arr.indexOf(item) === i
+        })
+　　　　es6:  [...new Set([1,2,3,3,2])]　
+
+　　22）判断一个字符串中出现次数最多的字符，统计这个次数
+      var str = 'asdfssaaasdddddddaa';
+      var json = {};
+      for (var i = 0; i < str.length; i++) {
+          if(!json[str.charAt(i)]){
+            json[str.charAt(i)] = 1;
+          }else{
+            json[str.charAt(i)]++;
+          }
+      };
+      var iMax = 0;
+      var iIndex = '';
+      for(var i in json){
+          if(json[i]>iMax){
+              iMax = json[i];
+              iIndex = i;
+          }
+      }   
+
+　　23）求数组的最值
+　　　　Math.max.apply(null, [1,2,3,4]);  Math.max.apply(null,[1,2,3,4]);
+　　24）数组的翻转（非reverse()）
+      var arr = [1,2,3,4];
+      var arr2 = [];
+      while(arr.length) {
+        var num = arr.pop();
+        arr2.push(num);
+      }
+      console.log(arr2);
+
+
+4.http
+　　1）状态码
+　　　　1XX 用于指定客户端相应的某些动作
+　　　　2XX 用于表示成功
+　　　　3XX 用于已经移动的文件并且被包含在定位头信息中指定心的地址信息(重定向，为了完成请求，必须进一步执行的动作)
+　　　　4XX 用于指出客户端错误
+　　　　5XX 用于支持服务器错误
+
+　　　　100 继续；101 分组交换协议
+　　　　200 ok；201 被创建；202 被采纳；203 非授权信息；204 无内容；205 重置内容；206 部分内容；
+　　　　300 多选项；301 永久地传递；302 找到；303 参见其他；304 未改动；305 使用代理；307 暂时重定向；
+　　　　400 错误请求(可能是get请求写成post请求)；401 未授权；402 要求付费；403 禁止；405 不允许的方法；406 不被采纳；407 要求代码授权；408 请求超时；409 冲突；410 过期的；411 要求的长度；412 前提不成立；413 请求实例太大；414 请求url太大；415 不支持的媒体类型；416 无法满足的请求范围；417 失败的预期；
+　　　　500 内部服务器错误；501 未被使用；502 网关错误；503 不可用的服务；504 网关超时；505 HTTP版本未被支持；
+　　2）解决跨域方法
+　　　　当协议、子域名、主域名、端口号中任意一个不相同时，都算作不同域。不同域之间相互请求资源，就算作“跨域”。
+　　　　同源策略限制从一个源加载的文档或脚本如何与来自另一个源的资源进行交互。这是一个用于隔离潜在恶意文件的关键的安全机制。
+　　　　01 jsonp
+　　　　　　利用<script>元素的这个开放策略，网页可以得到从其他来源动态产生的 JSON 数据。JSONP请求一定需要对方的服务器做支持才可以。
+　　　　　　JSONP优点是兼容性好，可用于解决主流浏览器的跨域数据访问的问题。缺点是仅支持get方法具有局限性。
+　　　　02 CORS
+　　　　　　CORS要求浏览器和服务器的同时支持，是跨域的根本解决方法，由浏览器自动完成。
+　　　　　　优点在于功能更加强大支持各种HTTP Method，缺点是兼容性不如JSONP。
+　　　　03 websocket
+　　　　　　WebSocket和HTTP都是应用层协议，都基于 TCP 协议。但是 WebSocket 是一种双向通信协议，在建立连接之后，WebSocket 的 server 与 client 都能主动向对方发送或接收数据。同时，WebSocket 在建立连接时需要借助 HTTP 协议，连接建立好了之后 client 与 server 之间的双向通信就与 HTTP 无关了。
+　　　　04 postMessage
+　　　　　　如果两个网页不同源，就无法拿到对方的DOM。HTML5为了解决这个问题，引入了一个全新的API：跨文档通信 API（Cross-document messaging）。这个API为window对象新增了一个window.postMessage方法，允许跨窗口通信，不论这两个窗口是否同源。postMessage方法的第一个参数是具体的信息内容，第二个参数是接收消息的窗口的源（origin），即"协议 + 域名 + 端口"。也可以设为*，表示不限制域名，向所有窗口发送。
+出处：https://blog.csdn.net/liangjielaoshi/article/details/83786388
+　　3）三次握手四次挥手
+　　　　三次握手：
+　　　　　　首先 Client 端发送连接请求报文，Server 段接受连接后回复 ACK 报文，并为这次连接分配资源。Client 端接收到 ACK 报文后也向 Server 段发生 ACK 报文，并分配资源，这样 TCP 连接就建立了。
+　　　　四次挥手：
+　　　　　　由于TCP连接是全双工的，因此每个方向都必须单独进行关闭。这个原则是当一方完成它的数据发送任务后就能发送一个FIN来终止这个方向的连接。收到一个 FIN只意味着这一方向上没有数据流动，一个TCP连接在收到一个FIN后仍能发送数据。首先进行关闭的一方将执行主动关闭，而另一方执行被动关闭。
+　　4）请求方式有哪些 Post 和 Get 的区别
+　　　　请求方式
+　　　　01. GET 方法：发送一个请求来取得服务器上的某一资源
+　　　　02. POST 方法：向 URL 指定的资源提交数据或附加新的数据
+　　　　03. PUT 方法：跟 POST 方法很像，也是想服务器提交数据。但是，它们之间有不同。PUT 指定了资源在服务器上的位置，而 POST 没有
+　　　　04. HEAD 方法：只请求页面的首部
+　　　　05. DELETE 方法：删除服务器上的某资源
+　　　　06. OPTIONS 方法：它用于获取当前 URL 所支持的方法。如果请求成功，会有一个 Allow 的头包含类似“GET,POST”这样的信息
+　　　　07. TRACE 方法：TRACE 方法被用于激发一个远程的，应用层的请求消息回路
+　　　　08.CONNECT 方法：把请求连接转换到透明的 TCP/IP 通道
+　　5）http和https的区别
+　　　　01. Http 协议运行在 TCP 之上，明文传输，客户端与服务器端都无法验证对方的身份；Https 是身披 SSL(Secure Socket Layer)外壳的 Http，运行于 SSL 上，SSL 运行于 TCP 之上，是添加了加密和认证机制的 HTTP。二者之间存在如下不同：
+　　　　02. 端口不同：Http 与 Http 使用不同的连接方式，用的端口也不一样，前者是 80，后者是 443；
+　　　　03. 资源消耗：和 HTTP 通信相比，Https 通信会由于加减密处理消耗更多的 CPU 和内存资源；
+　　　　04. 开销：Https 通信需要证书，而证书一般需要向认证机构购买；
+　　　　05. Https 的加密机制是一种共享密钥加密和公开密钥加密并用的混合加密机制。
+　　6）请求过程
+　　　　折中后的五层协议
+　　　　　　01 应用层(dns,http) DNS解析成IP并发送http请求
+　　　　　　02 传输层(tcp,udp) 建立tcp连接（三次握手）
+　　　　　　03 网络层(IP,ARP) IP寻址
+　　　　　　04 数据链路层(PPP) 封装成帧
+　　　　　　05 物理层(利用物理介质传输比特流) 物理传输（然后传输的时候通过双绞线，电磁波等各种介质）
+　　　　简括：
+　　　　　　从应用层的发送http请求，到传输层通过三次握手建立tcp/ip连接，再到网络层的ip寻址，再到数据链路层的封装成帧，最后到物理层的利用物理介质传输。
+
+
+5.webpack
+　　1）什么是webpack，为什么使用webpack // 工作原理；与gulp、grunt有什么区别
+　　　　webpack是一个打包模块化javascript的工具，在webpack里一切文件皆模块，通过loader转换文件，通过plugin注入钩子，最后输出由多个模块组合成的文件，webpack专注构建模块化项目。
+　　　　WebPack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，TypeScript等），并将其打包为合适的格式以供浏览器使用。
+　　2）优缺点
+　　　　优点
+　　　　　　01 专注于处理模块化的项目，能做到开箱即用，一步到位
+　　　　　　02 可通过plugin扩展，完整好用又不失灵活
+　　　　　　03 使用场景不局限于web开发
+　　　　　　04 社区庞大活跃，经常引入紧跟时代发展的新特性，能为大多数场景找到已有的开源扩展
+　　　　　　05 良好的开发体验
+　　　　缺点
+　　　　　　只能用于采用模块化开发的项目
+　　3）分别介绍什么是loader?什么是plugin
+　　　　loader：模块转换器，用于将模块的原内容按照需要转成你想要的内容
+　　　　plugin：在webpack构建流程中的特定时机注入扩展逻辑，来改变构建结果，是用来自定义webpack打包过程的方式
+　　4）常用的loader
+　　　　file-loader：把文件输出到一个文件夹中，在代码中通过相对 URL 去引用输出的文件
+　　　　url-loader：和 file-loader 类似，但是能在文件很小的情况下以 base64 的方式把文件内容注入到代码中去
+　　　　source-map-loader：加载额外的 Source Map 文件，以方便断点调试
+　　　　image-loader：加载并且压缩图片文件
+　　　　babel-loader：把 ES6 转换成 ES5
+　　　　css-loader：加载 CSS，支持模块化、压缩、文件导入等特性
+　　　　style-loader：把 CSS 代码注入到 JavaScript 中，通过 DOM 操作去加载 CSS。
+　　　　eslint-loader：通过 ESLint 检查 JavaScript 代码
+　　5）常用的plugin
+　　　　define-plugin：定义环境变量
+　　　　terser-webpack-plugin：通过TerserPlugin压缩ES6代码
+　　　　html-webpack-plugin 为html文件中引入的外部资源，可以生成创建html入口文件
+　　　　mini-css-extract-plugin：分离css文件
+　　　　clean-webpack-plugin：删除打包文件
+　　　　happypack：实现多线程加速编译
+　　6）分别介绍bundle，chunk，module是什么
+　　　　bundle：是由webpack打包出来的文件，
+　　　　chunk：代码块，一个chunk由多个模块组合而成，用于代码的合并和分割。
+　　　　module：是开发中的单个模块，在webpack的世界，一切皆模块，一个模块对应一个文件，webpack会从配置的entry中递归开始找出所有依赖的模块。
+　　7）什么是模块热更新
+　　　　模块热更新是webpack的一个功能，他可以使得代码修改过后不用刷新浏览器就可以更新
+　　8）通过webpack处理长缓存
+　　　　在webpack中可以在output纵输出的文件指定chunkhash,并且分离经常更新的代码和框架代码。通过NameModulesPlugin或是HashedModuleIdsPlugin使再次打包文件名不变。
+　　9）webpack-dev-server和http服务器如nginx有什么区别
+　　　　webpack-dev-server使用内存来存储webpack开发环境下的打包文件，并且可以使用模块热更新，他比传统的http服务对开发更加简单高效。
+　　10）如何提高webpack的构建速度
+　　　　01 通过externals配置来提取常用库
+　　　　02 利用DllPlugin和DllReferencePlugin预编译资源模块 通过DllPlugin来对那些我们引用但是绝对不会修改的npm包来进行预编译，再通过DllReferencePlugin将预编译的模块加载进来。
+　　　　03 使用Happypack 实现多线程加速编译
+要注意的第一点是，它对file-loader和url-loader支持不好，所以这两个loader就不需要换成happypack了，其他loader可以类似地换一下
+　　　　04 使用Tree-shaking和Scope Hoisting来剔除多余代码
+　　　　05 使用fast-sass-loader代替sass-loader
+　　　　06 babel-loader开启缓存
+　　　　　　babel-loader在执行的时候，可能会产生一些运行期间重复的公共文件，造成代码体积大冗余，同时也会减慢编译效率
+　　　　　　可以加上cacheDirectory参数或使用 transform-runtime 插件试试
+　　　　07 不需要打包编译的插件库换成全局"script"标签引入的方式
+　　　　　　比如jQuery插件，react, react-dom等，代码量是很多的，打包起来可能会很耗时
+　　　　　　可以直接用标签引入，然后在webpack配置里使用 expose-loader 或 externals 或 ProvidePlugin 提供给模块内部使用相应的变量
+　　　　08 优化构建时的搜索路径
+　　　　　　在webpack打包时，会有各种各样的路径要去查询搜索，我们可以加上一些配置，让它搜索地更快
+　　　　　　比如说，方便改成绝对路径的模块路径就改一下，以纯模块名来引入的可以加上一些目录路径
+　　　　　　还可以善于用下resolve alias别名 这个字段来配置
+　　　　　　还有exclude等的配置，避免多余查找的文件，比如使用babel别忘了剔除不需要遍历的
+　　出处：https://www.jianshu.com/p/bb1e76edc71e
+
+
+6.正则
+　　正则：也叫做规则，让计算机能够读懂人类的规则
+　　1）常用方法 
+　　　　String对的方法
+　　　　　　str.search(/表达式/) 返回匹配到的第一个位置
+　　　　　　str.split(/表达式/)
+　　　　　　str.match(/表达式/)
+　　　　　　str.replace(/表达式/,'')
+　　　　RegExp对象方法
+　　　　　　/表达式/.test(str) 返回布尔值
+　　　　　　/表达式/.exec(str) 返回一个数组，存放匹配的结果，如果未找到匹配，则返回值为null
+　　2）匹配手机号、邮箱、汉字、千分位
+　　　　验证手机号：/^1[345789]\d{9}/.test('15662173333')
+　　　　验证邮箱：/^\w+@[a-z0-9]+\.[a-z]+$/i
+　　　　验证汉字：^[\u4e00-\u9fa5],{0,}$ 
+　　　　实现千分位：/\B(?=(\d{3})+(?!\d))/g
+
+
+7.性能优化
+　　1）常用的性能优化方法
+　　　　01.减少HTTP请求数量
+　　	　　　　001 将多张图片合并成一张图片
+　　	　　　　002 合并css和js文件
+　　　　02.压缩js和css
+　　　　03.css放顶部，js放底部
+　　　　	　　浏览器在加载 HTML 内容时，是将 HTML 内容从上至下依次解析，解析到 link 或者 script 标签就会加载 href 或者 src 对应链接内容，为了第一时间展示页面给用户，就需要将 CSS 提前加载，不要受 JS 加载影响。
+　　　　04.去除重复脚本
+　　　　05.减少DOM操作
+　　　　06.懒加载
+　　　　07.减少重排（Reflow）
+　　　　　　	重排是 DOM 的变化影响到了元素的几何属性（宽和高），浏览器会重新计算元素的几何属性，会使渲染树中受到影响的部分失效，浏览器会验证 DOM 树上的所有其它结点的 visibility 属性，这也是 Reflow 低效的原因。如果 Reflow 的过于频繁，CPU 使用率就会急剧上升。
+　　　　08.图标使用iconFont替换
+　　2）输入url的加载过程
+　　　　01.解析html文件，创建DOM树
+　　　　　　自上而下解析，遇到任何样式（link、style）和脚本（script）都会阻塞
+　　　　　　001 css加载不会阻塞html文件的解析，但会阻塞dom的渲染
+　　　　　　002 css加载会阻塞后面js语句的执行
+　　　　　　003 js会阻塞html的解析和渲染
+　　　　　　004 没有defer和async标签的script会立即加载并执行
+　　　　　　005 有async标签的js，js的加载执行和html的解析和渲染并行
+　　　　　　006 有defer标签的js，js的加载和html的解析和渲染并行，但会在html解析完成后执行,在触发DOMContentLoaded事件前执行
+　　　　　　007 DOMContentLoaded和onload的区别：DOMContentLoaded在html解析完毕后执行，loload在页面完全加载完成后执行（包括样式和图片）
+　　　　02.解析css，生成CSSOM，css对象模型
+　　　　03.dom和css合并，构建渲染树（Render Tree）
+　　　　04.布局（Layout）和绘制（Paint），重绘（repaint）和重排（reflow/回流）
+　　　　　　001 重绘：根据元素的新属性重新绘制，使元素呈现新的外观
+　　　　　　002 重排：当渲染树中的一部分因为元素的规模尺寸，布局，隐藏等改变而需要重新构建
+　　　　　　003 重排必定会引发重绘，但重绘不一定会引发重排
+　　3）优雅降级和渐进增强	
+　　　　渐进增强：针对低版本浏览器进行构建页面，保证最基本的功能，然后再针对高级浏览器进行效果、交互等改进和追加功能达到更好的用户体验。
+　　　　优雅降级：一开始就构建完整的功能，然后再针对低版本浏览器进行兼容。
+
+8.vue
+　　1）生命周期
+　　　　01 在 beforeCreate 钩子函数调用的时候，是获取不到 props 或者 data 中的数据的，因为这些数据的初始化都在 initState 中。然后会执行 created 钩子函数，在这一步的时候已经可以访问到之前不能访问到的数据，但是这时候组件还没被挂载，所以是看不到的。
+　　　　02 接下来会先执行 beforeMount 钩子函数，开始创建 VDOM，最后执行 mounted 钩子，并将 VDOM 渲染为真实 DOM并且渲染数据。组件中如果有子组件的话，会递归挂载子组件，只有当所有子组件全部挂载完毕，才会执行根组件的挂载钩子。
+　　　　03 接下来是数据更新时会调用的钩子函数 beforeUpdate 和 updated，分别在数据更新前和更新后会调用。
+　　　　04 另外还有 keep-alive 独有的生命周期，分别为 activated 和 deactivated 。用 keep-alive 包裹的组件在切换时不会进行销毁，而是缓存到内存中并执行 deactivated钩子函数，命中缓存渲染后会执行 actived 钩子函数。
+　　　　05 最后就是销毁组件的钩子函数 beforeDestroy 和destroyed。前者适合移除事件、定时器等等，否则可能会引起内存泄露的问题。
+　　2）常用指令
+　　　　v-if v-else v-show v-for v-model v-on v-bind v-html
+　　3）组件通
+　　　　父子间：prod emit
+　　　　祖父组件和孙组件：$attr和$listeners
+　　　　其他组件：bus或者vuex
+　　4）watch和computed和method的区别
+　　　　methods VS computed
+　　　　　　对于最终的结果，两种方式确实是相同的。不同的是computed是基于它们的依赖进行缓存的。computed只有在它的相关依赖发生改变时才会重新求值。这就意味着只要 message 还没有发生改变，多次访问 reversedMessage 计算属性会立即返回之前的计算结果，而不必再次执行函数。相比而言，只要发生重新渲染，method 调用总会执行该函数。总之，重新计算开销很大的话请选computed，不希望有缓存的请选methods。
+　　　　watch VS computed
+　　　　　　当你在模板内使用了复杂逻辑的表达式时，你应当使用computed。
+　　　　　　watch是一个对象，键是需要观察的表达式，值是对应回调函数。值也可以是方法名，或者包含选项的对象。 
+　　　　　　当你有一些数据需要随着其它数据变动而变动时，或者当需要在数据变化时执行异步或开销较大的操作时，你可以使用 watch
+　　　5）vue-router 原理 传参 模式
+　　　　原理：本质就是监听 URL 的变化，然后匹配路由规则，显示相应的页面，并且无须刷新页面。
+　　　　传参：query、params、prods、直接跟在URL后面
+　　　　模式：Hash 和 istory 
+　　　　　　Hash 模式只可以更改 # 后面的内容，History 模式可以通过 API 设置任意的同源 URL
+　　　　　　History 模式可以通过 API 添加任意类型的数据到历史记录中，Hash 模式只能更改哈希值，也就是字符串
+　　　　　　Hash 模式无需后端配置，并且兼容性好。History 模式在用户手动输入地址或者刷新页面的时候会发起 URL 请求，后端需要配置 index.html 页面用于匹配不到静态资源的时候
+　　6）vuex
+　　　　state getters mutations（应用于同步，commit触发） actions（应用于异步，dispatch触发）
+　　7）mixins
+　　　　mixins 应该是我们最常使用的扩展组件的方式了。如果多个组件中有相同的业务逻辑，就可以将这些逻辑剥离出来，通过 mixins 混入代码。mixins 混入的钩子函数会先于组件内的钩子函数执行，并且在遇到同名选项的时候也会有选择性的进行合并
+　　8）keep-alive 组件有什么作用
+　　　　如果你需要在组件切换的时候，保存一些组件的状态防止多次渲染，就可以使用 keep-alive 组件包裹需要保存的组件。
+　　9）响应式原理
+　　　　01.vue将data初始化为一个Observer并对对象中的每个值，重写了其中的get、set，data中的每个key，都有一个独立的依赖收集器。
+　　　　02.在get中，向依赖收集器添加了监听
+　　　　03.在mount时，实例了一个Watcher，将收集器的目标指向了当前Watcher
+　　　　04.在data值发生变更时，触发set，触发了依赖收集器中的所有监听的更新，来触发Watcher.update
+　　10）NextTick 
+　　　　在下次 DOM 更新循环结束之后执行延迟回调。在修改数据之后立即使用这个方法，获取更新后的 DOM。
+　　11）vue react angular 的区别
+　　　　vue:
+　　　　　　优点：
+　　　　　　　　a.简单，容易上手
+　　　　　　　　b.轻量级的框架，且没有依赖
+　　　　　　　　c.能快速的更新dom
+　　　　　　　　d.对模块友好，可以通过npm、bower安装
+　　　　　　　　e.可复用的组件
+　　　　　　　　f.双向数据绑定
+　　　　　　缺点：
+　　　　　　　　a.没有angular那么成熟
+　　　　　　　　b.不支持IE8以下
+　　　　angular：
+　　　　　　优点：
+　　　　　　　　a.双向数据绑定
+　　　　　　　　b.模版动能强大，指令丰富
+　　　　　　　　c.可以复用的自定义指令
+　　　　　　　　d.比较完善，包含模版、模块化、路由、过滤器、依赖注入等
+　　　　　　　　e.组件化
+　　　　　　缺点：
+　　　　　　a.过于臃肿
+　　　　　　b.什么都要依赖注入
+　　　　react：
+　　　　　　优点：
+　　　　　　　　a.速度快，通过虚拟DOM更新实际DOM
+　　　　　　　　b.浏览器兼容性好
+　　　　　　　　c.组件化
+　　　　　　　　d.对SEO友好
+　　　　　　　　e.单向响应数据流
+　　　　　　缺点：
+　　　　　　　　a.只是个视图，并不完整，如果是大型项目需要配合其它框架，如react-router和readux
+　　12）vue虚拟dom原理
+　　　　Virual DOM是用JS对象记录一个dom节点的副本，当dom发生更改时候，先用虚拟dom进行diff，算出最小差异，然后再修改真实dom。
+　　　　优点：
+　　　　　　01 将 Virtual DOM 作为一个兼容层，让我们还能对接非 Web 端的系统，实现跨端开发。
+　　　　　　02 同样的，通过 Virtual DOM 我们可以渲染到其他的平台，比如实现 SSR、同构渲染等等。
+　　　　　　03 实现组件的高度抽象化
+　　　　缺点：
+　　　　　　01. 代码更多，体积更大
+　　　　　　02. 内存占用增大
+　　　　　　03. 小量的单一的dom修改使用虚拟dom成本反而更高，不如直接修改真实dom快
+　　13）在vue中如何操作dom
+　　　　使用ref
+　　14）对MVVM的理解
+　　　　Vue是以数据为驱动的，Vue自身将DOM和数据进行绑定，一旦创建绑定，DOM和数据将保持同步，每当数据发生变化，DOM会跟着变化。
+　　　　ViewModel是Vue的核心，它是Vue的一个实例。Vue实例是作用在某个HTML元素上的，这个HTML元素可以是body，也可以是某个id所指代的元素。 
+       DOM Listeners和DataBindings是实现双向绑定的关键。DOM Listeners监听页面所有View层DOM元素的变化，当发生变化，Model层的数据随之变化；DataBindings监听Model层的数据，当数据发生变化，View层的DOM元素随之变化。

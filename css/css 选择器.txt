@@ -1,0 +1,166 @@
+1. 通用选择器 *
+* {
+    padding: 0;
+    margin: 0;
+  }
+
+2.id选择器
+#foo {
+  width: 100%;  
+}
+
+3.class选择器
+.foo {
+  height: 100px;  
+}
+
+4.标签选择器
+h1 {
+  color: #000;  
+}
+
+5.后代选择器
+div p {
+  color: #000;  
+}
+选择div后面的所有p元素
+
+6.相邻选择器
+div + p {
+  color: #000;  
+}
+只选择div后面的p元素
+
+7.子元素选择器
+div > p {
+  color: #000;
+}
+ 选择div的所有子元素p，子元素外的不会被选中
+
+8.~
+div ~ p {
+  color: #000;  
+}
+选择跟在div后面的所有兄弟p元素，p可以不紧跟div
+
+9.属性选择器
+[title] {
+  color: #000;  
+}
+选择有title属性的元素
+
+10.[attr="data"]
+[data-id="data"] {
+  color: #red;  
+}
+<div data-id="data"></div>
+选择属性data-id等于data的元素
+
+11.[attr~="data"] 
+[data-id~="data"] {
+  color: red;  
+}
+<div data-id="data data-id"></div>
+如果属性值中有用空格分隔的一连串属性值，~ 可以选取其中一个属性值，也可以选中属性data-id等于data的元素
+
+12.[attr^="www"]
+a[href^="www"] {
+  color: red;  
+}
+选择属性href为www开头的a元素
+
+13.[attr$=".png"] 
+[href$=".png"] {
+  color: red;  
+}
+选择属性href以.png结尾的a元素
+
+14.[attr*="www"]
+a[href*="www"] {
+  color: red;  
+}
+选择属性href包含www的a元素
+
+15. [attr|=language]
+[lang|=en] 选择lang属性以en开头的元素
+
+16. 取反:not(selector)
+    <p>这是一个p元素</p>
+    <h1>这是标题</h1>
+    <div>这是div</div>
+
+    p {
+        color: darkblue;
+    }
+    :not(p) {
+        color: red;
+    }
+为每个并非<p>元素的元素设置字体颜色
+
+17.  :first-child、:last-child、:first-of-type、:last-of-type
+  p:first-child  选择父元素中的第一个p元素
+  p:last-child  选择父元素中的最后一个p元素
+  p:first-of-type  选择父元素中的第一个p元素
+  p:last-of-type 选择父元素中的最后一个p元素
+
+18. :nth-child(n)、:nth-last-child(n)、:nth-of-type(n)、:nth-last-of-type(n)
+  p:nth-child(3) 选择父元素中的第三个p元素
+  p:nth-last-child(3) 选择父元素中的倒数第三个p元素
+  p:nth-of-type(3) 选择父元素中的第三个p元素
+  p:nth-last-of-type(3) 选择父元素中的倒数第三个p元素
+
+19. :only-child、:only-of-type
+  选择每个p元素是其父级的唯一子元素
+
+20. first-line、first-letter
+  p:fist-line 选择每个p元素的第一行
+  p:fist-letter 选择每个p元素的第一个字母
+
+21. :before 、:after
+  p:before 在每个p元素前插入内容
+  p:after  在每个p元素后插入内容
+
+22. :link、:visited、:checked、:focus、:enabled、:disabled、:hover、:active
+  :link 链接未点击前
+  :visited 链接点击后
+  :checked 单选框或多选框被选中后
+  :focus input获取焦点时
+  :enabled 未被禁用的元素
+  :disabled 按钮或input被禁用后
+  :hover 鼠标移上去时
+  :active 按钮或链接被点击时
+23. :read-write、:read-only
+  :read-write 匹配可读及可写的元素 
+  :read-only 匹配设置了"readonly"属性的元素
+
+24. :optional、:required
+  :optional 匹配可选输入的元素（未设置"required"属性的元素）
+  :required 匹配设置了"required"属性的元素
+
+25. :valid、:invalid
+  :valid 匹配输入值合法的元素
+  :invalid 匹配输入值为非法的元素
+
+26. :root
+  选择文档的根元素
+
+27. :empty
+  p:empty 选择没有任何子元素的p标签
+
+28. ::selection
+选择被用户选中的元素
+
+29. :target
+  锚的名称是在一个文件中链接到某个元素的URL。元素被链接到目标元素。
+  :target选择器可用于当前活动的target元素的样式。
+
+30. :out-of-range 和 :in-range
+  <input type="number" max="10" min="5" value="7">
+  :out-of-range 选择值在范围之外的元素
+  :in-range 选择值在范围之内的元素
+  不支持ie
+
+ 
+参考
+http://www.runoob.com/cssref/css-selectors.html
+https://www.w3cschool.cn/css/css-selector.html

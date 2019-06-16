@@ -1,0 +1,127 @@
+一、安装vuex(npm i vuex)，创建store.js
+  import Vue from 'vue'
+  import Vuex from 'vuex'
+  import state from './state'
+  import getters from './getters'
+  import actions from './actions'
+  import mutations from './mutations'
+
+  Vue.use(Vuex)
+
+  export default new Vuex.Store({
+    state,
+    getters,
+    mutations,
+    actions,
+  })
+
+二、在main.js引入store.js，注册
+  import Vue from 'vue'
+  import App from './App.vue'
+  import router from './router'
+  import store from './store'
+
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
+
+三、state的用法
+state.js
+  const state = {
+      appName: 'admin'
+  }
+  export default state
+
+1.直接获取store的state
+  computed: {
+    appName () {
+      return this.$store.state.appName;
+    }
+  }
+
+2.在mapState中定义别名
+  computed: {
+    ...mapState({
+      appName: state => state.appName
+    })
+  }
+
+3.从mapSate获取
+  computed: {
+    ...mapState(['appName'])
+  }
+
+四、getter 获取计算后的 state
+getters.js
+  const getters = {
+    appNameWithVersion (state) {
+        return `${state.appName}v2.0`
+    }
+  }
+  export default getters
+
+1.从store里获取getter
+  computed: {
+    appNameWithVersion () {
+      return this.$store.getters.appNameWithVersion;
+    }
+  }
+2.从mapGetters中获取
+  computed: {
+    ...mapGetters(['appNameWithVersion'])
+  }
+
+五、mutations修改state
+mutations.js
+  const mutations = {
+    setAppName (state, params) {
+        state.appName = params
+    }
+  }
+export default mutations
+
+1.用store的commit触发mutations
+  methods: {
+    updateAppName () {
+      this.$store.commit('setAppName', 'admin2')
+    }
+  }
+  
+2.使用mapMutations
+  methods: {
+    ...mapMutations(['setAppName']),
+    updateAppName () {
+      this.setAppName('admin2');
+    }
+  }
+
+六、actions异步修改state
+actions.js
+  const actions = {
+    setName (state, name) {
+        setTimeout(() => {
+            state.commit('setAppName', name)
+        }, 2000)
+    }
+  }
+  export default actions
+
+1.使用dispatch触发actions
+  methods: {
+    updateAppName () {
+      this.$store.dispatch('setName', 'admin3')
+    }
+  }    
+
+2.使用mapActions
+  methods: {
+    ...mapActions(['setName']),
+    updateAppName () {
+      this.setName('admin3')
+    }
+  }
+ 
+
+参考：https://blog.csdn.net/m0_37068028/article/details/79860553

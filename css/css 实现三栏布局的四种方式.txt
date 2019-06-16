@@ -1,0 +1,113 @@
+三栏布局就是左中右，左右两边固定，中间自适应。
+
+1. 绝对定位
+    <div class="left">左边</div>
+    <div class="middle">中间</div>
+    <div class="right">右边</div>
+
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        /* 绝对定位 */
+        .left, .right {
+            position: absolute;
+            top: 0;
+        }
+        .left {
+            background: red;
+            width: 200px;
+            left: 0;
+        }
+        .middle {
+            background: blue;
+            margin: 0 200px;
+        }
+        .right {
+            background: green;
+            width: 200px;
+            right: 0;
+        }
+
+2. flex
+    <div class="left">左边</div>
+    <div class="middle">中间</div>
+    <div class="right">右边</div>
+
+        body {
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        .left {
+            background: blue;
+            flex: 200px 0 0;
+        }
+        .middle {
+            background: red;
+            flex: 1;
+        }
+        .right {
+            background: green;
+            flex: 0 0 200px;
+        }
+
+3. 双飞翼
+    <div class="middle">
+        <div class="inner">
+            中间
+        </div>
+    </div>
+    <div class="left">左边</div>
+    <div class="right">右边</div>
+
+      body {
+          padding: 0;
+          margin: 0;
+      }
+      .left, .middle, .right {
+          float: left;
+      }
+      .left {
+          background: red;
+          width: 200px;
+          margin-left: -100%; /* 使left移到middle的左边 */
+      }
+      .right {
+          background: red;
+          width: 200px;
+          margin-left: -200px; /* 使right移到middle的右边 */
+      }
+      .middle {
+          background: blue;
+          width: 100%;
+      }
+      .inner {
+          margin: 0 200px;
+      }
+
+4. 浮动
+
+    <div class="left">左边</div>
+    <div class="right">右边</div>
+    <div class="middle">中间</div>
+
+    .left {
+        float: left;
+        background: blue;
+        width: 200px;
+    }
+    .middle {
+        margin: 0 200px;
+        background: red;
+        width: 100%;
+    }
+    .right {
+        float: right;
+        background: green;
+        width: 200px;
+    }
+ 
+
+参考：https://segmentfault.com/a/1190000007729716

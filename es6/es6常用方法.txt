@@ -1,0 +1,362 @@
+一、let 和 const
+  let 声明变量，只在所在的块区有效，不存在变量提升；var 存在变 量提升
+  const 声明常量，只在所在块区有效
+
+二、变量的解构赋值
+1.数组的解构赋值
+  let [a, b, c] = [1, 2, 3];// a=1;b=2;c=3
+
+2.对象的解构赋值
+  let { foo, bar } = { foo: "aaa", bar: "bbb" };
+  foo // "aaa"
+  bar // "bbb"
+
+3.字符串的解构赋值
+  const [a, b] = 'hello';
+  a // "h"
+  b // "e"
+用途
+1）交换值
+  let x = 1，y = 2;
+  [x, y] = [y, x];//y = 1, x = 2
+2）从函数返回多个值
+  // 返回一个数组
+  function example() {
+    return [1, 2, 3];
+  }
+  let [a, b, c] = example();
+  // 返回一个对象
+  function example() {
+    return {
+        foo: 1,
+        bar: 2
+    };
+  }
+  let { foo, bar } = example();        
+
+3）输入模块的指定方法
+加载模块时，往往需要指定输入哪些方法。
+  const { SourceMapConsumer, SourceNode } = require 
+  ("source-map");
+
+ 
+
+三、字符串的扩展
+1.includes(), startsWith(), endsWith()
+  返回布尔值，支持第二个参数，表示开始搜索的位置
+  let s = 'Hello world!';
+  s.startsWith('world', 6) // true
+  s.endsWith('Hello', 5) // true
+  s.includes('Hello', 6) // false
+  使用第二个参数n时，endsWith的行为与其他两个方法有所不同。它针对前n个字符，而其他两个方法针对从第n个位置直到字符串结束。
+
+2.repeat()
+  repeat方法返回一个新字符串，表示将原字符串重复n次。n不能为负数
+  'x'.repeat(3) // "xxx"
+  'hello'.repeat(2) // "hellohello"
+3.padStart()，padEnd()
+  padStart()用于头部补全，padEnd()用于尾部补全。
+  'x'.padStart(4, 'ab') // 'abax'
+  'x'.padEnd(5, 'ab') // 'xabab'
+  padStart和padEnd一共接受两个参数，第一个参数用来指定字符串的最小长度，第二个参数是用来补全的字符串。
+
+4.模板字符串
+  let x = 1，y = 2;
+  `${x} + ${y} = ${x + y}`// "1 + 2 = 3"
+ 
+四、数组的扩张
+1.扩展符(...)
+  好比 rest 参数的逆运算，将一个数组转为用逗号分隔的参数序列。
+  console.log(...[1, 2, 3])// 1 2 3
+  作用：
+  1）取数组中最大值 Math.max(...[14, 3, 77])//77 
+  2）复制数组 const a1 = [1, 2]; const a2 = [...a1];
+  3）合并数组 [...arr1, ...arr2, ...arr3]
+
+2.Array.from()
+  将两类对象转为真正的数组，能将arguments变成真正的数组
+
+3.Array.of()
+  Array.of方法用于将一组值，转换为数组。
+  Array() // []
+  Array(3) // [, , ,]
+  Array(3, 11, 8) // [3, 11, 8]
+  Array方法没有参数、一个参数、三个参数时，返回结果都不一样。只有当参数个数不少于 2 个时，Array()才会返回由参数组成的新数组。参数个数只有一个时，实际上是指定数组的长度。
+
+4.数组实例的 fill()
+  fill方法使用给定值，填充一个数组。
+  ['a', 'b', 'c'].fill(7)// [7, 7, 7]
+  fill方法可以接受第二个和第三个参数，用于指定填充的起始位置和结束位置。
+  ['a', 'b', 'c'].fill(7, 1, 2)// ['a', 7, 'c']
+
+5.数组实例的 includes()
+  表示某个数组是否包含给定的值,返回布尔值该方法的第二个参数表示搜索的起始位置，默认为0。如果第二个参数为负数，则表示倒数的位置，如果这时它大于数组长度（比如第二个参数为-4，但数组长度为3），则会重置为从0开始。
+  [1, 2, 3].includes(3, 3); // false
+  [1, 2, 3].includes(3, -1); // true
+  [1, 2, 3].includes(3, -4); // true 
+
+五、对象的扩展
+1.属性的简洁表示法
+  const foo = 'bar';
+  const baz = {foo} === const baz = {foo: foo};
+
+  方法简写
+  const o = {
+    method() {
+        return "Hello!";
+    }
+  };
+  // 等同于
+  const o = {
+    method: function() {
+        return "Hello!";
+    }
+  };  
+
+2.Object.assign()
+合并对象
+  const target = { a: 1 };
+  const source = { b: 2 };
+  Object.assign(target, source);
+  target // {a:1, b:2}
+
+除了合并还有其他的用途
+1）浅拷贝
+  function clone(origin) {
+    return Object.assign({}, origin);
+  }
+2）为对象添加属性
+  class Point {
+    constructor(x, y) {
+        Object.assign(this, {x, y});
+    }
+  }
+将x属性和y属性添加到Point类的对象实例。
+3）为对象添加方法
+  Object.assign(SomeClass.prototype, {
+    someMethod(arg1, arg2) {
+        ···
+    }
+  });
+  // 等同于下面的写法
+  SomeClass.prototype.someMethod = function (arg1, arg2) {
+    ···
+  };
+4）数组的处理
+  Object.assign([1, 2, 3], [4, 5])// [4, 5, 3]
+
+
+3.Object.entries()
+  Object.entries方法返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历属性的键值对数组。
+  const obj = { foo: 'bar', baz: 42 };
+  Object.entries(obj)// [ ["foo", "bar"], ["baz", 42] ]
+
+ 
+
+六、函数的扩展
+1.箭头函数
+  var f = v => v;
+  箭头函数有几个使用注意点。
+  （1）函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。
+  （2）不可以当作构造函数，也就是说，不可以使用new命令，否则会抛出一个错误。
+  （3）不可以使用arguments对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+
+2.函数参数的默认值
+  function Point(x = 0, y = 0) {
+  this.x = x;
+  this.y = y;
+
+3.rest 参数
+  类似arguments，可以代替arguments
+
+4.双冒号运算符
+  用来取代call、apply、bind调用
+  foo::bar; === bar.bind(foo);
+
+七、Set
+  利用set可以实现数组去重
+  [...new Set([1,2,3,4,2,3,3])]//[1,2,3,4]
+
+八、Promise
+  Promise是一个对象，有then()方法的对象,Promise 是异步编程的一种解决方案。
+
+  const promise = new Promise(resolve, reject) => {
+    if (/* 异步操作成功 */){
+        resolve(value);
+    } else {
+        reject(error);
+    }
+  });
+  promise.then(value) => {
+    // success
+  }).catch( (error)=>{
+    //error
+  } );
+
+ 九、class
+1.constructor 方法
+一个类必须有constructor方法，如果没有显式定义，一个空的constructor方法会被默认添加。
+  class Point {}
+  // 等同于
+  class Point {
+    constructor() {}
+  }
+2.类的实例对象
+  与 ES5 完全一样，也是使用new命令。前面说过，如果忘记加上new，像函数那样调用Class，将会报错。
+
+3.不存在变量提升
+
+4.继承
+  class A {}
+  class B extends A {
+    constructor() {
+        super();
+    }
+  } 
+子类必须在constructor方法中调用super方法，否则新建实例时会报错。只有调用super之后，才可以使用this关键字，否则会报错。
+
+十、Module
+1.export 和 import
+  模块功能主要由两个命令构成：export和import。export命令用于规定模块的对外接口，import命令用于输入其他模块提供的功能。
+  一个模块就是一个独立的文件。该文件内部的所有变量，外部无法获取。如果你希望外部能够读取模块内部的某个变量，就必须使用export关键字输出该变量。
+
+1）导出变量
+  export var str = 'Michael';
+  export var obj = { a: 1 };
+  export var arr = [1, 2, 3];
+  另一种写法（推荐）
+  var str = 'Michael';
+  var obj = { a: 1 };
+  var arr = [1, 2, 3];
+
+  export { str, obj, arr }
+  使用大括号指定所要输出的一组变量，export放在最后，能够清晰的看出输出哪些变量。
+引用
+  import { str, obj, arr } from './export'
+  引入名称和导出名称要一一对应
+
+2）导出函数
+// circle.js
+  export function area(radius) {
+    return Math.PI * radius * radius;
+  }
+  export function circumference(radius) {
+    return 2 * Math.PI * radius;
+  }
+  // main.js
+  import { area, circumference } from './circle';
+
+3）整体加载
+  // circle.js
+  export function area(radius) {
+  return Math.PI * radius * radius;
+  }
+  export function circumference(radius) {
+  return 2 * Math.PI * radius;
+  }
+  // main.js
+  import * as circle from './circle';
+  circle.area(1) // 3.14...
+
+4）使用as关键字重命名
+  //export.js
+  var obj = { a: 1 };
+  export { obj as foo }
+  //import.js
+  import { foo } from './export'
+5）注意写法
+  // 报错
+  export 1;
+  // 报错
+  var m = 1;
+  export m;
+  // 报错
+  function f() {}
+  export f;
+  以上写法都会报错，因为没有提供对外的接口。正确的写法应该如下：
+
+  export var m = 1;
+  var m = 1;
+  export { m };
+  var n = 1;
+  export { n as m };
+  export function f () { };
+  function f () { }
+  export { f };
+  在接口名与模块内部变量之间，建立了一一对应的关系
+
+5）export default
+默认输出是一个函数。其他模块加载该模块时，import命令可以为该匿名函数指定任意名字。优势是给用户提供方便，让他们不用阅读文档就能加载模块。
+  // export.js
+  export default function () {
+    console.log('foo');
+  }
+  或者写成
+  function foo() {
+    console.log('foo');
+  }
+  export default foo;
+  //等同于
+  // export { foo as default }
+
+  // import.js
+  import customName from './export';
+  customName(); // 'foo'
+  注意：一个模块只能有一个export，多了会报错。如果想在一条import语句中，同时输入默认方法和其他接口，可以写成下面这样。
+  export default function (obj) {
+    // ···
+  }
+  export function each(arr) {
+    // ···
+  }
+  // import.js
+  import foo, { each } from './export';
+
+引入export default 和 export的区别
+  // 第一组 export default
+  export default function crc32() {
+    // ...
+  }
+  // import.js
+  import crc32 from 'crc32'; 
+
+  // 第二组 export
+  export function crc32() { 
+    // ...
+  };
+  // import.js
+  import {crc32} from 'crc32'; 
+  以上第一组是使用export default时，对应的import语句不需要使用大括号；第二组是不使用export default时，对应的import语句需要使用大括号。
+  因为export default命令其实只是输出一个叫做default的变量，所以它后面不能跟变量声明语句。
+  // 错误
+  export default var a = 1;
+  // 正确
+  var a = 1;
+  export default a;
+  // 报错
+  export 42;
+  // 正确
+  export default 42;
+
+6）跨模块常量
+  // constants/db.js
+  export const db = {
+    url: 'http://my.couchdbserver.local:5984',
+    admin_username: 'admin',
+    admin_password: 'admin password'
+  };
+  // constants/user.js
+  export const users = ['root', 'admin', 'staff', 'ceo', 'chief', 'moderator'];
+  将这些文件输出的常量，合并在index.js里面。使用的时候，直接加载 constants/index.js 就可以了，后面的index.js也可以省略
+  // constants/index.js
+  export {db} from './db';
+  export {users} from './users';// script.js
+  import {db, users} from './constants';
+
+2.module加载
+  使用<script>标签，但是要加入type="module"属性。浏览器对于带有type="module"的<script>，都是异步加载，不会造成堵塞浏览器，即等到整个页面渲染完，再执行模块脚本
+  <script type="module" src="./foo.js"></script>
+
+ 
+
+待补充，摘自阮老师的开源ES6第三版电子书 http://es6.ruanyifeng.com/

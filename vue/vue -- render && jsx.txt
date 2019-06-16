@@ -1,0 +1,177 @@
+vue在绝大多数使用template是没问题的，但在某些场合下，使用render更适合。
+
+一、render函数
+1.createElement 参数
+  createElement 可接受三个参数
+    1）{String | Object | Function}，一个 HTML 标签字符串，组件选项对象，或者函数，必选参数
+    2）{Object}，一个包含模板相关属性的数据对象，可以在 template 中使用这些特性。可选参数
+    3）{String | Array}，子虚拟节点 (VNodes)，由 `createElement()` 构建而成，也可以使用字符串来生成“文本虚拟节点”。可选参数
+
+2.深入data对象
+  {
+    // 和`v-bind:class`一样的 API
+    // 接收一个字符串、对象或字符串和对象组成的数组
+    'class': {
+      foo: true,
+      bar: false
+    },
+    // 和`v-bind:style`一样的 API
+    // 接收一个字符串、对象或对象组成的数组
+    style: {
+      color: 'red',
+      fontSize: '14px'
+    },
+    // 普通的 HTML 特性
+    attrs: {
+      id: 'foo'
+    },
+    // 组件 props
+    props: {
+      myProp: 'bar'
+    },
+    // DOM 属性
+    domProps: {
+      innerHTML: 'baz'
+    },
+    // 事件监听器基于 `on`
+    // 所以不再支持如 `v-on:keyup.enter` 修饰器
+    // 需要手动匹配 keyCode。
+    on: {
+      click: this.clickHandler
+    },
+    // 仅用于组件，用于监听原生事件，而不是组件内部使用
+    // `vm.$emit` 触发的事件。
+    nativeOn: {
+      click: this.nativeClickHandler
+    },
+    // 作用域插槽格式
+    // { name: props => VNode | Array<VNode> }
+    scopedSlots: {
+      default: props => createElement('span', props.text)
+    },
+    // 如果组件是其他组件的子组件，需为插槽指定名称
+    slot: 'name-of-slot',
+    // 其他特殊顶层属性
+    key: 'myKey',
+    ref: 'myRef',
+  }
+
+下面两段代码是一样的：
+
+template代码
+  <div>
+    <h1 class="myClass" title="学习render函数">学习render函数</h1>
+    <i style="color: #666">2019/02/15</i>
+  </div>
+
+render函数
+  render: function(createElement) {
+    return createElement('div', null, [
+        createElement('h1', {
+            class: 'myClass',
+            attrs: {
+                title: '学习render函数'
+            }
+        }, '学习render函数'),
+        createElement('i', {
+            style: 'color: #666'
+        }, '2019/02/15'),
+    ]);
+  }
+
+二、函数化组件
+函数化组件是没有状态（响应式数据），没有实例（没有this，没有钩子函数）。函数式组件只是一个函数，所以渲染开销也低很多。
+  Vue.component('my-component', {
+    functional: true,
+    // Props 可选
+    props: {
+      // ...
+    },
+    // 为了弥补缺少的实例，提供第二个参数作为上下文
+    render: function (createElement, context) {
+      // ...
+    }
+  })
+
+context包含以下属性
+  props：提供所有 prop 的对象
+  children: VNode 子节点的数组
+  slots: 返回所有插槽的对象的函数
+  data：传递给组件的数据对象，作为 createElement 的第二个参数传入组件
+  parent：父组件
+  listeners: (2.3.0+) 一个包含了所有在父组件上注册的事件侦听器的对象。这只是一个指向 data.on 的别名。
+  injections: (2.3.0+) 如果使用了 inject 选项，则该对象包含了应当被注入的属性。
+
+例子：
+  export default {
+    functional: true,
+    props: {
+      foo: {
+          type: String,
+          default: 'foo'
+      }
+    },
+    render: function(createElement, context) {
+      return createElement('div', context.props.foo)
+    }
+  }
+
+三、JSX语法和使用
+用JSX语法写要比render函数简便，JSX 是一个看起来很像 XML 的 JavaScript 语法扩展。
+
+1.表达式
+  JSX是支持表达式的，你需要将表达式写到{}内即可
+  <p>{0 < 1? 'true' : 'false'}</p>
+
+2.指令
+  <input vModel="newTodoText" />
+  //有修饰符的指令
+  <input vOn:click_stop_prevent="newTodoText" />
+
+3.组件
+  <MyComponent>hello</MyComponent>
+
+4.属性
+  return <input type="email" />
+    //动态绑定
+    return <input
+      type="email"
+      placeholder={this.placeholderText}
+    />
+  const inputAttrs = {
+    type: 'email',
+    placeholder: 'Enter your email'
+  }
+  return <input {...{ attrs: inputAttrs }} />
+
+5.class、style
+可以是字符串、数组、对象，由花括号包裹着
+  //class
+  class={'myclass'}
+  class={['myclass']}
+  class={{'myclass': true}}
+  //style
+  style={{color: '#666'}}
+  style={[{color: '#666'}]}
+  style={'color: #333'}
+
+6.数组
+JSX 允许在模板中插入数组，数组会自动展开所有成员
+  var arr = [
+    <p>p标签</p>,
+    <h1>h1标签</h1>
+  ]
+  return (
+    <div>
+        {arr}
+    </div>
+  ) 
+
+7.注释
+  注释需要写在花括号中
+  {/*注释...*/}
+ 
+参考：
+1.https://cn.vuejs.org/v2/guide/render-function.html
+2.https://github.com/vuejs/jsx#installation
+3.http://www.runoob.com/react/react-jsx.html

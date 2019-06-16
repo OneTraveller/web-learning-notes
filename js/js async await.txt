@@ -1,0 +1,124 @@
+一、async
+  带async关键字的函数，是声明异步函数，返回值是promise对象，如果async关键字函数返回的不是promise，会自动用Promise.resolve()包装。
+  async function test() {
+      return 'test'
+  }
+  test();
+  返回值为 Promise {<resolved>: "test"}。
+
+二、await
+  await等待右侧表达式的结果，这个结果是promise对象或者其他值。
+  如果它等到的不是一个 promise 对象，那 await 表达式的运算结果就是它等到的东西。
+  如果它等到的是一个 promise 对象，await 就忙起来了，它会阻塞后面的代码，等着 promise 对象 resolve，然后得到 resolve 的值，作为 await 表达式的运算结果。
+
+function test() {
+    return new Promise(resolve => {
+        setTimeout(() => resolve("test"), 2000);
+    });
+}
+
+  const result = await test();
+  console.log(result);
+  console.log('end')
+  由于test()造成的阻塞，console.log('end')会等到两秒后执行
+  所以为了避免造成阻塞，await 必须用在 async 函数中，async 函数调用不会造成阻塞。
+
+  function test() {
+      return new Promise(resolve => {
+          setTimeout(() => resolve("test"), 2000);
+      });
+  }
+
+  async function test2() {
+      const result = await test();
+      console.log(result);
+  }
+  test2();
+  console.log('end');
+
+  先执行console.log('end')，两秒后执行console.log('test')
+  如果await用在普通函数中，会报错
+
+
+
+三、async/await的执行顺序
+遇到await会阻塞后面的代码，先执行async外面的同步代码，同步代码执行完，再回到async内部，继续执行await后面的代码。以下面的代码分析：
+      async function test1() {
+          console.log('start test1');
+          console.log(await test2());
+          console.log('end test1');
+      }
+      async function test2() {
+          console.log('test2');
+          return 'return test2 value'
+      }
+      test1();
+      console.log('start async');
+      setTimeout(() => {
+          console.log('setTimeout');
+      }, 0);
+      new Promise((resolve, reject) => {
+          console.log('promise1');
+          resolve();
+      }).then(() => {
+          console.log('promise2');
+      });
+      console.log('end async');
+
+执行的结果
+  · 首先执行宏任务，执行test1函数，执行console.log('statr test1')
+  · 遇到await，先执行右边test2中的console.log('test2')，中断了后面的代码，执行test1外面的同步代码
+  · 执行console.log('start async');
+  · 遇到setTimeout，推到到下个宏任务队列中
+  · 执行Promise里面的同步代码console.log('promise1')
+  · 运行到promise().then，发现是promise对象，推到微任务队列中
+  · 执行console.log('end async')
+  · test1外面的同步代码执行结束后，回到test1中，console.log(await test2())执行完成后返回Promise {<resolved>: "return test2 value"}，是promise对象，推到微任务队列中
+  · 此时第一个宏任务结束，执行所有的微任务，因为微任务队列先进先出，所以先执行console.log('promise2')，后执行console.log('return test2 value')
+  · 执行test2完成后，后面的代码不再阻塞，执行console.log('end test1');
+  · 执行下个宏任务，即执行console.log('setTimeout');
+
+  补充下有关宏任务和微任务的知识
+  宏任务和微任务都是队列，宏任务有script、setTimeout、setInterval等，微任务有Promise.then catch finally、process.nextTick等，宏任务和微任务的关系如下：
+  先执行第一个宏任务，执行结束后，执行所有的微任务，然后执行下个宏任务。
+
+四、async/await的优缺点
+1. 优点
+  相对于promise，async/await处理 then 的调用链，代码要清晰很多，几乎和同步代码一样
+
+2. 缺点
+  滥用 await 可能会导致性能问题，因为 await 会阻塞代码
+
+五、处理reject
+1. try/catch
+      async function fn() {
+          try {
+              await new Promise((resolve, reject) => {
+              setTimeout(() => {
+                  reject('err3');
+              }, 1000);
+          })
+          } catch (err){
+              alert(err)
+          }
+      }
+      fn()
+
+2. catch
+      async function fn() {
+          await new Promise((resolve, reject) => {
+              setTimeout(() => {
+                  reject('err');
+              }, 1000);
+          })
+      }
+      fn().catch(alert)
+
+ 
+
+ 
+
+参考：
+1. https://segmentfault.com/a/1190000007535316
+2. https://segmentfault.com/a/1190000017224799
+3. https://www.cnblogs.com/wangziye/p/9566454.html

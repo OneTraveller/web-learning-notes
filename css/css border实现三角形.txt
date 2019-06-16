@@ -1,0 +1,62 @@
+实现过程：
+
+  <div class="box"></div>
+  .box {
+      background: #ddd;
+      width: 100px;
+      height: 100px;
+      border-top: 20px solid yellow;
+      border-right: 20px solid red;
+      border-bottom: 20px solid black;
+      border-left: 20px solid blue;
+  }
+
+高度和宽度减小后的border
+正常border表现为梯形，当box的高度和宽度减小至0时，border则为三角形
+
+  .box {
+      background: #ddd;
+      width: 0;
+      border-top: 20px solid yellow;
+      border-right: 20px solid red;
+      border-bottom: 20px solid black;
+      border-left: 20px solid blue;
+  }
+
+接下通过设置其他三个border的背景为透明则可以实现三角形
+  .box {
+        width: 0;
+        border-top: 20px solid yellow;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid transparent;
+  }
+
+  .box {
+        width: 0;
+        border-top: 20px solid transparent;
+        border-right: 20px solid red;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid transparent;
+  }
+
+  .box {
+        width: 0;
+        border-top: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid black;
+        border-left: 20px solid transparent;
+  }
+
+  .box {
+        width: 0;
+        border-top: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-bottom: 20px solid transparent;
+        border-left: 20px solid blue;
+  }
+
+
+ 
+
+参考：https://www.cnblogs.com/youhong/p/6530575.html

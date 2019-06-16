@@ -1,0 +1,42 @@
+get和post的区别：
+  1.GET产生一个TCP数据包；POST产生两个TCP数据包。
+  　　对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；
+  　　而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
+  2.get请求数据有限制，post请求数据没有限制
+  3.请求参数在url中发送，post请求参数在http消息主体中发送
+
+//get
+function get() {
+    //创建XMLHttpRequest
+　　let xhr = new XMLHttpRequest();
+    //监听响应
+　　xhr.onreadystatechange = function () {
+　　　　if (xhr.readyState === 4 && (xhr.status === 200 || xhr.status === 304)) {
+　　　　　　console.log(xhr.responseText);
+　　　　}
+　　};
+　　xhr.open("GET","your url",true);
+　　xhr.send();
+}
+
+//post
+function post () {
+    //请求参数、url、创建XMLHttpRequest
+　　let data = 'name=tom&age=18',
+　　　　url = 'your url',
+　　　　xhr = new XMLHttpRequest();
+
+　　xhr.open('post', url);
+    //设置header
+　　xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+　　xhr.send(data);
+　　xhr.onreadystatechange = function () {
+　　　　if (xhr.readyState === 4 && ( xhr.status === 200 || xhr.status === 304 )){
+　　　　　　console.log(xhr.responseText);
+　　　　}
+　　}
+}
+
+参考：
+  1.https://blog.csdn.net/u012391923/article/details/53197387?utm_source=blogxgwz3
+  2.http://www.runoob.com/tags/html-httpmethods.html

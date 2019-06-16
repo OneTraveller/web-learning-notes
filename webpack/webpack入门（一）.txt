@@ -1,0 +1,298 @@
+一、简介
+WebPack可以看做是模块打包机：它做的事情是，分析你的项目结构，找到JavaScript模块以及其它的一些浏览器不能直接运行的拓展语言（Scss，less, TypeScript等），并将其转换和打包为合适的格式供浏览器使用。
+Webpack的工作方式是：把你的项目当做一个整体，通过一个给定的主文件（如：index.js），Webpack将从这个文件开始找到你的项目的所有依赖文件，使用loaders处理它们，最后打包为一个（或多个）浏览器可识别的JavaScript文件。
+
+二、起步
+1.打开cmd，创建一个demo
+  mkdir webpack4-demo && cd webpack4-demo
+
+2.初始化package
+  npm init -y
+
+3.安装webpack及webpack-cli
+  npm i webpack webpack-cli -D
+
+4.创建index.html和index.js
+  mkdir src dist && touch src/index.js dist/index.html
+
+  index.html
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title>webpack4</title>
+    </head>
+      <body>
+        <script src="./bundle.js"></script>
+      </body>
+    </html>
+
+index.js
+  let h1 = document.createElement('h1');
+  h1.innerHTML = 'hello webpack4';
+  document.body.appendChild(h1);
+
+5.创建webpack.config.js
+  mkdir config && touch config/webpack.config.js
+  webpack.config.js
+  const path = require('path');
+  const modules = {
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, '../dist')
+    }
+  }
+  module.exports = modules;
+  entry入口js，output输出文件，filename文件名称，path文件存放位置
+
+6.修改package.json
+  "scripts": {
+      "build": "webpack --config config/webpack.config.js"
+    },
+
+7.打包
+  npm run build
+  打开index.html，能够看到Hello webpack4
+
+
+三、常用API
+1.加载css
+1）安装并添加 style-loader 和 css-loader
+  npm install --save-dev style-loader css-loader
+2）在src文件下添加style.css
+  h1 {
+    color: red;
+  }
+3）在index.js引入style.css
+  import './style.css';
+4）在webpack.config.js添加module，和output同级
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  }
+
+2.加载less
+1）安装并添加less less-loader
+  npm install --save-dev less less-loader
+2）在webpack.config.js配置
+  rules: [
+    {
+      test: /\.(css|less)$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        'less-loader'
+      ]
+    }
+  ]
+3）在index.js引入less文件
+  import './style.less'
+
+3.加载scss
+1）安装并添加node-sass  sass-loader
+  npm install  node-sass sass-loader --save-dev
+    如果node-sass安装不成功，请尝试
+    npm i node-sass --sass_binary_site=https://npm.taobao.org/mirrors/node-sass/ -D
+2）配置webpack.config.js
+  {
+    test: /\.scss$/,
+    use: [
+      'style-loader',
+  　　　　　　'css-loader',
+      'sass-loader'
+    ]
+  }
+3）在index.js里引入style.scss文件
+  import './style.scss'
+
+4.css分离
+1）安装extract-text-webpack-plugin
+  npm install --save-dev extract-text-webpack-plugin@next
+  对于webpack4版本，必须装extract-text-webpack-plugin最新版本
+2）配置webpack.config.js
+  const ExtractTextPlugin = require("extract-text-webpack-plugin");
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      },
+      {
+        test: /\.less$/i,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'less-loader']
+        })
+      },
+      {
+        test: /\.scss$/i,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
+      }
+    ]
+  },
+  plugins: [
+    new ExtractTextPlugin('style.css'),
+  ]
+3）在index.js引入.css .less .scss 文件打包即可
+
+5.加载图片
+1）安装并添加file-loader
+  npm install --save-dev file-loader
+2）在webpack.config.js中配置
+  module: {
+    rules: [
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: [
+          'file-loader'
+        ]
+      },
+    ]
+  }
+3）在src文件夹下添加icon.png，在index.js引入
+  import Icon from './icon.png';
+4）在js或css引用图片
+  var myIcon = new Image();
+  myIcon.src = Icon;
+  element.appendChild(myIcon);
+  // css
+  background: url('./icon.png');
+
+6.加载字体
+1）在webpack.config.js配置
+  module: {
+    rules: [
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: [
+          'file-loader'
+        ]
+      }
+    ]
+  }
+2）在src文件夹下添加my-font.woff，在style.css中添加如下代码
+  @font-face {
+    font-family: 'MyFont';
+    src: url('./my-font.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+  }
+  h1 {
+    font-family: 'MyFont';
+  }
+  通过配置好 loader 并将字体文件放在合适的地方，你可以通过一个 @font-face 声明引入。本地的 url(...) 指令会被 webpack 获取处理，就像它处理图片资源一样
+
+ 7.es6/es7转换为es5
+1）安装@babel/core @babel/preset-env babel-loader
+  npm i -D @babel/core babel-loader @babel/preset-env
+  注意：对于babel-loader@7.x，要安装babel-core  和 babel-preset-env；对于babel-loader@8.x，要安装@babel/core @babel/preset-env
+2）配置.babelrc
+  {
+    "presets": [
+      "@babel/preset-env"
+    ]
+  }
+3）配置webpack.config.js
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: '/node_modules/',
+        loader: 'babel-loader'
+      }
+    ]
+  }
+4）@babel/polyfill
+  Babel 默认只转换新的 JavaScript 句法（syntax），而不转换新的 API，比如数组的find、includes、from都不会转码。如果想使用这些方法，必须使用babel-polyfill，为当前环境提供一个垫片。
+  npm install --save-dev @babel/polyfill
+  在index.js引入或者在webpack.config.js的entry引入
+  // index.js
+  import '@babel/polyfill';
+  // 或者在 webpack.config.js
+  entry: ['@babel/polyfill', './src/index.js'],
+
+补充：
+1.babel-polyfill 和 babel-runtime
+  babel-polyfill：当运行环境中并没有实现的一些方法，babel-polyfill中会给做兼容
+  babel-runtime：将es6编译成es5
+优缺点：
+  babel-polyfill：引入polyfill，前端就可以放心的在代码里用es6的语法来写；但是这样会造成全局空间污染，代码量比较大。
+  babel-runtime：不会污染全局对象和内置的对象原型。比如当前运行环境不支持promise，可以通过引入babel-runtime/core-js/promise来获取promise，或者通过babel-plugin-transform-runtime自动重写你的promise。缺点是不支持find、includes、Object.assign等方法。
+
+2.babel-plugin-transform-runtime 和 babel-runtime
+  在babel编译es6到es5的过程中，babel-plugin-transform-runtime这个插件会自动polyfill es5不支持的特性，这些polyfill包就是在babel-runtime这个包里
+
+8.压缩js
+1）配置webpack.config.js
+  const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+  plugins: [
+    new UglifyJSPlugin()
+  ],
+2）如果报错 Cannot find module 'uglifyjs-webpack-plugin'，需要安装uglifyjs-webpack-plugin
+  npm install uglifyjs-webpack-plugin --save-dev
+
+9.配置typescript
+1）安装typescript ts-loader
+  npm install --save-dev typescript ts-loader
+2）在根目录下添加tyconfig.json index.ts
+  tyconfig.json
+    {
+      "compilerOptions": {
+        "outDir": "./dist/",
+        "noImplicitAny": true,
+        "module": "es6",
+        "target": "es5",
+        "jsx": "react",
+        "allowJs": true
+      }
+    }
+  index.ts
+    let isTs: boolean = true;
+    console.log(isTs)
+3）配置webpack.config.js
+  const path = require('path');
+  module.exports = {
+    entry: './src/index.ts',
+    mode: 'production',
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: 'ts-loader',
+          exclude: /node_modules/
+        }
+      ]
+    },
+    resolve: {
+      extensions: ['.tsx', '.ts', '.js']
+    },
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, '../dist')
+    }
+  };
+
+ 
+
+参考：
+1.https://www.webpackjs.com/guides/
+2.https://www.jianshu.com/p/d2c5d5190641
+3.http://es6.ruanyifeng.com/#docs/intro#Babel-转码器
+4.https://www.jianshu.com/p/a16a34eb597e
+5.https://segmentfault.com/q/1010000012041869/a-1020000012044930

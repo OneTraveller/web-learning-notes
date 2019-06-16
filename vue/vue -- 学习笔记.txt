@@ -1,0 +1,157 @@
+一、class与style
+1.class
+1）大括号
+  <div :class="{ active: isActive }"></div>
+  data: {
+    isActive: true
+  }
+
+2）对象
+  <div :class="classObject"></div>
+  data: {
+      classObject: {
+          active: true,
+          'text-danger': false
+      }
+  }
+
+3）数组
+  <div :class="[activeClass, errorClass]"></div>
+  data: {
+      activeClass: 'active',
+      errorClass: 'text-danger'
+  }
+
+2.style
+1）大括号
+  <div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+  data: {
+      activeColor: 'red',
+      fontSize: 30
+  }
+
+2）对象
+  <div :style="styleObject"></div>
+  data: {
+    styleObject: {
+        color: 'red',
+        fontSize: '13px'
+    }
+  }
+
+3）数组
+  <div :style="[baseStyles, overridingStyles]"></div>
+  data: {
+    baseStyles: 'active',
+    overridingStyles: 'text-danger'
+  }
+
+二、组件的传参
+1.父传给子（props）
+  父组件：
+    <parent toChild="该起床吃早餐了"></parent>
+  子组件接收：
+    <child>{{toChild}}</child>
+    props: {
+      toChild: String
+    }
+
+2.子传给父（emit）
+  子组件：
+    this.$emit('toParent', '我已经起来吃完早餐了')
+  父组件接收：
+    <parent @toParent="receive"></parent>
+    methods: {
+      receive (msg) {
+          console.log(msg)//我已经起来吃完早餐了
+      }
+    }
+
+3.祖父组件和孙组件的传参（$attr和$listeners）
+  祖父组件
+    <child from-grandfather="来自祖父组件的消息" @fromGrandson="handle"/>
+    handle (message) {
+      console.log(message)//来自孙组件的消息
+    }
+  子组件
+    <grandson v-bind="$attrs" v-on="$listeners"/>
+  孙组件
+    <div @click="$emit('fromGrandson', '来自孙组件的消息')">{{$attrs['from-grandfather']}}</div>
+
+4.非父子间的传参（bus）
+1）创建bus.js
+  import Vue from 'vue'
+  const Bus = new Vue()
+  export default Bus
+2）在main.js引进bus
+  import bus from './lib/bus'
+  Vue.prototype.$bus = bus;
+3）发送数据
+  this.$bus.$emit('toSelect', '选择A')
+4）接收数据
+  this.$bus.$on('toSelect', (selected) => {
+    console.log(selected)//选择A
+  })
+ 
+
+三、子组件修改父组件 （sync）
+1）父组件 添加sync修饰符
+  <Header :text.sync="text" />
+  data () {
+    return {
+      text: 'home'
+    }
+  }
+  
+2）子组件添加emit
+  <button @click="$emit('update:text', 'update')">clike me</button>
+ 
+
+四、watch的使用
+1.普通用法（某个值）
+  data () {
+    return {
+      date: '2019-06-07',
+    }
+  },
+  watch: {
+    date (newVal) {
+      console.log(newVal)
+    }
+  },
+
+2.监听对象或数组
+  <button @click="info.name = 'jack'">update name</button>
+  data () {
+    return {
+      info: { name: 'tom' }
+    }
+  },
+  watch: {
+    info: {
+      handler (newVal) {
+        console.log(newVal)
+      },
+      deep: true,
+      immediate: true, // 立即执行
+    }
+  },
+
+3.watch配合computed使用监听对象
+  <button @click="info.name = 'jack'">update name</button>
+  data () {
+    return {
+      info: { name: 'tom' }
+    }
+  },
+  computed: {
+    name () {
+      return this.info.name;
+    },
+  },
+  watch: {
+    name (newVal) {
+      console.log(newVal)
+    }
+  },
+

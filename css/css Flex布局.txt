@@ -1,0 +1,223 @@
+看完了阮老师的Flex布局教程，做下笔记。
+
+一、Flex介绍
+  Flex即Flexible Box，意为弹性布局，用来为盒状模型提供最大的灵活性。
+  采用 Flex 布局的元素，称为 Flex 容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
+  Webkit 内核的浏览器，必须加上-webkit前缀（display: -webkit-flex;）。
+  注意，设为 Flex 布局以后，子元素的float、clear和vertical-align属性将失效。
+
+二、容器的属性
+  flex-direction: 项目排列方向
+  flex-wrap: 换行方式
+  flex-flow: flex-direction属性和flex-wrap属性的简写形式，默认值为row nowrap
+  justify-content: 水平对齐方式
+  align-items: 垂直对齐方式
+  align-content: 多根轴线（多行）的对齐方式。如果项目只有一根轴线，该属性不起作用
+
+1. flex-direction
+可取值：
+  row（默认值）：水平方向，从左往右。
+  row-reverse：水平方向，从右往左。
+  column：垂直方向，从上往下。
+  column-reverse：垂直方向，从下往上。
+
+2. flex-wrap
+可取值：
+  nowrap（默认值）：不换行
+  wrap：换行，第一行在上面
+  wrap-reverse：换行，第一行在下面
+
+3. flex-flow
+  flex-flow: <flex-direction> || <flex-wrap>
+
+4. justify-content（水平对齐）
+可取值：
+  flex-start（默认值）：左对齐
+  flex-end：右对齐
+  center：居中
+  space-between：两端对齐，项目间的间隔相等
+  space-around：每个项目间隔相等。所以，项目间的间隔比项目与边框的间隔大一倍
+
+5. align-items（垂直对齐）
+可取值：
+  flex-start：垂直上对齐
+  flex-end：垂直下对齐
+  center：垂直中点对齐
+  baseline ：项目的第一行文字的基线对齐
+  stretch（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+
+6. align-content（多行）
+可取值：
+  flex-start：垂直上对齐
+  flex-end：垂直下对齐
+  center垂直中点对齐
+  space-between：垂直上下对齐，行之间的间隔平均分布，行占满容器
+  space-around：每行间隔相等，行占满容器
+  stretch（默认值）：行占满容器
+
+三、项目的属性
+  order：项目的排列顺序。默认为0
+  flex-grow：项目的放大比例，默认为0，即如果存在剩余空间，也不放大
+  flex-shrink：项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+  flex-basis：项目占据的主轴空间，默认值为auto，即项目的本来大小
+  flex：lex-grow, flex-shrink 和 flex-basis的简写，默认值为0 1 auto。后两个可选
+  align-self：允许单个项目有与其他项目不一样的对齐方式，可覆盖align-items属性
+
+1. order
+项目的排列顺序。数值越小，排列越靠前，默认为0
+
+2. flex-grow
+  如果所有项目的flex-grow属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的flex-grow属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。
+
+3. flex-shrink
+  如果所有项目的flex-shrink属性都为1，当空间不足时，都将等比例缩小。如果一个项目的flex-shrink属性为0，其他项目都为1，则空间不足时，前者不缩小。
+
+4. flex-basis
+  可以设为跟width或height属性一样的值（比如350px、百分比），则项目将占据固定空间
+
+5. flex
+  该属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)。
+  建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
+
+6. align-self
+  align-self: auto | flex-start | flex-end | center | baseline | stretch
+  除了auto，其他都与align-items属性完全一致
+
+
+四、实例
+1. 网络布局
+1）基本网络布局，平均分布
+   .box{
+      display: flex;
+    }
+    p {
+      flex: 1;
+      border: 1px solid #ddd;
+    }
+
+  <div class="box">
+    <p>2019</p>
+    <p>02</p>
+    <p>17</p>
+  </div>
+
+
+2）百分比布局，某网络固定，其他的平均分布
+    .box{
+      display: flex;
+    }
+    p {
+      flex: 1;
+      border: 1px solid #ddd;
+    }
+    p:first-child {
+      flex: 0 0 50%;
+    }
+
+  <div class="box">
+    <p>2019</p>
+    <p>02</p>
+    <p>17</p>
+  </div>
+
+
+2. 圣杯布局
+圣杯布局为header、body、footer，然后body又分为左中右
+ * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header,
+    .box-body,
+    footer,
+    .left,
+    .middle,
+    .right {
+      border: 1px solid #ddd;
+    }
+
+    .box-body,
+    .middle {
+      flex: 1;
+    }
+
+    .box-body {
+      display: flex;
+    }
+
+    header,
+    footer {
+      flex: 0 0 50px;
+    }
+
+    .left,
+    .right {
+      flex: 0 0 100px;
+    }
+
+  <div class="box">
+    <header>header</header>
+    <div class="box-body">
+      <div class="left">left</div>
+      <div class="middle">middle</div>
+      <div class="right">right</div>
+    </div>
+    <footer>footer</footer>
+  </div>
+ 
+
+3. 悬挂式布局
+  主栏的左侧添加一个图片
+    .box{
+      display: flex;
+    }
+
+    img {
+      height: 50px;
+      margin-right: 20px;
+    }
+    .box-body {
+      flex: 1;
+    }
+
+    <div class="box">
+      <img src="../assets/logo.png" alt="">
+      <div class="box-body">box-body box-body box-body box-body box-body box-body</div>
+    </div>
+
+
+
+4. 固定底栏
+  当页面内容太少，无法占满一屏的高度，底栏就会抬高到页面的中间。这时可以采用Flex布局，让底栏总是出现在页面的底部。
+    .box{
+      display: flex;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    .box-body {
+      flex: 1;
+    }
+    header, .box-body, footer {
+      border: 1px solid #ddd;
+    }
+
+  <div class="box">
+    <header>header</header>
+    <div class="box-body">box-body</div>
+    <footer>footer</footer>
+  </div>
+
+
+
+ 
+
+参考：
+1. http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html?utm_source=tuicool)
+2. http://www.ruanyifeng.com/blog/2015/07/flex-examples.html

@@ -1,0 +1,74 @@
+一、forEach
+  回调函数参数，item(数组元素)、index(序列)、arr(数组本身)
+  循环数组，无返回值，不改变原数组
+  不支持return操作输出，return只用于控制循环是否跳出当前循环
+
+二、includes
+  判断数组是否包含某个元素，不用return，不用回调函数，返回布尔值
+
+三、filter
+  使用return操作输出，会循环数组每一项，并在回调函数中操作
+  返回满足条件的元素组成的数组，不改变原数组
+
+四、map
+  输出的是return什么就输出什么新数组
+  原数组被“映射”成对应新数组，返回新数组，不改变原数组
+
+五、find
+  用来查找目标元素，找到就返回该元素，找不到返回undefined
+  输出的是一旦判断为true则跳出循环输出符合条件的数组元素
+
+六、some
+  返回布尔值，遇到满足条件变跳出循环
+
+七、every
+  返回布尔值，遇到不满足条件跳出循环
+
+八、reduce
+  累加器，输出的是return叠加什么就输出什么 
+  回调函数参数四个
+  pre: 初始值（之后为上一操作的结果）
+  cur: 当前元素之
+  index: 当前索引
+  arr: 数组本身
+  主要有以下几种用法：
+  1.数组求和
+    [1,2,3,4].reduce((pre, cur) => pre + cur)//10
+  2.二维数组转为一维数组
+    [[1, 2], [3, 4], [5, 6]].reduce(( acc, cur ) => [...acc, ...cur], [])//[1, 2, 3, 4, 5, 6]
+  3.计算数组中每个元素出现的次数
+    const arraySum = (arr, val) => arr.reduce((acc, cur) => {
+      return cur == val ? acc + 1 : acc + 0
+    }, 0);
+    let arr = [1, 2, 3, 4, 5];
+    arraySum(arr, 0) //3
+  4.代替filter和map的组合
+  const characters = [
+    { name: 'ironman', env: 'marvel' },
+    { name: 'black_widow', env: 'marvel' },
+    { name: 'wonder_woman', env: 'dc_comics' },
+  ];
+
+  console.log(
+    characters.filter(character => character.env === 'marvel')
+    .map(character => Object.assign({}, character, { alsoSeenIn: ['Avengers'] }))
+  );
+  // [
+  //  { name: 'ironman', env: 'marvel', alsoSeenIn: ['Avengers'] },
+  //  { name: 'black_widow', env: 'marvel', alsoSeenIn: ['Avengers'] }
+  // ]
+
+    console.log(
+      characters.reduce((acc, character) => {
+        return character.env === 'marvel'? acc.concat(Object.assign({}, character, { alsoSeenIn: ['Avengers'] })) : acc;
+      }, [])
+    )
+    // [
+    //  { name: 'ironman', env: 'marvel', alsoSeenIn: ['Avengers'] },
+    //  { name: 'black_widow', env: 'marvel', alsoSeenIn: ['Avengers'] }
+    // ]
+
+参考：
+1.https://blog.csdn.net/kingan123/article/details/79818566
+2.https://juejin.im/post/5b8d0a74f265da431d0e7ec0
+3.https://www.cnblogs.com/cckui/p/9267542.html

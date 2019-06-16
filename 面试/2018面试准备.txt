@@ -1,0 +1,231 @@
+1.vue的生命周期
+2.vue的路由跳转(传参)
+3.vue和angular和react的特点
+4.vw 和 rem 计算方法 (适配手机) rem基于什么实现的
+5.手机端的调试
+6.写封装组件
+7.数组排序(前端实现按价格或时间排序)
+8.懒加载(按需加载)
+9.手机端的优化
+10.vue X
+11.上下居中的几种方式
+12.闭包
+13.vue watch
+14.vue常用指令
+15.webpack配置
+16.组件之间的传参(父--子， 子--父) 实现的机制
+17.vue 中 this 需要注意的事项
+18.MVVM模式的理解
+19.单页应用
+20.输入url的加载过程
+21.angular的生命周期及常用指令
+22.react的生命周期及常用指令
+
+答案：
+22.react的生命周期及常用指令
+  生命周期：
+    a.constructor
+    b.componentWillMount 组件将要加载
+    c.componentDidMount 组件渲染完成
+    d.componentWillReceiveProps
+    e.shouldComponentUpdate
+    f.componentWillUpdate
+    g.render
+    h.componentDidUpdate
+    i.componentWillUnmount
+
+21.angular的生命周期及常用指令
+  生命周期：
+    a.ngOnChange
+    b.ngOnInit
+    c.ngDoCheck
+    d.ngOnDestroy
+    e.ngAfterContentInit
+    f.ngAfterContentChecked
+    g.ngAfterViewInit
+    h.ngAfterViewChecked
+  常用指令：
+    ng-app, ng-click, ng-bind, ng-repeat, ng-model,
+    ng-class, ng-show/ng-hide, ng-if, ng-switch,
+    ng-checked, ng-selected, ng-disabled, ng-readonly,
+    ng-blur, ng-focus, ng-change, ng-submit
+
+20.输入url的加载过程
+  a.浏览器先查看浏览器缓存-系统缓存-路由器缓存
+  b.在发送http请求前，需要域名解析，解析获取相应的IP地址
+  c.浏览器向服务器发起TCP链接，与服务器建立TCP三次握手
+  d.握手成功后，浏览器向服务器发送http请求
+  e.服务器处理收到的请求，将数据返回至浏览器
+  f.浏览器收到HTTP响应
+  g.读取页面内容，浏览器渲染，解析html源码
+  h.生成dom树。解析css样式、js交互，呈现页面
+
+19.单页应用
+  a.优点：
+    用户体验好：对于内容的改动不需要加载整个页面，这样不会出现空白页面，
+    页面与页面无缝切换，甚至带有一定的动画效果
+    请求量少：请求内容无需服务器解析，对服务器压力较小
+  b.缺点：
+    单页应用最根本的缺陷就是不利于SEO(搜索引擎优化)，因为界面的绝大部分都是动态生成的，所以搜索引擎很不容易索引它
+    首次加载量过大，首屏加载慢，所以对首屏需要做特殊处理
+
+
+18. MVVM模式的理解
+  MVVM分为三个部分：分别是M（Model，模型层），V（View，视图层），VM（ViewModel，V与M连接的桥梁，也可以看作为控制器）
+    1、 M：模型层，主要负责业务数据相关；
+    2、 V：视图层，顾名思义，负责视图相关，细分下来就是html+css层；
+    3、 VM：V与M沟通的桥梁，负责监听M或者V的修改，是实现MVVM双向绑定的要点；
+    MVVM支持双向绑定，意思就是当M层数据进行修改时，VM层会监测到变化，并且通知V层进行相应的修改，反之修改V层则会通知M层数据进行修改，以此也实现了视图与模型层的相互解耦；
+
+17.vue 中 this 需要注意的事项
+  如果this指向window而不是vue时，可以apply改变指向：fn.apply(vue)
+
+16. 组件之间的传参(父--子， 子--父) 实现的机制
+  父--子 props。子--父 $emit (订阅：$emit 发送， $on 接收)
+
+15.webpack配置
+
+14. vue常用指令
+  v-if v-else v-show v-on v-model v-bind v-for
+
+13. vue watch
+  用于观察Vue实例上的数据变动。对应一个对象，键是观察表达式，值是对应回调
+
+11.上下居中的几种方式
+  /*第一种*/
+  .p{
+    vertical-align: middle;
+    display: table-cell;
+  }
+  .c{
+    margin: 0 auto;
+  }
+
+  /*第二种*/
+  .p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /*第三种*/
+  .p{
+    position: relative;
+  }
+  .c{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /*第三种*/
+  .c{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+10. vue X
+  Vuex 是一个专为vue.js应用程序开发的状态管理模式。
+  它采用集中式存储管理应用的所有组件的状态,并以相应的规则保证状态以一种可预测的方式发生变化。
+  主要有三部分组成
+    1.state：驱动应用的数据源
+    2.view：以声明方式将state映射到视图
+    3.actions：相应在view上的用户输入导致的状态变化
+
+9.手机端的优化
+  9.1 网络传输优化
+  9.1.1 网络传输的优化要点
+  9.1.2 首屏加速
+  9.1.3 降低请求数量
+  9.1.4 降低请求量
+  9.1.5缓存Ajax/localstorage
+  9.1.6 lazyload懒加载
+
+9.2 DOM操作优化
+  9.2.1 页面渲染
+  9.2.2 减少使用定位属性（fixed/absolute）
+
+9.3 内存资源优化
+  9.3.1 虚拟键盘导致fixed元素错位
+  9.3.2 fixed元素滑动惯性平滑度
+  9.3.3 其它
+
+9.4 内存资源优化
+  9.4.1 移动端的javascript
+  9.4.2 闭包陷阱
+  9.4.3 webapp资源释放
+  9.4.4 动画与假死
+  9.4.5 Application Cache
+
+9.5 增强用户体验优化 
+  9.5.1 区域滚动
+  9.5.2 点击响应
+
+4.vw 和 rem 计算方法
+vw：
+  假如设计稿：750px， 设计稿上的width为300px；
+  transWidth = 300 * 100 / 750
+rem:
+  html{ font-size: 62.5% }
+  /* 10 / 16 * 100%==》1rem == 10px；默认1rem == 16px */
+  @media screen and (min-width: 320px) and (max-width:375px){
+    font-size: 14px; //通过计算得来
+  }
+  @medio screen and (min-width: 375px) and (max-width: 415px){
+    font-size: 16px;
+  }
+
+3.vue和angular和react的特点
+  vue:
+  优点：
+    a.简单，容易上手
+    b.轻量级的框架，且没有依赖
+    c.能快速的更新dom
+    d.对模块友好，可以通过npm、bower安装
+    e.可复用的组件
+    f.双向数据绑定
+  缺点：
+    a.没有angular那么成熟
+    b.不支持IE8以下
+  angular：
+  优点：
+    a.双向数据绑定
+    b.模版动能强大，指令丰富
+    c.可以复用的自定义指令
+    d.比较完善，包含模版、模块化、路由、过滤器、依赖注入等
+    e.组件化
+  缺点：
+    a.过于臃肿
+    b.什么都要依赖注入
+  react：
+  优点：
+    a.速度快，通过虚拟DOM更新实际DOM
+    b.浏览器兼容性好
+    c.组件化
+    d.对SEO友好
+    e.单向响应数据流
+  缺点：
+    a.只是个视图，并不完整，如果是大型项目需要配合其它框架，如react-router和readux
+
+
+2.vue的路由跳转(传参)
+  使用vue-router实现路由跳转
+  传参
+    this.$route.push({path:'/xxx',query:{id:1}})//类似get传参，通过URL传递参数
+    this.$route.push({path:'/xxx',params:{id:1}});//类似post传参
+  接收参数
+    this.$route.query.id
+    this.$route.params.id
+
+1.vue的生命周期
+  beforeCreate: 创建前状态
+  created: 创建完状态
+  beforeMount: 挂载前状态
+  mounted: 挂载结束状态
+  boforeUpdate: 更新状态
+  updated: 更新完状态
+  beforeDestory: 销毁前状态
+  destroyed: 销毁完成状态

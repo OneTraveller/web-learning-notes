@@ -1,0 +1,40 @@
+了解的方式有两种：
+
+1. 用a标签，href设置为后端提供的excel接口
+  <a href="excel接口">导出</a>
+  简单方便，缺点就是当有token校验时，不适合
+
+2. 用axios
+把token放在请求的header里边
+  import axios from 'axios'
+  import { getToken } from 'js-cookie';
+
+  methods: {
+    exportExcel () {
+      let url = 'http...',
+        token = getToken();
+      axios.get(url, {
+        headers:{
+          "Admin_token":token
+        },
+        responseType: 'blob', //二进制流
+      }).then(function (res) {
+        if(!res) return
+        let blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=utf-8'})
+        let url = window.URL.createObjectURL(blob);
+        let aLink = document.createElement("a");
+        aLink.style.display = "none";
+        aLink.href = url;
+        aLink.setAttribute("download", "excel.xls");
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink); 
+        window.URL.revokeObjectURL(url); 
+      }).catch(function (error) {
+        console.log(error)
+      });
+    }
+  }
+ 
+
+参考：https://blog.csdn.net/xuesheng1610748/article/details/83865679

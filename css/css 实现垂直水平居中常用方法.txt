@@ -1,0 +1,87 @@
+html
+  <div class="outer">
+      <div class="inner"></div>
+  </div>
+
+基本样式
+.outer {
+    background: #ddd;
+    width: 500px;
+    height: 500px;
+}
+.inner {
+   width: 100px;
+   height: 100px;
+   background: red;
+}
+
+一、宽高不固定
+1.display: flex
+  .outer {
+      display: flex;
+      align-items: center;
+      justify-content: center; 
+  }
+2.absolute + transform
+  .outer {
+      position: relative;
+  } 
+  .inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+  }
+
+3.absolute + margin: auto
+  .outer {
+      position: relative
+  }
+  .inner {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+  }
+
+4.display: table-cell
+.outer {
+    display: table-cell;
+    vertical-align: middle;
+}
+.inner {
+    margin: auto;
+}
+
+二、宽高固定
+1.text-align + display: inline-block + vertical-align: middle
+  .outer {
+      text-align: center;
+  }
+  .outer::after {
+      content: '';
+      display: inline-block;
+      vertical-align: middle;
+      height: 500px;
+  }
+  .inner {
+      vertical-align: middle;
+      display: inline-block;
+  }
+
+2.absolute + top + left + margin-top + margin-left
+  .outer {
+      position: relative;
+  }
+  .inner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: -50px;
+      margin-left: -50px;
+  }
+ 
+
+参考：https://github.com/louzhedong/blog/issues/2

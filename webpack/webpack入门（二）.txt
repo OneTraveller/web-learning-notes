@@ -1,0 +1,139 @@
+一、管理输出
+1.多入口配置
+  entry: {
+    index1: './src/index.js',
+    index2: './src/index2.js'
+  },
+  output: {
+    filename: '[name].bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  上面的配置npm run build之后会生成index.bundle.js和index2.bundle.js， 然后在index.html中添加js引用
+
+2.设定 HtmlWebpackPlugin
+HtmlWebpackPlugin会生成新的index.html，替换掉之前旧的index.html
+1）安装HtmlWebpackPlugin
+  npm install --save-dev html-webpack-plugin
+2）配置webpack.config.js
+  const HtmlWebpackPlugin = require('html-webpack-plugin');
+  plugins: [
+    new HtmlWebpackPlugin({
+      title: 'Output Management'
+    })
+  ],
+
+3.清理 /dist 文件夹
+通常，在每次构建前清理 /dist 文件夹，是比较推荐的做法，因此只会生成用到的文件。
+1）安装clean-webpack-plugin
+  npm install clean-webpack-plugin --save-dev
+2）配置webpack.config.js
+  const CleanWebpackPlugin = require('clean-webpack-plugin');
+  plugins: [
+    new CleanWebpackPlugin(),
+  ],
+ 
+
+ 二、开发
+1.source map
+  将编译后的代码映射回原始源代码。如果一个错误来自于 b.js，source map 就会明确的告诉你，关于source map的选项。缺点是增大体积，但不影响开发环境
+  // 与entry和output同级
+  devtool: 'inline-source-map',
+
+2.热加载
+1）安装webpack-dev-server
+  npm install --save-dev webpack-dev-server
+2）配置webpack.config.js
+  const webpack = require('webpack');
+  plugins: [
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devServer: {
+    //设置基本目录结构,用于找到程序打包地址
+    contentBase: './dist',
+    //服务端压缩是否开启
+    compress: true,
+    //服务器的IP地址，可以使用IP也可以使用localhost
+    host: '192.168.1.108,
+    //配置服务端口号
+    port: 8080,
+    //是否自动打开浏览器
+    open: true,
+    hot: true,
+  }
+3）修改package.json
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "serve": "webpack-dev-server --config webpack.config.js"
+  },
+  执行npm run serve
+ 
+
+三、webpack-merge
+  开发环境和生产环境的构建目标差异很大。在开发环境中，我们需要具有强大的、具有热模块替换能力的 source map 和 localhost server。而在生产环境中，我们的目标则转向于关注更小的 bundle以及更优化的资源，以改善加载时间。由于要遵循逻辑分离，我们通常建议为每个环境编写彼此独立的 webpack 配置。为了将独立的配置合并在一起，我们将使用一个名为 webpack-merge 的工具。通过“通用”配置，我们不必在环境特定的配置中重复代码。
+1）安装webpack-merge
+  npm install --save-dev webpack-merge
+2）在根目录下创建config文件夹，然后在config文件夹下创建webpack.common.js  webpack.dev.js  webpack.prod.js文件
+  webpack.common.js
+    const path = require('path');
+    module.exports = {
+      entry: {
+        app: './src/index.js'
+      },
+      output: {
+        filename: '[name].bundle.js',
+        path: path.resolve(__dirname, 'dist')
+      }
+    };
+
+  webpack.dev.js
+    const merge = require('webpack-merge');
+    const common = require('./webpack.common.js');
+    module.exports = merge(common, {
+      mode: 'development',
+      devtool: 'inline-source-map',
+      devServer: {
+        contentBase: '../dist'
+      }
+    });
+
+  webpack.prod.js
+    const merge = require('webpack-merge');
+    const common = require('./webpack.common.js');
+    module.exports = merge(common, {
+      mode: 'production'
+    });
+
+3）修改package.json
+  "scripts": {
+    "build:dev": "webpack --config config/webpack.dev.js",
+    "build:prod": "webpack --config config/webpack.prod.js"
+  },
+ 
+
+四、CommonsChunkPlugin
+通过使用 CommonsChunkPlugin 来移除重复的模块，减小代码体积
+1）配置webpack.config.js
+  // 与entry和output同级
+  optimization: {
+    splitChunks: {
+      name: 'common',
+      chunks: "initial",
+    }
+  },
+ 
+
+五、shimming 全局变量
+1）配置webpack.config.js
+  const webpack = require('webpack');
+  plugins: [
+    new webpack.ProvidePlugin({
+      _: 'lodash'
+    })
+  ],
+2）在js中直接引用_就可以
+  element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+ 
+
+参考：
+1.https://www.webpackjs.com/guides/development/
