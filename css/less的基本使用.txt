@@ -1,0 +1,180 @@
+一、less的简洁
+  LESS是一个CSS预处理器，可以为网站启用可自定义，可管理和可重用的样式表。 LESS是一种动态样式表语言，扩展了CSS的功能，提供诸如变量，函数， mixins 和操作等功能，可以构建动态CSS。
+  使用LESS的原因：
+    1.LESS支持创建更清洁，跨浏览器友好的CSS更快更容易。
+    2.LESS是用JavaScript设计的，并且创建在 live 中使用，其编译速度比其他CSS预处理器更快。
+    3.LESS保持你的代码以模块化的方式，这是非常重要的，通过使其可读性和容易改变。
+    4.可以通过使用LESS 变量来实现更快的维护。
+
+二、安装
+1. 全局安装less
+  npm i -g less
+2. 创建style.less style.css文件，进行编译，将style.less编译到style.css里
+  lessc style.less style.css
+
+三、用法
+1.变量
+  @main-color: blue;
+  h1 {
+    color: @main-color;
+  }
+  将编译为：
+  h1 {
+    color: blue;
+  }
+
+2.嵌套
+  div {
+    background: #eee;
+    h1 {
+      color: blue;
+    }
+  }
+  将编译为：
+  div {
+    background: #eee;
+  }
+  div h1 {
+      color: blue;
+    }
+  }
+
+3.&
+  div {
+    background: #eee;
+    &:hover {
+      color: blue;
+    }
+  }
+  将编译为：
+  div {
+    background: #eee;
+  }
+  div:hover {
+    color: blue;
+  }
+
+4.运算
+@fontSize: 12px;
+font-size: @fontSize * 2; ==> font-size: 24px;
+font-size: @fontSize + 2; ==> font-size: 14px;
+
+5.导入，导入style.less
+  @import 'style' //
+
+6.扩展
+  h2 {
+    &:extend(.body);
+    font-style: italic;
+  }
+  .body {
+    background: green;
+  }
+  将编译为：
+  h2 {
+    font-style: italic;
+  }
+  .body,
+  h2 {
+    background: green;
+  }
+
+  .style:extend(.container, .img)
+  {
+    background: #BF70A5;
+  }
+  .container {
+    font-style: italic;
+  }
+  .img{
+    font-size: 30px;
+  }
+  将编译为：
+  .style {
+    background: #BF70A5;
+  }
+  .container,
+  .style {
+    font-style: italic;
+  }
+  .img,
+  .style {
+    font-size: 30px;
+  }
+
+7.混合
+1）普通混合
+  .p1{
+    color:red;
+  }
+  .p2{
+    background : #64d9c0;
+    .p1();
+  }
+  .p3{
+    background : #DAA520;
+    .p1;
+  }
+  将编译为：
+  .p1 {
+    color: red;
+  }
+  .p2 {
+    background: #64d9c0;
+    color: red;
+  }
+  .p3 {
+    background: #DAA520;
+    color: red;
+  }
+2）.带参数混合
+  .border(@width; @style; @color) {
+    border: @width @style @color;
+  }
+  .header {
+    .border(2px; dashed; green);
+  }
+  将编译为：
+  .header {
+    border: 2px dashed green;
+  }
+
+8.函数
+  Less 内置了多种函数用于转换颜色、处理字符串、算术运算等。
+  @base: #f04615;
+  @width: 0.5;
+  .class {
+    width: percentage(@width); // returns `50%`
+    color: saturate(@base, 5%);
+    background-color: spin(lighten(@base, 25%), 8);
+  }
+  利用 percentage 函数将 0.5 转换为 50%，将颜色饱和度增加 5%，以及颜色亮度降低 25% 并且色相值增加 8 
+
+9.map
+  在小于3.5的版本中，还可以使用mixin和规则集作为值的映射。
+  #colors() {
+    primary: blue;
+    secondary: green;
+  }
+  .button {
+    color: #colors[primary];
+    border: 1px solid #colors[secondary];
+  }
+  将编译为：
+  .button {
+    color: blue;
+    border: 1px solid green;
+  }
+
+10.作用域
+  先在内部寻找变量和mixin，如果没有找到，则从外部寻找
+  @var: red;
+  #page {
+    @var: white;
+    #header {
+      color: @var; // white
+    }
+  }
+
+
+参考： https://less.bootcss.com/

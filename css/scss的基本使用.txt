@@ -1,0 +1,100 @@
+1.变量
+  $primary-color: #333;
+  body {
+    color: $primary-color;
+  }
+  将编译为：
+  body {
+    color: #333; 
+  }
+
+2.嵌套
+  body {
+    div {
+      color: #eee;
+    }
+  }
+  将编译为：
+  body div {
+    color: #eee;
+  }
+
+3.&
+  div{
+    &.active {
+      color: red;
+    }
+  }
+  将编译为：
+  div.active {
+    color: red;
+  }
+
+4.导入
+  SASS的@import则会直接将这些引入的片段合并至当前CSS文件，并且不会产生新的HTTP请求
+  @import 'reset' //导入reset.scss
+
+5.混合
+  @mixin border-radius($radius) {
+    border-radius: $radius;
+    -ms-border-radius: $radius;
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+  }
+  .box {
+    @include border-radius(10px);
+  }
+  将编译为：
+  .box {
+    border-radius: 10px;
+    -ms-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px; 
+  }
+
+6.继承
+  %success-common {
+    border: 1px solid #ccc;
+    padding: 10px;
+    color: #333;
+  }
+  .success {
+    @extend %success-common;
+    border-color: green;
+  }
+  将编译为：
+  .success {
+    border: 1px solid #ccc;
+    padding: 10px;
+    color: #333;
+    border-color: green;
+  }
+
+7.运算
+  $width1 = 100px;
+  $width2 = 200px;
+  div {
+    width: $width + $width2;
+  }
+  将编译为：
+  div {
+    width: 300px;
+  }
+
+8.嵌套属性
+  .demo {
+    // 命令空间后带有冒号:
+    font: {
+      family: fantasy;
+      size: 30em;
+      weight: bold;
+    }
+  }
+  将编译为：
+  .demo {
+    font-family: fantasy;
+    font-size: 30em;
+    font-weight: bold; 
+  }
+
+参考：https://www.jianshu.com/p/a99764ff3c41
