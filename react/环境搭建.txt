@@ -1,0 +1,100 @@
+从零搭建react框架
+1.初始化
+  npm init -y
+
+2.安装生产环境依赖
+  npm i -S react react-dom
+
+3.安装开发环境依赖
+  npm i -D webpack webpack-cli webpack-dev-server style-loader css-loader less less-loader @babel/core babel-loader @babel/preset-env @babel/preset-react
+
+4.配置webpack，在根目录下创建confi文件夹，存在webpack.config.js
+  const path = require('path');
+  const webpack = require('webpack');
+
+  const modules = {
+    entry: './src/index.js',
+    output: {
+      filename: 'bundle.js',
+      path: path.resolve(__dirname, '../dist')
+    },
+    plugins: [
+      new webpack.NamedModulesPlugin(),
+      new webpack.HotModuleReplacementPlugin()
+    ],
+    module: {
+      rules: [
+        {
+          test: /\.(css|less)$/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'less-loader'
+          ]
+        },
+        {
+          test: /\.(js|jsx)$/,
+          exclude: '/node_modules/',
+          loader: 'babel-loader'
+        }
+      ],
+    },
+    devServer: {
+      contentBase: './dist',
+      host: 'localhost',
+      port: 8000,
+      open: true,
+      hot: true,
+    }
+  }
+
+  module.exports = modules;
+
+5.配置package.json
+  "scripts": {
+    "dev": "webpack-dev-server --config config/webpack.config.js"
+    "build": "webpack --config config/webpack.config.js",
+  },
+
+6.配置.babelrc
+  {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react",
+    ]
+  }
+
+7.创建index.js
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+
+  const App = () => {
+    return (
+      <div>
+        <h1>hello react !</h1>
+      </div>
+    )
+  };
+
+  ReactDOM.render(<App />, document.getElementById('app'));
+
+8.创建dist/index.html
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+  </head>
+
+  <body>
+    <div id="app"></div>
+    <script src="./bundle.js"></script>
+  </body>
+
+  </html>
+
+9.运行
+npm run dev

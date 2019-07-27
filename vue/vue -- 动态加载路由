@@ -1,0 +1,20 @@
+// router/index.js
+const router = new Router({
+  routes: []
+})
+
+let vueRouter;
+router.beforeEach((to, from, next) => {
+  // 不加这个判断，路由会陷入死循环
+  if (!vueRouter) {
+    vueRouter = '通过接口请求路由'
+    router.addRoutes(vueRouter)
+    next({ ...to, replace: true })
+  } else {
+    next()
+  }
+})
+
+function getComponent(name) {
+  return () => import(`@/components/${name}`)
+}

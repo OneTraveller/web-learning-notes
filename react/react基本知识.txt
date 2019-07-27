@@ -1,0 +1,116 @@
+1.事件处理
+  React 元素的事件处理和 DOM 元素类似。但是有一点语法上的不同:
+    React 事件绑定属性的命名采用驼峰式写法，如：onClick, onChange, onMouseOver...
+    如果采用 JSX 的语法你需要传入一个函数作为事件处理函数，而不是一个字符串(DOM 元素的写法)
+
+  a.普通用法
+  handleClick () {
+    console.log('handle click');
+  }
+  <button onClick={this.handleClick}>click me</button>
+
+  b.传递参数
+  1）<button onClick={this.handleClick.bind(this, 'handleClick')}>click me</button>
+  2）<button onClick={val => this.clickButton(val)}>click me</button>
+
+  c.事件中调用this
+  1）<button onClick={this.handleClick.bind(this, 'handleClick')}>click me</button>
+  2）<button onClick={val => this.clickButton(val)}>click me</button>
+  3）constructor() {
+      super();
+      this.handleClick = this.handleClick.bind(this)
+    }
+
+2.显示和隐藏
+  constructor() {
+    super();
+    this.state = { show: true };
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick () {
+    this.setState({
+      show: !this.state.show
+    })
+  }
+  <button onClick={this.handleClick}>click me</button>
+  1）内联样式
+    <h1 style={{ display: this.state.show ? 'block' : 'none' }}>show</h1>
+  2）className
+    .show { display: block; }
+    .hide { display: none; }
+    <h1 className={ this.state.show ? 'show' : 'hide' }>show</h1>
+
+3.列表
+  this.state = { list: ['tom', 'jack'] };
+  { this.state.list.map((item, index) => <h2 key={index}>{item}</h2>) }
+
+4.ref
+  <input type="text" defaultValue='val' ref='input' />
+  const input = this.refs.input;
+  console.log(input.value); // val
+
+5.双向数据绑定
+  constructor() {
+    super();
+    this.state = { input: '' };
+  }
+  change (val) {
+    this.setState({ input: val })
+  }
+  <input type="text" onChange={e => this.change(e.target.value)} />
+  <h5>输入的值：{this.state.input}</h5>
+
+6.组件间的通信
+  1）父向子传值 props
+    父组件：
+      <Child basketball='nba'/>
+    子组件：
+      constructor(props) {
+        super(props);
+        console.log(this.props.basketball)
+      }
+  2）子向父传值 回调函数
+    父组件：
+      fromChildVal (val) {
+        console.log(val);
+      }
+      <Child fromChildVal={val => this.fromChildVal(val)} />
+    子组件：
+      componentDidMount () {
+        this.props.fromChildVal('child val')
+      }
+
+7.动画
+  1）react-transition-group
+    import { CSSTransition } from 'react-transition-group';
+    // 设置this.state.show的忽略
+    <CSSTransition timeout={100} className="fade" in={this.state.show}>
+      <div>CSSTransition</div>
+    </CSSTransition>
+    // 样式
+    .fade.enter, .fade.exit-done, .fade.exit-active {
+      opacity: 0;
+      transition: opacity .8s ease-in;
+    }
+    .fade.enter-done, .fade.exit, .fade.enter-active {
+      opacity: 1;
+      transition: opacity .8s ease-in;
+    }
+  
+  2）react-motion
+    import { Motion, spring, presets } from 'react-motion';
+    this.state = { left: 0 };
+    handleClick () {
+      this.setState({ left: this.state.left === 0 ? 200 : 0 })
+    }
+    <button onClick={this.handleClick.bind(this)}>click me</button>
+    <Motion style={{ x: spring(this.state.left, presets.wobbly) }}>
+      {val => <div style={{ transform: `translateX(${val.x}px)` }} className='box'></div>}
+    </Motion>
+    // css
+    .box {
+      border: 1px solid;
+      width: 100px;
+      height: 100px;
+    }
