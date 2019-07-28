@@ -1,0 +1,47 @@
+react-router-dom的基本使用
+  react-router和react-router-dom，后者比前者多出了 <Link> <BrowserRouter> 这样的 DOM 类组件
+
+1.安装
+  npm i react-router-dom -S
+
+2.引入
+  import { HashRouter as Router, Route, Link } from "react-router-dom";
+  BrowserRouter和HashRouter的区别：
+    1）BrowserRouter的url中没有#号，HashRouter有
+    2）BrowserRouter需要服务器Rewrites设置，否则刷新会找不到对应链接
+
+3.用法
+  <Router>
+		<Link to='/地址'>文字</Link> // 渲染为a标签
+		<Route path='/地址' component={组件名称}>
+  </Router>
+
+4.exact
+  完全匹配路径才能跳转，适用于只有/的路径，如首页
+
+5.添加子路由
+  const path = this.props.match.url;
+    return (
+      <div>
+        <Link to={`${path}/new1`}>新闻1</Link>
+        <Link to={`${path}/new2`}>新闻2</Link>
+        <Route path={`${path}/new1`} component={newComponent1}></Route>
+        <Route path={`${path}/new2`} component={newComponent2}></Route>
+      </div>
+    )
+
+6.路由传参
+  1）url后面跟参数
+    <Link to='/detail/088'>详情</Link>
+    <Route path='/detail/:id' component={Detail}></Route>
+    获取：this.props.match.params.id // 008
+  2）query
+    点击跳转：this.props.history.push({ pathname: '/news/new1', query: { id: 186 } })
+    获取：this.props.location.query // { id: 186 }
+  3）state
+    点击跳转：this.props.history.push({ pathname: '/news/new1', state: 186 })
+    获取：this.props.location.state // 186
+
+参考：
+1.https://reacttraining.com/react-router/web/example/basic
+2.https://www.jianshu.com/p/7ad7ab2745af

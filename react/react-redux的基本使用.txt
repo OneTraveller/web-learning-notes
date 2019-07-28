@@ -1,0 +1,58 @@
+1.简介
+  redux：状态管理器 
+  主要包含三部分：action、reducer、store
+    action：改变state的办法是触发action，一个描述进行什么动作的对象
+    reducer：纯函数，用于计算、通过action描述的动作修改state
+    store维护state，有四个方法
+      1）dispatch 改变state
+      2）getState 获取state
+      3）subscribe 监听state变化
+      4）replaceReducer：替换store当前用来处理state的reducer
+
+2.安装
+  npm i redux -S 
+
+3.编写reducer函数
+  export default function reducer (state = 0, action) {
+    if (action.type === 'add') {
+      return state + 1;
+    }
+    return state;
+  }
+
+4.创建store
+  import { createStore } from 'redux';
+  import Reducer from '../Reducer';
+  export const store = createStore(Reducer)
+
+5.进行监听 subscribe
+  在app.js中
+    import { store } from '../store';
+    function render () {
+      ReactDOM.render(<App />, document.getElementById('app'));
+    }
+    render();
+    store.subscribe(render);
+
+6.在组件中使用
+  import { store } from '../store';
+  handleClick() {
+    store.dispatch({type: 'add'})
+  }
+  <h2>{store.getState()}</h2>
+
+7.使用中间件applyMiddleware和异步redux-thunk
+  1）安装thunk：npm i redux-thunk -S 
+  2）实现代码
+    import { createStore, applyMiddleware } from 'redux';
+    import Reducer from '../Reducer';
+    import thunk from 'redux-thunk'
+
+    export const store = createStore(Reducer, applyMiddleware(thunk, fn))
+
+    // applyMiddleware中间件，做一些限制
+    function fn ({ getState }) {
+      return (dispatch) => (action) => {
+        dispatch(action)
+      }
+    }
