@@ -1,0 +1,32 @@
+1.下载HBuilderX
+  1）链接：http://www.dcloud.io/hbuilderx.html
+  2）点右上角的按钮进行下载
+
+2.解压压缩包，运行HBuilderX.exe
+
+3.创建项目
+  1）点新建项目
+  2）选择 5 + App(A) 
+  3）填写名称 选择末班
+  4）点创建按钮
+
+4.设置manifest.json文件
+
+5.打包
+  1）点菜单栏-发行-原生app云打包
+  2）因为只打安卓的包，去掉ios的打钩
+  3）选中 使用DCloud公用证书
+  4）点击打包按钮
+  5）点菜单发行-查看云打包状态
+  6）在控制台点击下载链接进行下载apk
+  7）将apk发送到手机上进行安装
+
+6.打包vue项目成apk
+  1）将vue项目目录下的config文件夹里的index.js文件中,将build对象下的assetsPublicPath中的“/”，改为“./”后，打包生成的 dist 文件
+  2）将dist文件中的static文件夹和index.html放入打包的项目中
+  3）将不用的文件删掉，只剩static文件夹、unpackage文件夹、index.html和mainfest.json即可
+  4）按照上面的步骤进行打包
+
+
+参考：
+https://www.cnblogs.com/taohuaya/p/10263519.html
