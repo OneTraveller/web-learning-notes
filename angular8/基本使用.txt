@@ -1,0 +1,49 @@
+一、起步
+  1.全局安装 @angular/cli
+    npm install -g @angular/cli
+  2.创建工作空间和初始应用
+    ng new ng8
+  3.运行应用
+    cd ng8
+    ng serve --open
+
+二、常用API
+1.class
+  1）[class.myClass]="expression"，表达式为真，添加 myClass，反之移除
+  2）[class]="expression" 表达式应该返回一个包含类名的字符串。
+  3）[ngClass]="{ 'myClass': expression }" 表达式为真，添加 myClass，反之移除
+
+2.style
+  1）[style.color]="fontColor" // fontColor = 'red' ts
+  2）[ngStyle]="myStyle" // myStyle = { fontSize: '30px' } ts
+
+3.属性绑定
+  <h1 [title]="title">hello angular</h1>
+
+4.插值表达式 {{}}
+  <h1>{{title}}</h1>
+
+5.ngIf 
+  <h2 *ngIf="true">ngif</h2>
+
+6.事件绑定
+  <button (click)="clickMe($event)">click me</button>
+
+7.列表 ngFor
+  <p *ngFor="let item of list">{{item}}</p>
+  // ts list: any[];
+        constructor() {
+          this.list = ['age', 'name'];
+        }
+
+8.创建组件
+  1）执行命令行
+    ng g c 组件名称
+  2）在父组件中添加组件名称即可
+
+
+
+
+参考：
+1.https://www.jianshu.com/p/8e107265b8b4
+2.https://www.jianshu.com/p/b3671ceafd7d

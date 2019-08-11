@@ -114,3 +114,13 @@
       width: 100px;
       height: 100px;
     }
+
+8.组件的生命周期
+  1.组件初始化
+    constructor()
+  2.挂载
+    componentWillMount，render，componentDidMount
+  3.组件的更新
+    componentWillReceiveProps，shouldComponentUpdate，componentWillUpdate，render，componentDidUpdate
+  4.卸载
+    componentWillUnmount
