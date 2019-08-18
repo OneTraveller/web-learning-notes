@@ -12,6 +12,7 @@ add && commit && push && pull && status
   git status 查看状态（commit前的状态）
   git status -s 查看简洁版
   git diff 查看修改内容
+  git push --no-thin gerrit HEAD:refs/publish/master （commit --amend 后）
 
 远端 remote
   git remote -v 查看远端地址
@@ -61,6 +62,10 @@ tag
   head~1, head~2：回退到上一个版本，回退到上两个版本
   git reset --hard commit_id 回退到指定的版本
   git reflog 查看历史命令，可以回到未来的版本
+
+git clean -df 删除当前目录下没有被track过的文件和文件夹
+git checkout -- .  撤销没有被track过的文件
+
 
 生成ssh key
 1.配置
