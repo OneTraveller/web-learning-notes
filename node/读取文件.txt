@@ -1,0 +1,21 @@
+const fs=require('fs');
+
+// 写入数据
+//fs.writeFile(path, data, callback);
+// 读取文件
+//fs.readFile(path, callback);
+
+fs.writeFile('./a.txt', 'testData', err => {
+  if (err) {
+    console.log('失败', err);
+  } else {
+    console.log('成功')
+  }
+});
+
+fs.readFile('./a.txt', (err, data) => {
+  if (err) {
+    console.log('错误', err);
+  } else {
+    console.log('成功', data.toString());
+  }
