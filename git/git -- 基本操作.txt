@@ -62,6 +62,10 @@ tag
   git reset --hard commit_id 回退到指定的版本
   git reflog 查看历史命令，可以回到未来的版本
 
+git clean -df 删除当前目录下没有被track过的文件和文件夹
+git checkout -- .  撤销没有被track过的文件
+
+
 生成ssh key
 1.配置
   git config --global  user.name "这里换上你的用户名"
