@@ -1,0 +1,20 @@
+跳转锚点的三种方法
+
+1. name
+  <a name="anchor"></a>
+  <a href="#anchor">click me</a>
+  
+2. id
+  <a id="anchor"></a>
+  <a href="#anchor">click me</a>
+
+3. input focus
+  <input type="text" id="input" style="opacity: 0;">
+  <button onclick="anchor()">click me</button>
+
+  function anchor() {
+    document.getElementById('input').focus();
+  }
+
+补充
+<a href="#">回到顶部</a>

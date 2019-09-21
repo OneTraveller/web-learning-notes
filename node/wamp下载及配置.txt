@@ -1,0 +1,18 @@
+1.简洁
+  WAMP是指在Windows服务器上使用Apache、MySQL和PHP的集成安装环境，可以快速安装配置Web服务器，对新手来说在Windows平台下使用Apache、MySQL、PHP也确实是一个不错的选择。
+
+2.下载
+  https://wampserver-64bit.en.softonic.com
+
+3.配置
+  1）在安装wamp的目录下，找到httpd.conf文件
+    D:\soft\wamp\wamp\bin\apache\Apache2.2.17\conf
+  2）在httpd.conf文件中，搜索关键字DocumentRoot，将路径换成自己的项目地址，记住，是两处！！！
+    如：DocumentRoot "D:/soft/wamp/www/"
+    换成：DocumentRoot "E:/learn/node/node-express/"
+  3）如果出现Forbidden You don't have permission to access /phpMyAdmin/index.php on this server.的错误，修改如下：
+    同样是修改httpd.conf,将 <Directory /></Directory> 中的 Deny from all 改成 Deny from None 即可
+  4）重启wamp
+
+
+参考：https://www.cnblogs.com/wangluochong/archive/2013/03/26/2981846.html

@@ -1,0 +1,35 @@
+1.进入数据库
+  http://localhost:8080/phpmyadmin/
+
+2.创建数据库
+  1）点击localhost
+  2）输入数据库名称，选择类型（通常选择utf8_general_ci）
+  3）点击创建
+
+3.在数据库中创建数据表
+  1）输入表名，字段数（列数，后续可修改）
+  2）点击右边执行按钮
+  3）添加字段：如id/INT、username/VARCHAR，然后点保存
+
+4.SQL——4大语句
+  增 INSERT
+    INSERT INTO <表> (字段, ...) VALUES(值, ...);
+    INSERT INTO user_table (username, password) VALUES('lisi', '111111');
+
+  删 DELETE
+    DELETE FROM <表> WHERE 条件;
+    DELETE FROM user_table WHERE ID=2;
+
+  改 UPDATE
+    UPDATE <表> SET 字段=新值,字段=新值,... WHERE 条件;
+    UPDATE user_table SET password='654321', username='blue2' WHERE ID=1;
+
+  查 SELECT
+    SELECT 字段列表 FROM <表> WHERE 条件 ORDER BY 字段 LIMIT 30,30;
+    SELECT * FROM `user_table` WHERE ID=1
+
+5.node操作数据库
+  1）连接数据库
+    const db = myqsl.createConnection({ host: 'localhost', user: 'root', password: '', database: '数据库名称', })
+  2）增删改查
+    const data = await db.query(`SELECT ID FROM user_table WHERE username='${username}'`);
