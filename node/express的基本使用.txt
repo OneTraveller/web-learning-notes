@@ -1,0 +1,56 @@
+express的基本使用
+
+1.简洁
+  express 是一个保持最小规模的灵活的 Node.js Web 应用程序开发框架，为 Web 和移动应用程序提供一组强大的功能。
+
+2.安装
+  npm install express --save
+
+3.基本使用
+  1）引入express
+    const express = require('express')
+  2）初始化
+    const app = express();
+  3）get(url, callback)
+  4）监听端口
+    app.listen(3000)
+  5）example
+    const express = require('express')
+    const app = express()
+    app.get('/user', (req, res) => res.send('Got a get request at /user'))
+    app.listen(3000, () => console.log('Example app listening on port 3000!'))
+
+4.next
+  执行下一步
+  app.get('/reg', (req, res, next) => {
+    req.nextParams = 'test'; // 传参给下一步
+    next();
+  })
+  // next
+  app.get('/reg', (req, res) => {
+    // req.nextParams => 'test'
+    res.send('get 请求成功(next)');
+  })
+
+5.post
+  安装body-parser，方便获取参数
+  const urlencodedParser = bodyParser.urlencoded({ extended: false });
+  app.post('/login', urlencodedParser, (req, res) => {
+    const { username, password } = req.body;
+    res.send('post 请求成功')
+  })
+
+6.中间件
+  1）返回静态文件
+    server.use(express.static('./static/'));
+  2）post获取参数
+    app.use(bodyParser.urlencoded({ extended: false }))
+    app.post('/login', (req, res) => {
+      const { username, password } = req.body || {};
+      res.send('post 请求成功（使用中间件）')
+    })
+  3）文件上传-multer
+    安装 multer
+    let obj=multer({dest: './static/upload'});
+    server.use(obj.any());
+
