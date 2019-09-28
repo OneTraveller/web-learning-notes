@@ -1,0 +1,101 @@
+koa的初步使用
+
+1.简洁
+  koa是Express的下一代基于Node.js的web框架，目前有1.x和2.0两个版本。
+  历史
+    1.express
+      Express是第一代最流行的web框架，它对Node.js的http进行了封装。
+      虽然Express的API很简单，但是它是基于ES5的语法，要实现异步代码，只有一个方法：回调。
+      如果异步嵌套层次过多，代码写起来就非常难看。
+    2.koa 1.0
+      随着新版Node.js开始支持ES6，Express的团队又基于ES6的generator重新编写了下一代web框架koa。
+    3.koa 2.0
+      koa团队并没有止步于koa 1.0，他们非常超前地基于ES7开发了koa2。
+      和koa 1相比，koa2完全使用Promise并配合async来实现异步，代码看起来更加简洁
+
+2.安装
+  npm i koa -D
+
+3.hello koa
+  const Koa = require('koa');
+  const app = new Koa();
+  // response
+  app.use(ctx => {
+    ctx.body = 'Hello Koa';
+  });
+  app.listen(3000);
+
+4.配合async使用
+  app.use(async (ctx, next) => {
+    const start = Date.now();
+    await next();
+    const ms = Date.now() - start;
+    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+  });
+
+5.断言
+  app.use(async (ctx, next) => {
+    // if (!ctx.query.user) ctx.throw(400)
+    ctx.assert(ctx.query.user, 400, 'user is required');
+    await next();
+    ctx.body = 'success';
+  })
+
+6.中间件
+  const Koa = require('koa');
+  const app = Koa();
+  app.use(...);
+  app.listen(8080);
+
+7.路由
+  1.安装路由
+    npm i -D koa-router
+  2.使用路由
+    const Koa = require('koa');
+    const Router = require('koa-router');
+    const app = new Koa();
+    const router = new Router();
+    router.get('/user', () => {});
+    // 在中间件里使用路由
+    app.use(router.routes());
+    app.listen(8080, () => console.log('server opening...'))
+
+8.路由带参数
+  前端访问接口：'http://localhost:8080/user/1213';
+  router.get('/user/:id', (ctx, next) => {
+    ctx.body = 'hello koa-router';
+    console.log(ctx.params); // { id: 1213 }
+  })
+
+9.路由嵌套
+  router.get('/user', ctx => {
+    ctx.body = 'user';
+  })
+  router.get('/user/login', ctx => {
+    ctx.body = 'user/login'
+  })
+
+10.操作cookie
+  const Koa = require('koa');
+  const session = require('koa-session');
+  const app = new Koa();
+  app.listen(8080);
+
+  app.keys = [
+    'afdfee34hghsgfsf',
+    'afdfeetreve34hghsgfsf',
+    'afdfee34hgdfdhsgfsf',
+  ];
+
+  app.use(session({
+    maxAge: 20 * 60 * 1000, // 有效期 20分钟
+    renew: true, // 自动续期
+  }, app));
+
+  app.use(ctx => {
+    if (!ctx.session.view) {
+      ctx.session.view = 0;
+    }
+    ctx.session.view++;
+    ctx.body = `欢迎你第${ctx.session.view}次来访`;
+  })
