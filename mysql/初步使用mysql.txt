@@ -1,0 +1,142 @@
+一、简洁
+  MySQL 是一个关系型数据库管理系统，由瑞典 MySQL AB 公司开发，目前属于 Oracle 公司。
+  MySQL 是一种关联数据库管理系统，关联数据库将数据保存在不同的表中，而不是将所有数据放在一个大仓库内，这样就增加了速度并提高了灵活性。
+
+二、常用语句
+  1.创建数据库
+    CREATE DATABASE 数据库名
+  
+  2.连接数据库（node）
+    const myqsl = require('mysql')
+    myqsl.createConnection({ host: '主机名或ip', user: '用户名', password: '密码', database: '数据库名称' })
+    myqsl.createConnection({ host: 'localhost', user: 'root', password: '', database: '20191002', })
+  
+  3.删除数据库名字
+    DROP DATABASE 数据库名
+
+  4.创建数据表
+    CREATE TABLE table_name (字段名 字段类型);
+      ex：
+      CREATE TABLE IF NOT EXISTS `runoob_tbl`(
+        `runoob_id` INT UNSIGNED AUTO_INCREMENT,
+        `runoob_title` VARCHAR(100) NOT NULL,
+        `runoob_author` VARCHAR(40) NOT NULL,
+        `submission_date` DATE,
+        PRIMARY KEY ( `runoob_id` )
+      )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+      如果你不想字段为 NULL 可以设置字段的属性为 NOT NULL， 在操作数据库时如果输入该字段的数据为NULL ，就会报错。
+      AUTO_INCREMENT定义列为自增的属性，一般用于主键，数值会自动加1。
+      PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。
+      ENGINE 设置存储引擎，CHARSET 设置编码。
+
+  5.删除数据表
+    DROP TABLE 数据表
+
+  6.条件 WHERE
+    SELECT 字段 FROM 表名 [WHERE 条件1 [AND [OR]] 条件2.....
+    SELECT * FROM `user_table` WHERE password='1213' AND username = 'bear'
+
+  7.增 INSERT
+    INSERT INTO <表> (字段, ...) VALUES(值, ...);
+    INSERT INTO user_table (username, password) VALUES('lisi', '111111');
+     AUTO_INCREMENT 实现自增
+
+  8.删 DELETE
+    DELETE FROM <表> WHERE 条件;
+    DELETE FROM user_table WHERE ID=2;
+
+  9.改 UPDATE
+    UPDATE <表> SET 字段=新值,字段=新值,... WHERE 条件;
+    UPDATE user_table SET password='654321', username='blue2' WHERE ID=1;
+
+  10.查 SELECT
+    SELECT 字段 FROM <表> WHERE 条件 ORDER BY 字段 LIMIT 30,30;
+    SELECT * FROM `user_table` WHERE ID=1
+
+  11.模糊查询 LIKE
+    SELECT 字段 FROM 表名 WHERE 字段 LIKE '%...%'
+    SELECT * FROM  `user_table` WHERE PASSWORD LIKE  '%23%'
+
+  12.去重 UNION
+    SELECT 字段 FROM 表1 UNION SELECT 字段 FROM 表2
+    SELECT password FROM runoob_tbl UNION SELECT password FROM user_table
+
+  13.排序
+    ASC 或 DESC 关键字来设置查询结果是按升序或降序排列
+    SELECT * FROM `user_table` ORDER BY username DESC
+
+  14.分组 GTOUP BY
+    SELECT 字段, function(字段) FROM 表名 GROUP BY 字段;
+    SELECT name, COUNT(name) FROM user_table GROUP BY name;
+    WITH ROLLUP 可以实现在分组统计数据基础上再进行相同的统计（SUM,AVG,COUNT…）
+      SELECT coalesce(name, '总数'), SUM(singin) as singin_count FROM  employee_tbl
+        GROUP BY name WITH ROLLUP;
+      coalesce(a, b, c) 如果a==null,则选择b；如果b==null,则选择c；如果a!=null,则选择a；如果a b c 都为null ，则返回为null
+      +--------------------------+--------------+
+      | coalesce(name, '总数') | singin_count |
+      +--------------------------+--------------+
+      | 小丽                   |            2 |
+      | 小明                   |            7 |
+      | 小王                   |            7 |
+      | 总数                   |           16 |
+      +--------------------------+--------------+
+
+  15.NULL 值处理
+    SELECT 命令及 WHERE 子句来读取数据表中的数据,但是当提供的查询条件字段为 NULL 时，该命令可能就无法正常工作.
+    1.IS NULL: 当列的值是 NULL,此运算符返回 true
+      SELECT * FROM runoob_test_tbl WHERE runoob_count IS NULL
+    2.IS NOT NULL: 当列的值不为 NULL, 运算符返回 true
+      SELECT * from runoob_test_tbl WHERE runoob_count IS NOT NULL
+    3.ifnull
+      select * , columnName1+ifnull(columnName2,0) from tableName;
+      columnName1，columnName2 为 int 型，当 columnName2 中，有值为 null 时，
+      columnName1+columnName2=null， ifnull(columnName2,0) 把 columnName2 中 null 值转为 0。
+
+  16.正则表达式
+    MySQL 同样也支持其他正则表达式的匹配，规则与js正则类似
+      查找name字段中以'st'为开头的所有数据：
+        SELECT name FROM person_tbl WHERE name REGEXP '^st';
+      查找name字段中以'ok'为结尾的所有数据：
+        SELECT name FROM person_tbl WHERE name REGEXP 'ok$';
+
+  17.连接的作用 JOIN
+    1）JOIN：获取两个表中字段匹配关系的记录
+      SELECT * FROM a_tbl a JOIN b_tbl b ON a.name = b.name
+    2）LEFT JOIN：与 JOIN 有所不同。 LEFT JOIN 会读取左边数据表的全部数据，即便右边表无对应数据，填充NULL
+      SELECT * FROM a_tbl a LEFT JOIN b_tbl b ON a.name = b.name
+    3）RIGHT JOIN：会读取右边数据表的全部数据，即便左边表无对应数据，填充NULL
+      SELECT * FROM a_tbl a RIGHT JOIN b_tbl b ON a.name = b.name
+
+  18.数据类型
+    1）字符串
+      类型        大小              用途
+      CHAR	     0-255字节	        定长字符串
+      VARCHAR	   0-65535字节	      变长字符串
+      TINYBLOB	 0-255字节	        不超过 255 个字符的二进制字符串
+      TINYTEXT	 0-255字节	        短文本字符串
+      BLOB	     0-65535字节	      二进制形式的长文本数据
+      TEXT	     0-65535字节	      长文本数据
+      MEDIUMBLOB 0-16777215字节	    二进制形式的中等长度文本数据
+      MEDIUMTEXT 0-16777215字节	    中等长度文本数据
+      LONGBLOB	 0-4294967295字节	  二进制形式的极大文本数据
+      LONGTEXT	 0-4294967295字节	  极大文本数据
+
+    2）日期和时间类型
+      类型      字节     范围                      格式        用途 
+      DATE	    3	      1000-01-01/9999-12-31	    YYYY-MM-DD	日期值
+      TIME	    3	      '-838:59:59'/'838:59:59'	HH:MM:SS	  时间值或持续时间
+      YEAR	    1	      1901/2155	                YYYY	      年份值
+      DATETIME	8	      1000-01-01 00:00:00       YYYY-MM-DD 	混合日期和时间值
+                        /9999-12-31 23:59:59	    HH:MM:SS
+
+    3）数值类型
+      类型          大小    用途        范围(有符号)             范围(无符号)
+      TINYINT	      1字节	  小整数值    (-128，127)	            (0，255)	
+      SMALLINT	    2字节	  大整数值    (-32 768，32 767)	      (0，65 535)	
+      MEDIUMINT 	  3字节	  大整数值    (-8 388 608，8 388 607)	(0，16 777 215)	
+      INT或INTEGER	4字节	  大整数值    (-2 147 483 648，2 147 483 647)	  (0，4 294 967 295)	
+      BIGINT	      8字节	  极大整数值  (-9,223,372,036,854,775,808，9 223 372 036 854 775 807)	  (0，18 446 744 073 709 551 615)	
+      FLOAT	        4字节	  浮点数值    (-3.402 823 466 E+38，-1.175 494 351 E-38)，0，(1.175 494 351 E-38，3.402 823 466 351 E+38)	0，(1.175 494 351 E-38，3.402 823 466 E+38)	单精度
+      DOUBLE	      8字节	  浮点数值    (-1.797 693 134 862 315 7 E+308，-2.225 073 858 507 201 4 E-308)，0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308)	0，(2.225 073 858 507 201 4 E-308，1.797 693 134 862 315 7 E+308)	双精度
+
+  
