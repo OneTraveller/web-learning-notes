@@ -46,14 +46,15 @@ html
       margin: auto;
   }
 
-4.display: table-cell
-.outer {
-    display: table-cell;
-    vertical-align: middle;
-}
-.inner {
-    margin: auto;
-}
+4.display: table-cell + vertical-align
+  浮动和绝对定位会让元素块状化，导致vertical-align无效，所以浮动和绝对定位不适用
+  .outer {
+      display: table-cell;
+      vertical-align: middle;
+  }
+  .inner {
+      margin: auto;
+  }
 
 二、宽高固定
 1.text-align + display: inline-block + vertical-align: middle

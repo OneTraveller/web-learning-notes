@@ -20,9 +20,21 @@
 
 六、some
   返回布尔值，遇到满足条件变跳出循环
+  用法：
+  1.求两个数组的交集
+  const arr1 = [{id: 1213, id: 1214}]
+  const arr2 = [{id: 1313, id: 1213}]
+  const intersection = arr1.filter(x => arr2.some(y => x.id === y.id))
+  // intersection ==> [{id: 1213}]
 
 七、every
   返回布尔值，遇到不满足条件跳出循环
+  用法：
+  1.求两个数组的差集
+  const arr1 = [{id: 1213, id: 1214}]
+  const arr2 = [{id: 1313, id: 1213}]
+  const diff = arr1.filter(x => arr2.every(y => y.id !== x.id))
+  // diff ==> [{id: 1214}]
 
 八、reduce
   累加器，输出的是return叠加什么就输出什么 
