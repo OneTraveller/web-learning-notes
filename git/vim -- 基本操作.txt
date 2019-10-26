@@ -1,0 +1,36 @@
+一、vim常用命令
+  1）mkdir test 创建文件夹test
+  2）rm -r test 删除文件夹test
+  3）rm -rf .git  移除之前提交的git
+  4）pwd 查看当前路径
+  5）touch index.html 创建index.html
+  6）rm index.html 删除index.html
+  7）ls 列出文件
+  8）mv index.html test.html 将index.html 文件重命名为 test.html
+  9）vim index.js 进入编辑index.js文件
+  10）按 a/i/o进入编辑模式
+  11）按ECS退出操作模式
+  12）shift + ; + wq 保存退出，q!不保存退出
+
+ 
+
+二、vim快捷键
+  1）ctrl + u 删除光标前字符
+  2）ctrl + k 删除光标后的字符
+  3）ctrl + w 删除光标前一个单词(相连在一起的)
+  4）ctrl + a 光标移到最前面
+  5）ctrl + e 光标移到最后面
+  6）ctrl + r 查找之前执行过的命令
+  7）ctrl + b 光标向前移一位
+  8）ctrl + f 光标向后移一位
+  9）ctrl + p 上一条命令
+  10）ctrl + n 下一条命令
+  11）ctrl + h 删除光标前一个字符
+  12）ctrl + d 删除光标后一个字符
+  13）ctrl + l 清屏
+  14）reset 清屏
+  15）alt + b 移至前一个单词前面
+  16）alt + f 移至后一个单词后面
+  17）alt + d 删除光标后一个单词
+  18）shift + PageUp 向上翻页
+  19）shift + PageDown 向下翻页

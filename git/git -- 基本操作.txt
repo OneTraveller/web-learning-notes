@@ -1,127 +1,151 @@
-一、git基本操作
-  git init 初始化工程
-  git clone url 克隆工程
-add && commit && push && pull && status
-  git add . （git add -A）添加全部修改文件，包括untracked的文件
-  git add -u 添加修改的文件，不包括新建的文件
-  git commit -m '提交信息' 提交已经添加缓存区的文件
-  git commit -a -m '提交信息' 提交修改过的文件（包括未添加到缓存区的）
-  git push -u origin master 加了参数-u后，以后即可直接用git push 代替git push origin master
-  git push -f 强制提交（适用于旧版本覆盖新版本）
-  git pull 拉取最新代码
-  git status 查看状态（commit前的状态）
-  git status -s 查看简洁版
-  git diff 查看修改内容
-  git push --no-thin gerrit HEAD:refs/publish/master （commit --amend 后）
+git的基本操作
 
-远端 remote
-  git remote -v 查看远端地址
-  git remote set-url origin [url] 修改远端地址
-  git remote -v 查看远端链接
-  git remote rm origin 删除远端链接
-  git remote add origin url 添加远端链接
+1.安装及配置git
+  ● 从官网下载exe安装：https://git-scm.com/downloads
+  ● 配置
+    git config --global user.name "Your Name"
+    git config --global user.email "Your Email"
 
-log
-  git log 查看历史记录
-  git log --pretty=oneline 查看历史记录（commit id 和 commit 信息）
-  git log --oneline 简洁版
-  git log -p 文件名 查看指定文件的提交历史
-  git blame 文件名 以列表的形式查看指定文件的提交历史
+2.创建版本库
+  git init
 
-checkout
-  git branch (分知名) 创建分支
-  git checkout (分知名) 切换分支
-  git branch -d (分支名) 删除分支
+3.克隆版本库
+  git clone url(版本库地址)
 
-tag
-  git tag -a v1.0 打上v1.0标签
-  git tag 查看标签
-  git tag -d v1.0 删除v1.0标签
-  git push --tags 上传所有的标签
+4.查看状态 status
+  查看在你上次提交之后是否有修改
+  ● git status
+  ● 查看简洁版：git status -s 
 
-编辑界面
-  cat 查看文件内容
-  git vim 编辑器基本操作
-  按 a/i/o进入编辑模式
-  按ECS进入操作模式
-  在操作模式下，：wq保存退出，：q!不保存退出
+5.查看提交记录 log 
+  ● 查看历史记录：git log 
+  ● 查看记录简短版本：git log --oneline 
+  ● 查看记录的拓扑图：git log --graph --oneline 
+  ● 以列表的形式查看指定文件的提交历史：git blame 文件名
+  ● 查看指定文件的提交历史：git blame 文件名 git log -p 文件名 
+  ● 查看逆向记录：git log --reverse  --oneline 
+  ● 指定日期 --since、 --before、 --until、 --after
+    查看三周前且在2019-10-26之后的所有提交，可以执行这个(--no-merges 选项以隐藏合并提交)
+      git log --oneline --before={3.weeks.ago} --after={2019-10-26} --no-merges
 
-撤销
-撤销文件的修改
-  git checkout head xx文件 撤销xx文件的修改
-撤销add
-  git reset HEAD 撤销全部的add
-  git reset HEAD xx文件 撤销xx文件add
-撤销commit
-  git commit --amend 修改最后一次提交（补提交或者修改message的情况下使用）
-  git reset [--mixed, --soft, --hard] [head^, head~1, head~2] 回退版本
-  --mixed：默认参数，git reset --mixed head^ 和 git reset head^是一样的效果，撤销commit和add，不删除工作区的代码
-  --soft：撤销commit，不撤销add，不删除工作区代码
-  --hard：撤销commit和add，删除工作区代码
-  head^：回退到上个版本
-  head~1, head~2：回退到上一个版本，回退到上两个版本
-  git reset --hard commit_id 回退到指定的版本
-  git reflog 查看历史命令，可以回到未来的版本
+6.查看差异 diff
+  查看执行 git status 的结果的详细信息
+  ● 尚未缓存的改动：git diff
+  ● 查看已缓存的改动： git diff --cached
+  ● 显示摘要而非整个 diff：git diff --stat
 
-git clean -df 删除当前目录下没有被track过的文件和文件夹
-git checkout -- .  撤销没有被track过的文件
+7.添加到暂存区 add
+  工作区：就是你在电脑里能看到的目录。
+  暂存区：英文叫stage, 或index。一般存放在 ".git目录下" 下的index文件(.git/index)中，所以我们把暂存区有时也叫作索引(index)。
+  版本库：工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库
+  将工作区的文件添加到版本库有两个步骤
+    第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；
+    第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。
+  add
+  ● 添加文件：git add file1 file2
+  ● 添加修改过的文件(不包括untracked的文件)：git add -u
+  ● 添加所有文件(包括untracked的文件)：git add .
 
+8.提交到版本库 commit
+  ● 提交已经添加缓存区的文件：git commit -m '提交信息' 
+  ● 提交修改过的文件(git add -u && git commit -m 'xx')：git commit -a -m '提交信息' 
+  ● 修改最后一次提交(补提交或者修改message的情况下使用)：git commit --amend 
 
-生成ssh key
-1.配置
-  git config --global  user.name "这里换上你的用户名"
-  git config --global user.email "这里换上你的邮箱"
-2.生成秘钥
-  ssh-keygen -t rsa -C "这里换上你的邮箱"
-  来自 https://blog.csdn.net/lqlqlq007/article/details/78983879
+9.撤销修改 
+  HEAD指向版本库的最新版本
+  ● 撤销add
+    ● 撤销xx文件：git reset HEAD xx文件
+    ● 撤销所有：git reset HEAD 
+  ● 撤销commit
+      ● git reset [--mixed, --soft, --hard] [head^, head~1, head~2]
+        --mixed：默认参数，撤销commit和add，不删除工作区的代码(git reset --mixed head^ === git reset head^)
+        --soft：撤销commit，不撤销add，不删除工作区代码
+        --hard：撤销commit和add，删除工作区代码
+        head^：回退到上个版本
+        head~1, head~2：回退到上一个版本，回退到上两个版本
+      ● git reset --hard commit_id 回退到指定的版本
+      ● git reflog 查看历史命令，可以回到未来的版本
 
-开发流程
-  1.取最新的master代码，在master分支上 git pull
-  2.创建个人分支 git branch branchName
-  3.切换至个人分支 git checkout branchName
-  4.进行开发
-  5.进行提交 git add .  和 git commit -m 'message'
-  6.切换到master分支，取最新代码 git pull
-  7.切回个人分支，rebase并解决冲突： git rebase master
-  8.push到个人分支  git push origin branchName
-  9.创建pull request请求  
-  10.合并到master分支
+10.创建分支及切换分支
+  ● 切换分支：git checkout 分支名 
+  ● 创建远端分支：git branch origin/分支名
+  ● 切换分支：git checkout 分支名 
+  ● 创建并切换分支：git checkout -b 分支名 
+  ● 删除分支：git branch -d 分支名 
+  ● 强制删除分支：git branch -D 分支名 
 
+11.分支合并 merge
+  merge操作会使提交记录变成分叉的拓扑图
+  合并dev：git merge dev
 
-二、git常用命令
-  1）mkdir test 创建文件夹test
-  2）rm -r test 删除文件夹test
-  3）rm -rf .git  移除之前提交的git
-  4）pwd 查看当前路径
-  5）touch index.html 创建index.html
-  6）rm index.html 删除index.html
-  7）ls 列出文件
-  8）mv index.html test.html 将index.html 文件重命名为 test.html
-  9）vim index.js 进入编辑index.js文件
-  10）shift + ; + wq 保存退出
+12.rebase
+  rebase操作可以把本地未push的分叉提交历史整理成直线，更直观
+  rebase master 分支：git rebase master
+    ● 解决完冲突后继续rebase：git rebase --continue
+    ● 跳过rebase：git rebase --skip
+    ● 终止rebase：git rebase --abort
 
- 
+13.cherry-pick
+  cherry-pick命令，能让我们能复制一个特定的提交到当前分支
+    git cherry-pick commit_id
+  场景：在master分支上修复了bug，由于dev分支是和master上的代码一致，也会存在这个bug，把master分支解决bug的代码复制到dev上
+    
+14.储藏 satsh
+  stash操作可将工作区的代码储藏起来
+    ● 代码储藏：git stash
+    ● 查看储藏代码：git stash list
+    ● 代码恢复：git stash pop
+  场景：master上出现bug，此时在dev上开发，工作只进行到一半，还没法提交，可将dev分支上的代码进行储藏，修改好master上的bug后再返回继续开发
 
-三、git快捷键
-  1）ctrl + u 删除光标前字符
-  2）ctrl + k 删除光标后的字符
-  3）ctrl + w 删除光标前一个单词(相连在一起的)
-  4）ctrl + a 光标移到最前面
-  5）ctrl + e 光标移到最后面
-  6）ctrl + r 查找之前执行过的命令
-  7）ctrl + b 光标向前移一位
-  8）ctrl + f 光标向后移一位
-  9）ctrl + p 上一条命令
-  10）ctrl + n 下一条命令
-  11）ctrl + h 删除光标前一个字符
-  12）ctrl + d 删除光标后一个字符
-  13）ctrl + l 清屏
-  14）reset 清屏
-  15）alt + b 移至前一个单词前面
-  16）alt + f 移至后一个单词后面
-  17）alt + d 删除光标后一个单词
-  18）shift + PageUp 向上翻页
-  19）shift + PageDown 向下翻页
+15.远端 remote
+  ● 查看远端地址：git remote -v 
+  ● 修改远端地址：git remote set-url origin [url] 
+  ● 删除远端链接：git remote rm origin 
+  ● 添加远端链接：git remote add origin url 
+
+16.拉取 fetch
+  从远端版本库拉取最新代码到版本库， 再merge合并到工作区
+    git fetch
+    git merge FETCH_HEAD
+
+17.拉取 pull
+  从远端版本库拉取最新的代码到工作区：git pull
+  相当于 git fetch && git merge FETCH_HEAD
+
+18.推送 push
+  将本地banbk推送到远端版本库
+    ● 普通推送：git push -u origin master (加了参数-u后，以后即可直接用git push 代替git push origin master)
+    ● 强制推送：git push -f 
+
+19.自定义别名
+  自定义别名可以简写命令，例如：
+    ● 用co表示checkout：git config --global alias.co checkout
+    ● 用ci表示commit: git config --global alias.ci commit
+
+20.忽略特殊文件
+  创建 .gitignore 文件，然后把要忽略的文件名填进去，git就会自动忽略这些文件
+  例如：
+    /node_modules
+    /.pnp
+    .pnp.js
+
+21.标签 tag
+  tag就是一个让人容易记住的有意义的名字，它跟对应的 commit_id 绑在一起，便于代码回退
+  ● 打上v1.0标签：git tag -a v1.0 
+  ● 查看标签：git tag 
+  ● 上传一个标签：git push origin v1.0 
+  ● 上传所有的标签：git push origin --tags 
+  ● 删除v1.0标签：git tag -d v1.0 
+
+22.使用github
+  ● 在github上创建一个项目
+  ● 生成ssh key
+    ● 配置(如已配置，忽略)
+      git config --global user.name "Your Name"
+      git config --global user.email "Your Email"
+    ● 生成秘钥
+      ssh-keygen -t rsa -C "Your Email"
+      详情请看：https://blog.csdn.net/lqlqlq007/article/details/78983879
 
  
 
