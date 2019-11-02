@@ -1,0 +1,58 @@
+简洁
+  gulp 将开发流程中让人痛苦或耗时的任务自动化，从而减少你所浪费的时间、创造更大价值。
+    ● 代码优于配置、node 最佳实践、精简的 API 集，gulp 让工作前所未有的简单
+    ● 基于 node 强大的流(stream)能力，gulp 在构建过程中并不把文件立即写入磁盘，从而提高了构建速度。
+    ● 遵循严格的准则，确保我们的插件结构简单、运行结果可控
+
+2. 安装gulp
+  全局安装：npm i gulp -g  启动器
+  本地安装：npm i gulp -D  核心库
+
+3. 编写配置
+  gulpfile.js 
+    ● 安装并引入对应的gulp的插件
+      npm i gulp-xxx -D
+      const xxx = require('gulp-xxx')
+    ● 声明的任务
+      gulp.task('js', () => {})
+    ● 执行声明的任务
+      gulp.task('default', ['js', ...任务名称])
+    压缩js的例子:
+      const gulp = require('gulp');
+      const uglify = require('gulp-uglify');
+      gulp.task('js', () =>
+        gulp.src(['./src/js/*.js'])
+          .pipe(uglify())
+          .pipe(gulp.dest('./build/js/'))
+      );
+      gulp.task('default', ['js']);
+
+4.常用API
+  ● src 从指定的路径读取文件
+    src(globs, [options])
+      globs：string或array类型
+        特殊字符 * ：匹配文件夹下的所有文件，不能匹配嵌套的文件夹。如 'js/*.js' 能匹配js文件夹下的所有js文件，不能匹配js/js/index.js的文件
+        特殊字符 ** ：能匹配所有文件夹下的文件，包括嵌套的文件夹里的文件。如 'js/**/*.js',匹配js文件夹下的所有js文件
+        特殊字符 ! ：取反，['**/*.js', '!node_modules/']
+      options：object类型
+        对于接受函数的选项，传递的函数将与每个 Vinyl 对象一起调用，并且必须返回另一个列出类型的值
+  ● dest 输出文件到指定的路径
+    dest(directory, [options])
+  ● watch 监听文件的修改
+    watch(globs, [...任务名])
+  ● pipe
+    流（stream）所提供的主要的 API 是 .pipe() 方法，用于连接转换流。利用 .pipe() 方法将插件放置在 src() 和 dest() 之间，并转换流中的文件
+
+5.常用插件
+  ● gulp-uglify: 压缩js
+  ● gulp-sourcemaps: 检查代码出错的地方
+  ● gulp-babel：es6/es7转成es5
+  ● gulp-concat：拼接
+  ● gulp-cssmin：压缩css
+  ● gulp-less：编译less
+  ● gulp-scss：编译scss
+  ● gulp-imagemin：压缩图片
+  ● gulp-rename：文件重命名
+  ...
+
+
