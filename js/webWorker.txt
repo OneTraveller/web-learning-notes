@@ -50,7 +50,9 @@ webWorker
 
   （5）文件限制
     Worker 线程无法读取本地文件，即不能打开本机的文件系统（file://），它所加载的脚本，必须来自网络。
+    
 
+demo链接：https://github.com/OneTraveller/demo/tree/master/webWorker
 
 参考：http://www.ruanyifeng.com/blog/2018/07/web-worker.html
 
