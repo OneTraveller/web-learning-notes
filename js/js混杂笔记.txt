@@ -274,10 +274,41 @@ click('click count', 3000)
 18.将多维数组转为以为数组
   arr.join(',').split(',')
   [[1,2,3],4,5,[[6,7]]].join(',').split(',')//["1", "2", "3", "4", "5", "6", "7"]
-  19.获取数组倒数的元素
+
+19.获取数组倒数的元素
   arr.slice(-1) 获取倒数一个元素
   arr.slice(-2) 获取倒数两个元素
 
 20.数组重洗
   arr.sort(()=> (Math.random() - 0.5))
   
+21.字符串每五个一换行，英文字符保持单词的完整
+    /* 
+      @params str, 要换行的字符串
+      @params length 要换行的数字，即一行显示几个字符
+    */
+    function linefeed(str, length) {
+      // 判断字符是否为英文
+      const reg = /[A-z]/;
+      let count = 0;
+      const newStr = str.split('').reduce((pre, item, index) => {
+        count += 1;
+        // 如果不到要换行的字符时，直接拼接
+        if (count >= length) {
+          // 如果当前和后一位是英文不换行，不是英文换行
+          if (reg.test(item) && reg.test(str[index + 1])) {
+            return `${pre}${item}`;
+          }
+          count = 0;
+          return `${pre}${item}\n`;
+        }
+        return `${pre}${item}`;
+      }, '');
+      return newStr;
+    }
+
+22.postMessage
+  postMessage为h5新增的特性，可以用于iframe传参数
+  使用： 
+    监听： window.addEventListener('message', (params) => {}, false);
+    发送消息：window.postMessage('要传过去的参数', '接收方的域名， 同域名下为"/" ');

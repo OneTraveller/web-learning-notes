@@ -120,6 +120,25 @@
     <p>17</p>
   </div>
 
+  3）多个元素，每行放三个
+    .box {
+      display: flex;
+      flex-wrap: wrap; /* 允许换行 */
+    }
+    p {
+      flex: 0 0 33.33%;
+    }
+
+    <div class="box">
+      <p>2019年</p>
+      <p>12月</p>
+      <p>28日</p>
+      <p>14时</p>
+      <p>46分</p>
+      <p>56秒</p>
+    </div>
+
+
 
 2. 圣杯布局
 圣杯布局为header、body、footer，然后body又分为左中右
