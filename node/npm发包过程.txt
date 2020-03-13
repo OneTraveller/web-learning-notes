@@ -1,0 +1,35 @@
+一、注册npm账号
+  https://www.npmjs.com/signup
+
+二、创建项目，包含最少三个文件
+  1. package.json（包的基本信息）
+  2. README.md（说明文档）
+  3. index.js （入口文件）
+
+三、添加账号
+  1. 第一次发包，使用命令行：npm adduser，然后添加用户信息
+  2. 第二次发包，使用命令行：npm login
+
+四、发布
+  npm publish
+
+五、可能会遇到的问题
+  1. code E403 no_perms Private mode enable, only admin can publish this module...
+    原因：发布源不对，可能是目前是淘宝镜像
+    解决方法：切换npm源
+      npm config set registry=http://registry.npmjs.org
+    发布好了之后在切换回淘宝镜像
+      npm config set registry=https://registry.npm.taobao.org/
+
+  2.没有发布权限 code E401 This package requires that publishers enable TFA and provide an OTP to publish
+    原因：已经存在babel包，而我又不是babel的发布者
+    解决方法：
+      1）换包名
+      2）加作用域
+        npm init --scope=@bear -y
+        @符号后面的是你注册npm账户时的username，这时的名字为 @bear/packageName
+
+  
+参考链接：
+1.https://segmentfault.com/a/1190000014800794?utm_source=channel-hottest
+2.https://segmentfault.com/a/1190000017463371?utm_source=tag-newest
