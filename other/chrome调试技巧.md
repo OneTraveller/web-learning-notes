@@ -2,7 +2,7 @@
 
 转自[你不知道的 Chrome 调试技巧](https://juejin.im/book/5c526902e51d4543805ef35e)
 
-## 通用篇
+# 1. 通用篇
 
 ### ● 复制 copying
 
@@ -41,7 +41,7 @@
 
 > 进入到 Sources 面板，在导航栏里选中 Snippets 这栏，点击 New snippet(新建一个代码块) ，之后按 ctrl + p，输入：! + 文件名称 执行
 
-## 元素面板
+# 2. 元素面板
 
 ### ● 通过'h'显示隐藏元素
 
@@ -52,13 +52,13 @@
 > 方法 1：选中 dom 元素，点击右键，选择 expand recursively
 > 方法 2：使用 alt+左键 点击 dom 节点左侧的箭头
 
-## console 篇
+# 3. console 篇
 
 ### ● \$0
 
 > 在 Chrome 的 Elements 面板中， $0 是对我们当前选中的 html 节点的引用，$1 是对上一次我们选择的节点的引用...直到 \$4
 
-### ● \\$\$
+### ● \$\$
 
 > \$\$('div') === Array.from(document.querySelectorAll('div'))
 
@@ -108,7 +108,7 @@
 
 > 在 console 面板中，点击小眼睛图标，输入表达式，能够不会更新
 
-## network 篇
+# 4. network 篇
 
 ### ● initiator 显示调用堆栈信息
 
@@ -122,7 +122,7 @@
 
 > 选中请求方方法右键，选择 Replay XHR
 
-## Drawer 篇
+# 5. Drawer 篇
 
 > 如何打开 Drawer ? 在 DevTools（任何选项卡）中，按 esc 来显示，再次按 esc 隐藏
 
