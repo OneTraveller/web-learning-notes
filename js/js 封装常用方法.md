@@ -10,6 +10,8 @@ function getType(params) {
 
 ### 2. 深拷贝
 
+> 方法 1
+
 ```
 function deepCopy(params) {
    var obj;
@@ -28,6 +30,32 @@ function deepCopy(params) {
   } else { return params; }
     return obj;
   }
+```
+
+> 方法 2
+
+```
+function deepClone(obj) {
+    // 如果是 值类型 或 null，则直接return
+    if(obj === null || typeof obj !== 'object') {
+        return obj
+    }
+    // 定义结果对象
+    let copy = {}
+    // 如果对象是数组，则定义结果数组
+    if(Array.isArray(obj)) {
+        copy = []
+    }
+    // 遍历对象的key
+    for(let key in obj) {
+        // 如果key是对象的自有属性
+        if(obj.hasOwnProperty(key)) {
+            // 递归调用深拷贝方法
+            copy[key] = deepClone(obj[key])
+        }
+    }
+    return copy
+}
 ```
 
 ### 3. 实现数字千分位
