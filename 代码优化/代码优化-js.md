@@ -123,7 +123,7 @@ const map = { projectNo };
 
 ### 删除多余的属性
 
-原因：更加简洁
+原因：更加简洁，不影响之前的对象
 
 > 修改前
 
@@ -172,13 +172,13 @@ keys.forEach((key) => {
 > 修改前
 
 ```
-if (list && list.lenght > 0) {}
+if (list && list.length > 0) {}
 ```
 
 > 修改后
 
 ```
-if (list && list.lenght) {}
+if (list && list.length) {}
 ```
 
 ### 如果对一个变量有多种值的判断，可以使用 includes
@@ -258,6 +258,20 @@ function fn(option = {}, name) {}
 function fn(name, option = {}) {}
 ```
 
+### 参数不要过多，如果两个以上的参数，建议写成解构赋值的形式，这样就不用考虑参数的顺序
+
+> 修改前
+
+```
+function fn(params1, params2, params3) {}
+```
+
+> 修改前
+
+```
+function fn({params1, params2, params3}) {}
+```
+
 ## 其他
 
 ### 命名小技巧
@@ -265,7 +279,7 @@ function fn(name, option = {}) {}
 原因：解决命名的苦恼
 
 1. 变量添加前缀：max min init new start end
-2. 数据添加后缀：data params list map
+2. 数据添加后缀：data list map
 3. 函数添加前缀：can has is get set load query
 
 ### 判空
@@ -357,7 +371,7 @@ this.state = map[type];
 
 ### if 括号里的判断尽量简短，如果过长，可以抽出来
 
-原因：
+原因：提高可读性
 
 > 修改前
 
@@ -412,18 +426,41 @@ const { projectNo } = info;
 this.$set(info, 'date', '2020-10-01');
 ```
 
-###
+### 请求接口的时候对异常进行处理
 
-原因：
+原因：保证代码的健壮性
 
 > 修改前
 
 ```
-
+async getData() {
+  this.loading = true;
+  const res = await this.xxx();
+  if (isResponseOk(res)) {
+    this.tableData = res.data;
+    // todo
+  } else {
+    errorTip(this, res);
+  }
+  this.loading = false;
+}
 ```
 
 > 修改后
 
 ```
-
+async getData() {
+  this.loading = true;
+  try {
+    const res = await this.xxx();
+    if (isResponseOk(res)) {
+      this.tableData = res.data;
+      // todo
+    } else {
+      errorTip(this, res);
+    }
+  } finally {
+    this.loading = false;
+  }
+}
 ```

@@ -21,7 +21,7 @@ width: 300px !important;
 
 ## 同一个 div 下的样式尽量嵌套在一起
 
-后续想把这个 div 去除掉，把关于这个 div 的整个嵌套样式删除既可
+原因：后续想把这个 div 去除掉，把关于这个 div 的整个嵌套样式删除既可
 
 > html
 
@@ -175,7 +175,7 @@ padding-left: 0;
 
 ## 使用 currentColor
 
-原因：currentColor 是一个变量，自定与 color 保持一致。大多时候，border-color、outline-color、background、text-shadow、box-shadow 会与 color 一样的颜色，可以使用 currentColor 变量，后续方便维护。
+原因：currentColor 是一个变量，自动与 color 保持一致。大多时候，border-color、outline-color、background、text-shadow、box-shadow 会与 color 一样的颜色，可以使用 currentColor 变量，后续方便维护。
 
 > 修改前
 
