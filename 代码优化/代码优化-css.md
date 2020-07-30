@@ -138,6 +138,8 @@ line-height: 1.5;
 
 原因：减少代码量
 
+上下左右居中
+
 > 修改前
 
 ```
@@ -154,6 +156,24 @@ margin-left: -40px;
 position: absolute;
 top: calc(50% - 15px);
 left: calc(50% - 40px);
+```
+
+基于 UI width=750px 的页面
+
+> 修改前
+
+```
+const clientWidth = document.documentElement.clientWidth;
+const html = document.getElementsByTagName('html');
+html.style.fontSize = `${clientWidth / 7.5}px`
+```
+
+> 修改后
+
+```
+html {
+    font-size: calc(100vw / 7.5);
+}
 ```
 
 ## 代码易维护 vs 代码量少

@@ -121,6 +121,21 @@ const projectNo = 'no1213';
 const map = { projectNo };
 ```
 
+### 合并对象
+
+```
+const obj1 = { a: 1 };
+const obj2 = { b: 2 };
+const obj3 = { ...a, ...b } // { a: 1, b: 2}
+```
+
+### 解构对象属性别名
+
+```
+const obj = { a: 0, b: 1, c: 2 };
+const { a, b: d, c: e } = obj; // a d e => 0 1 2
+```
+
 ### 删除多余的属性
 
 原因：更加简洁，不影响之前的对象
@@ -165,6 +180,14 @@ keys.forEach((key) => {
 
 ## 数组相关
 
+### 合并数组
+
+```
+const arr1 = [1, 2];
+const arr2 = [3, 4];
+const arr3 = [...arr1, ...arr2]; // [1, 2, 3, 4]
+```
+
 ### 判断一个数组的元素大于零
 
 原因：（0， '', null, undefined, NaN）经 if 转换布尔值后为 false，其他的经 if 转换布尔值后为 true
@@ -181,6 +204,47 @@ if (list && list.length > 0) {}
 if (list && list.length) {}
 ```
 
+### 创建指定长度数组
+
+原因：适合创建长数组
+
+> 修改前
+
+```
+const arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+```
+
+> 修改后
+
+```
+const arr = [...new Array(10).keys()];
+// arr => [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+### 交换赋值
+
+原因：减少代码量
+
+> 修改前
+
+```
+let a = 0;
+let b = 1;
+let c = a;
+a = b;
+b = c;
+// a b => 1 0
+```
+
+> 修改后
+
+```
+let a = 0;
+let b = 1;
+[a, b] = [b, a];
+// a b => 1 0
+```
+
 ### 如果对一个变量有多种值的判断，可以使用 includes
 
 > 修改前
@@ -195,67 +259,23 @@ if (this.params.type === '1' || this.params.type === '2') {}
 if (['1', '2'].includes(this.params.type)) {}
 ```
 
-### 动态改变表格里的操作按钮
-
-> 修改前
-
-```
-this.btns = [];
-const list = config.list; // [{ id: 'detail', label: '详情' }, { id: 'add', label: '新增' }, { id: 'modify', label: '修改' }];
-if (state === '0') {
-  this.btns.push(list[0]);
-  this.btns.push(list[2]);
-} else {
-  this.btns.push(list[1]);
-  this.btns.push(list[2]);
-}
-```
-
-> 修改后
-
-```
-this.btns = state === '0' ? this.filterList([0, 2]) : this.filterList([1, 2]);
-methods: {
-  filterList(indexList) {
-    return config.list.filter((item, index) => indexList.includes(index));
-  }
-}
-```
-
 ### 循环数据量大的数组时，可以使用 some 代替 forEach
 
 原因：提高性能，使用 forEach 会循环每个元素，使用 some 循环时，遇到满足条件是，便跳出整个循环
 
 ## 函数相关
 
-### 使用默认参数语法
-
-> 修改前
+### 优雅处理非空参数
 
 ```
-function fn(option) {
-  option = option || {};
+function isRequired() {
+    throw new Error("param is required");
 }
-```
-
-> 修改前
-
-```
-function fn(option = {}) {}
-```
-
-### 将默认参数放到最后
-
-> 修改前
-
-```
-function fn(option = {}, name) {}
-```
-
-> 修改前
-
-```
-function fn(name, option = {}) {}
+function func(name = isRequired()) {
+    console.log(name);
+}
+func(); // "param is required"
+func("tom"); // tom
 ```
 
 ### 参数不要过多，如果两个以上的参数，建议写成解构赋值的形式，这样就不用考虑参数的顺序
@@ -405,6 +425,24 @@ const data = data1 > data2 ? data1 : data2;
 
 ```
 const data = Math.max(data1, data2);
+```
+
+### 对比时间（前提是格式一致）
+
+> 修改前
+
+```
+const time1 = '2020-02-02';
+const time2 = '2020-02-03';
+new Date(time1) > new Date(time2); // false
+```
+
+> 修改后
+
+```
+const time1 = '2020-02-02';
+const time2 = '2020-02-03';
+time1 > time2; // false
 ```
 
 ### 使用变量保存层级较多的数据
