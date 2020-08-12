@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>worker</title>
+  </head>
+  <body>
+    <p>计数： <output class="result">0</output></p>
+    <button onclick="startWorker()">开始计数</button>
+    <button onclick="stopWorker()">停止计数</button>
+
+    <script>
+      let worker;
+
+      function startWorker() {
+        const result = document.querySelector('.result');
+        if (typeof Worker !== 'undefined') {
+          if (!worker) {
+            worker = new Worker('worker.js');
+          }
+          worker.onmessage = function (event) {
+            console.log(event.data);
+            result.innerHTML = event.data;
+          };
+          return;
+        }
+        result.innerHTML = '你的浏览器不支持 Web Workers';
+      }
+
+      function stopWorker() {
+        if (worker) {
+          worker.terminate();
+          worker = undefined;
+        }
+      }
+    </script>
+  </body>
+</html>
