@@ -23,7 +23,7 @@ h1 {
 div p {
   color: #000;  
 }
-选择div后面的所有p元素
+选择div包含的所有p元素
 
 6.相邻选择器
 div + p {
@@ -98,14 +98,27 @@ a[href*="www"] {
 为每个并非<p>元素的元素设置字体颜色
 
 17.  :first-child、:last-child、:first-of-type、:last-of-type
-  p:first-child  选择父元素中的第一个p元素
-  p:last-child  选择父元素中的最后一个p元素
+  :first-child  选择父元素中的第一个元素
+  :last-child  选择父元素中的最后一个元素
   p:first-of-type  选择父元素中的第一个p元素
   p:last-of-type 选择父元素中的最后一个p元素
 
+  first-child 和 first-of-type 的区别
+  :first-child 匹配的是某父元素的第一个子元素，可以说是结构上的第一个子元素。
+  :first-of-type 匹配的是某父元素下相同类型子元素中的第一个，比如 p:first-of-type，就是指所有类型为p的子元素中的第一个。
+
+  ```
+    <div>
+      <h1>1213</h1>
+      <p>1213</p>
+    </div>
+    div p:first-child {} // 匹配不到元素
+    div p:first-of-type {} // 可以匹配到元素
+  ```
+
 18. :nth-child(n)、:nth-last-child(n)、:nth-of-type(n)、:nth-last-of-type(n)
-  p:nth-child(3) 选择父元素中的第三个p元素
-  p:nth-last-child(3) 选择父元素中的倒数第三个p元素
+  :nth-child(3) 选择父元素中的第三个元素
+  :nth-last-child(3) 选择父元素中的倒数第三个元素
   p:nth-of-type(3) 选择父元素中的第三个p元素
   p:nth-last-of-type(3) 选择父元素中的倒数第三个p元素
 
@@ -153,6 +166,13 @@ a[href*="www"] {
 29. :target
   锚的名称是在一个文件中链接到某个元素的URL。元素被链接到目标元素。
   :target选择器可用于当前活动的target元素的样式。
+  ```
+    :target {
+      color: red;
+    }
+    <a href="#id1">跳转元素</a>
+    <div id="id1">目标元素</div>
+  ```
 
 30. :out-of-range 和 :in-range
   <input type="number" max="10" min="5" value="7">
