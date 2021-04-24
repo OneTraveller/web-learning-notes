@@ -1,18 +1,18 @@
 # js 封装常用方法
 
-### 1. 获取数据类型
+### 获取数据类型
 
-```
+```JavaScript
 function getType(params) {
   return Object.prototype.toString.call(params).slice(8, -1)
 }
 ```
 
-### 2. 深拷贝
+### 深拷贝
 
 > 方法 1
 
-```
+```JavaScript
 function deepCopy(params) {
    var obj;
    if (typeof params === 'object') {
@@ -34,7 +34,7 @@ function deepCopy(params) {
 
 > 方法 2
 
-```
+```JavaScript
 function deepClone(obj) {
     // 如果是 值类型 或 null，则直接return
     if(obj === null || typeof obj !== 'object') {
@@ -58,20 +58,20 @@ function deepClone(obj) {
 }
 ```
 
-### 3. 实现数字千分位
+### 实现数字千分位
 
-> 1）toLocaleString
+1. toLocaleString（缺点是有兼容性问题）
 
-```
+```JavaScript
   function toFormat(num) {
     num = Number(num);
     return num.toLocaleString();
   }
 ```
 
-> 2）正则
+2. 正则
 
-```
+```JavaScript
   function toFormat(num) {
     num = num.toString();
     var t = /\B(?=(\d{3})+(?!\d))/g;
@@ -85,9 +85,9 @@ function deepClone(obj) {
 
 ### 4. 查询 url 后面参数
 
-> 1）循环
+1. 循环
 
-```
+```JavaScript
 function getParamsName(attr) {
   var url = location.href; // 'baidu.com?name=黎明&age=18&habit=basketball'
   var params = url.split('?')[1];
@@ -104,18 +104,18 @@ function getParamsName(attr) {
 }
 ```
 
-> 2）正则
+2. 正则
 
-```
+```JavaScript
 function getParamsName(attr) {
   let match = RegExp(`[?&]${attr}=([^&]*)`).exec(window.location.search)
   return match && decodeURIComponent(match[1])
 }
 ```
 
-### 5. 获取当前时间
+### 获取当前时间
 
-```
+```JavaScript
 function getDate() {
   var date = new Date();
   var year = date.getFullYear(),
@@ -126,8 +126,7 @@ function getDate() {
   second = date.getSeconds();
 
   var fill = function (num) {
-    num = num.toString();
-    return num.padStart(2, '0') // 为个位数时 补充前面的零
+    return `${num}`.padStart(2, '0'); // 为个位数时 补充前面的零
   }
 
   var currentdate = `${year}-${fill(month)}-${fill(day)} ${fill(hour)}:${fill(minute)}:${fill(second)}`;
@@ -135,11 +134,11 @@ function getDate() {
 }
 ```
 
-### 6. 数组去重
+### 数组去重
 
-> 1） es5
+1. es5
 
-```
+```JavaScript
 function uniq(arr) {
   if (Array.isArray(arr)) {
     return arr.filter((item, index, array) => array.indexOf(item) === index);
@@ -147,17 +146,17 @@ function uniq(arr) {
 }
 ```
 
-> 2）es6
+2. es6
 
-```
+```JavaScript
 function uniq(arr) {
   return [...new Set(arr)]
 }
 ```
 
-### 7. 计算字符串出现次数最多的字母
+### 计算字符串出现次数最多的字母
 
-```
+```JavaScript
 function count(str) {
   var obj = {}, max = { key: '', val: 1 };
   for (var i = 0; i < str.length; i++) {

@@ -12,21 +12,21 @@ Web Worker 的作用，就是为 JavaScript 创造多线程环境，允许主线
 
 1. 主线程采用 new 命令，调用 Worker()构造函数，新建一个 Worker 线程。
 
-```
+```JavaScript
 var worker = new Worker('work.js');
 ```
 
 2. 主线程调用 worker.postMessage()方法，向 Worker 发消息。
    worker.postMessage()方法的参数，就是主线程传给 Worker 的数据。它可以是各种数据类型，包括二进制数据。
 
-```
+```JavaScript
 worker.postMessage('Hello World');
 worker.postMessage({method: 'echo', args: ['Work']});
 ```
 
 3. 主线程通过 worker.onmessage 指定监听函数，接收子线程发回来的消息。
 
-```
+```JavaScript
 worker.onmessage = function (event) {
   console.log('Received message ' + event.data);
   // todo
@@ -35,13 +35,13 @@ worker.onmessage = function (event) {
 
 4. Worker 完成任务以后，主线程就可以把它关掉。
 
-```
+```JavaScript
 worker.terminate();
 ```
 
 5. 主线程可以监听 Worker 是否发生错误。如果发生错误，Worker 会触发主线程的 error 事件。
 
-```
+```JavaScript
 worker.onerror(function (event) {
   // todo
 });
@@ -56,7 +56,7 @@ worker.addEventListener('error', function (event) {
 
 1. Worker 线程内部需要有一个监听函数，监听 message 事件
 
-```
+```JavaScript
 addEventListener('message', function (e) {
   postMessage('You said: ' + e.data);
 }, false);
@@ -65,20 +65,20 @@ addEventListener('message', function (e) {
 
 2. postMessage()方法用来向主线程发送消息。
 
-```
+```JavaScript
 postMessage('msg');
 ```
 
 3. Worker 内部如果要加载其他脚本，有一个专门的方法 importScripts()。
 
-```
+```JavaScript
 importScripts('script1.js');
 importScripts('script1.js', 'script2.js');
 ```
 
 4. 关闭 worker
 
-```
+```JavaScript
 close();
 ```
 
