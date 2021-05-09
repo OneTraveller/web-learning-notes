@@ -1,0 +1,55 @@
+body {
+  background: #120;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  font-weight: bold;
+  color: #fff;
+}
+ul {
+  list-style: none;
+}
+a {
+  color: white;
+}
+.info {
+  width: 400px;
+  margin: 0 auto;
+  padding: 3em 0;
+}
+.info li {
+  float: left;
+  margin-right: 2em;
+  line-height: 30px;
+}
+.score {
+  background-color: white;
+  color: black;
+  font-size: 20px;
+  width: 50px;
+  height: 30px;
+}
+
+.table {
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  border-collapse: collapse;
+  border-spacing: 0;
+  background-color: #eee;
+  clear: both;
+}
+td {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #000;
+}
+.snake-head {
+  background-color: #055;
+}
+.snake-body {
+  background-color: #000;
+}
+.food {
+  background-color: #033;
+}
