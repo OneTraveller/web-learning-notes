@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>2048游戏</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <p>分数: <span id="score">0</span></p>
+
+    <div id="gridPanel">
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+      <div class="grid"></div>
+
+      <div id="c00" class="cell"></div>
+      <div id="c01" class="cell"></div>
+      <div id="c02" class="cell"></div>
+      <div id="c03" class="cell"></div>
+
+      <div id="c10" class="cell"></div>
+      <div id="c11" class="cell"></div>
+      <div id="c12" class="cell"></div>
+      <div id="c13" class="cell"></div>
+
+      <div id="c20" class="cell"></div>
+      <div id="c21" class="cell"></div>
+      <div id="c22" class="cell"></div>
+      <div id="c23" class="cell"></div>
+
+      <div id="c30" class="cell"></div>
+      <div id="c31" class="cell"></div>
+      <div id="c32" class="cell"></div>
+      <div id="c33" class="cell"></div>
+    </div>
+    <div id="gameOver">
+      <div></div>
+      <p>
+        游戏结束<br />
+        分数: <span id="fScore">0</span><br />
+        <a class="btn" onclick="start()">再玩一次</a>
+      </p>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
