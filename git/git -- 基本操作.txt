@@ -148,6 +148,17 @@ git的基本操作
       ssh-keygen -t rsa -C "Your Email"
       详情请看：https://blog.csdn.net/lqlqlq007/article/details/78983879
 
+merge和rebase区别
+从上面可以看到，merge和rebasea都是合并历史记录，但是各自特性不同：
+
+merge
+通过merge合并分支会新增一个merge commit，然后将两个分支的历史联系起来
+其实是一种非破坏性的操作，对现有分支不会以任何方式被更改，但是会导致历史记录相对复杂
+
+rebase
+rebase 会将整个分支移动到另一个分支上，有效地整合了所有分支上的提交
+主要的好处是历史记录更加清晰，是在原有提交的基础上将差异内容反映进去，消除了 git merge所需的不必要的合并提交
+
  
 
 参考资料：
